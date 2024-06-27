@@ -1,3 +1,125 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Add your styles here */
+
+/* Custom styles */
+.container {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #555;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #777;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.button.secondary {
+    background-color: #ccc;
+    color: #333;
+}
+
+.button.secondary:hover {
+    background-color: #999;
+}
+
+.button.large {
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+.button.small {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+}
+body {
+    background-color: #f2f2f2;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.button.primary {
+    background-color: #28a745;
+}
+
+.ticket-issue {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.ticket-issue h3 {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.ticket-issue input[type="text"],
+.ticket-issue textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.ticket-issue textarea {
+    height: 150px;
+}
+
+.ticket-issue button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ticket-issue button:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
