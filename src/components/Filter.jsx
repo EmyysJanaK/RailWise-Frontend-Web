@@ -21,7 +21,7 @@ const Filter = () => {
     };
 
     return (
-        <div className="border p-4 pl-10 bg-gray-100">
+        <div className="border p-4 pl-10 bg-gray-100 w-full h-fit">
             <h3 className="text-lg font-semibold mb-4">Filters</h3>
             <div className="mb-4">
                 <h4 className="font-semibold mb-2">Classes</h4>
