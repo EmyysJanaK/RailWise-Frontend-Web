@@ -16,7 +16,6 @@ const Breadcrumbs = ({ prevLocation, title }) => {
       </h1>
       <p className="text-sm font-normal text-lightText capitalize flex items-center">
         <span> {prevLocation === "" ? "HomePage" : prevLocation}</span>
-
         <span className="px-1">
           <HiOutlineChevronRight />
         </span>

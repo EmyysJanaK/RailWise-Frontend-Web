@@ -1,53 +1,33 @@
-// src/App.jsx
-import React from 'react';
-
-import {
-  createBrowserRouter,
-  RouterProvider,
-  createRoutesFromElements,
-  Route,
-} from 'react-router-dom';
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Results from "./pages/Results"
 import HomePage from './pages/HomePage';
-import Tickets from './pages/Tickets';
+import LoginCustomer from './pages/LoginCustomer';
+import Stations from './pages/Stations';
 import About from './pages/About'; // Import the About page component
-
+import TrainStatus from './pages/TrainStatus'; // Import the TrainStatus page component
 import Contact from './pages/Contact'; // Import the Contact page component
 import './index.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-const Layout = () => {
-  return (
-    <div>
-      <Header />
-      <Footer />
-
-    </div>
-  );
-};
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route>
-      <Route path="/" element={<Layout />}>
-       
-        <Route index element={<HomePage />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/contact" element={<Contact />}></Route>
-        </Route>
-
-    </Route>
-  )
-);
-
 function App() {
+  
+
   return (
-    <div className="font-bodyFont">
-      <RouterProvider router={router} />
-    </div>
-  );
+
+      <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/stations" element={<Stations />} />
+            <Route path="/train status" element={<TrainStatus />} />
+            <Route path="/LoginCustomer" element={<LoginCustomer />} />
+          </Routes>
+      </BrowserRouter>
+
+  )
 }
 
-
-export default App;
+export default App
