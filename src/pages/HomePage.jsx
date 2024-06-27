@@ -13,7 +13,7 @@ const HomePage = () => {
   useEffect(() => {
     const getStations = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/stations');
+        const response = await axios.get('/api/stations');
         setStations(response.data);
       } catch (error) {
         console.error(error);
