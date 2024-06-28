@@ -1,13 +1,31 @@
-import { useState } from 'react'
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Results from "./pages/Results"
+import HomePage from './pages/HomePage';
+import LoginCustomer from './pages/LoginCustomer';
+import Stations from './pages/Stations';
+import About from './pages/About'; // Import the About page component
+import TrainStatus from './pages/TrainStatus'; // Import the TrainStatus page component
+import Contact from './pages/Contact'; // Import the Contact page component
+import './index.css';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
   
 
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+
+      <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/stations" element={<Stations />} />
+            <Route path="/train status" element={<TrainStatus />} />
+            <Route path="/LoginCustomer" element={<LoginCustomer />} />
+          </Routes>
+      </BrowserRouter>
 
   )
 }
