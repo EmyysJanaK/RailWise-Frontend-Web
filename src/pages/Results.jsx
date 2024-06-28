@@ -1,52 +1,86 @@
-import { useState, useEffect } from "react";
-import Filter from "../components/Filter";
-import TrainOption from "../components/TrainOption";
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Filter from '../components/Filter';
+import TrainOption from '../components/TrainOption';
+import axios from 'axios';
 
 const Results = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [trainOptions, setTrainOptions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const trainOptions = [
-    {
-      id: 1,
-      departure: "05:54",
-      arrival: "15:07",
-      duration: "9h 13m",
-      changes: 3,
-      price: 116,
-    },
-    {
-      id: 2,
-      departure: "06:42",
-      arrival: "17:07",
-      duration: "10h 25m",
-      changes: 2,
-      price: 71,
-    },
-    {
-      id: 3,
-      departure: "07:43",
-      arrival: "17:07",
-      duration: "9h 24m",
-      changes: 3,
-      price: 108,
-    },
-    {
-      id: 4,
-      departure: "09:07",
-      arrival: "18:19",
-      duration: "9h 12m",
-      changes: 3,
-      price: 103,
-    },
-    {
-      id: 5,
-      departure: "11:21",
-      arrival: "20:19",
-      duration: "8h 58m",
-      changes: 3,
-      price: 106,
-    },
-  ];
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const departureStationId = queryParams.get('departureStationId');
+  const arrivalStationId = queryParams.get('arrivalStationId');
+  const departureDate = queryParams.get('departureDate');
+  const pax = queryParams.get('pax');
+
+  useEffect(() => {
+    const getStations = async () => {
+      try {
+        const response = await axios.get('/api/schedules', {
+          params: {
+            fromName: 'Maradana',
+            toName: 'Beliaththa',
+            date: '2024-06-26',
+            pax: 4,
+          },
+        });
+        const data = response.data;
+
+        const formattedTrainOptions = data.map(item => ({
+          id: item.schedule._id,
+          departure: item.fromHalt.departureTime,
+          arrival: item.toHalt.arrivalTime,
+          duration: calculateDuration(item.fromHalt.departureTime, item.toHalt.arrivalTime),
+          changes: 0, // This data is not provided in the API response, so set it to 0 or calculate accordingly
+          price: item.toHalt.price - item.fromHalt.price,
+        }));
+
+        setTrainOptions(formattedTrainOptions);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setError('Failed to load train options. Please try again later.');
+        setLoading(false);
+      }
+    };
+    getStations();
+  }, []);
+
+  const calculateDuration = (start, end) => {
+    const parseTime = (timeString) => {
+      const [time, modifier] = timeString.split(' ');
+      let [hours, minutes] = time.split(':').map(Number);
+
+      if (modifier === 'pm' && hours !== 12) {
+        hours += 12;
+      } else if (modifier === 'am' && hours === 12) {
+        hours = 0;
+      }
+
+      return { hours, minutes };
+    };
+
+    const startTime = parseTime(start);
+    const endTime = parseTime(end);
+
+    const startDate = new Date();
+    startDate.setHours(startTime.hours, startTime.minutes);
+
+    const endDate = new Date();
+    endDate.setHours(endTime.hours, endTime.minutes);
+
+    const diff = endDate - startDate;
+    const hours = Math.floor(diff / 1000 / 60 / 60);
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+    return `${hours}h ${minutes}m`;
+  };
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -55,11 +89,16 @@ const Results = () => {
       console.log(isFilterVisible);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [isFilterVisible]);
+
+  const handleTrainOptionClick = (option) => {
+    const newUrl = `/options?departureStationId=${departureStationId}&arrivalStationId=${arrivalStationId}&departureDate=${departureDate}&pax=${pax}`;
+    navigate(newUrl);
+  };
 
   return (
     <div className="flex flex-col">
@@ -78,9 +117,15 @@ const Results = () => {
         <button onClick={() => setIsFilterVisible(true)} className="md:hidden md:mb-0 w-fit px-4 py-2 mb-2 border-black border-2 rounded-md">Filters</button>
 
         <div className="flex flex-col flex-[3] ml-0">
-          {trainOptions.map((option) => (
-            <TrainOption key={option.id} option={option} />
-          ))}
+          {loading ? (
+            <div>Loading...</div>
+          ) : error ? (
+            <div>{error}</div>
+          ) : (
+            trainOptions.map((option) => (
+              <TrainOption key={option.id} option={option} onClick={() => handleTrainOptionClick(option)} />
+            ))
+          )}
         </div>
       </div>
     </div>

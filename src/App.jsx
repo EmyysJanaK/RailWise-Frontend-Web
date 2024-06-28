@@ -9,6 +9,8 @@ import Contact from './pages/Contact'; // Import the Contact page component
 import './index.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Options from './pages/Options';
+import PassengerDetails from './pages/PassengerDetails';
 
 function App() {
   
@@ -24,6 +26,8 @@ function App() {
             <Route path="/stations" element={<Stations />} />
             <Route path="/train status" element={<TrainStatus />} />
             <Route path="/LoginCustomer" element={<LoginCustomer />} />
+            <Route path="/options" element={<Options />} />
+            <Route path="/passenger-details" element={<PassengerDetails />} />
           </Routes>
       </BrowserRouter>
 
