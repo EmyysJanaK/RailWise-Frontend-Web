@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
-import trainImage from "../assets/trainImage.png"; // Adjust the path as needed
+import trainImage from "../assets/trainImage.png"; 
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const Contact = () => {
     const location = useLocation();
@@ -13,39 +14,124 @@ const Contact = () => {
         }
     }, [location]);
 
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+      });
+    
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+          ...formData,
+          [name]: value
+        });
+      };
+    
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        // Handle form submission logic here (e.g., send data to backend)
+        alert('Thank you for your message!');
+      };
+
     return (
         <div className="relative max-w-container mx-auto px-2 py-8">
             <img src={trainImage} alt="Train Background" className="absolute inset-0 w-full h-full object-cover opacity-10 z-0" />
             <div className="relative z-10">
                 <Breadcrumbs title="Contact" prevLocation={prevLocation} />
-                <h1 className="text-3xl sm:text-4xl text-blue-600 font-bold mb-8 text-center shadow-lg">Contact Us</h1>
-                <form className="space-y-6">
-                    <div>
-                        <label htmlFor="name" className="block text-xl text-purple-700">Name:</label>
-                        <input type="text" id="name" name="name" className="w-full text-lg bg-gray-100 rounded-md p-2 mt-1 shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500" />
-                    </div>
-                    <div>
-                        <label htmlFor="email" className="block text-xl text-purple-700">Email:</label>
-                        <input type="email" id="email" name="email" className="w-full text-lg bg-gray-100 rounded-md p-2 mt-1 shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500" />
-                    </div>
-                    <div>
-                        <label htmlFor="message" className="block text-xl text-purple-700">Message:</label>
-                        <textarea id="message" name="message" rows="4" className="w-full text-lg bg-gray-100 rounded-md p-2 mt-1 shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
-                    </div>
-                    <button type="submit" className="w-full text-xl bg-green-500 text-white rounded-md py-3 mt-4 shadow-lg hover:bg-green-600 transition duration-300">Submit</button>
-                </form>
-                
-                <h2 className="text-2xl sm:text-3xl text-purple-700 font-bold mt-12 mb-4 text-center shadow-lg">FAQ</h2>
-                <ul className="space-y-4">
-                    <li className="text-lg sm:text-xl text-orange-700 bg-yellow-100 rounded-md p-4 shadow-lg">Question 1: What is the purpose of this website?</li>
-                    <li className="text-lg sm:text-xl text-orange-700 bg-yellow-100 rounded-md p-4 shadow-lg">Question 2: How can I contact customer support?</li>
-                    <li className="text-lg sm:text-xl text-orange-700 bg-yellow-100 rounded-md p-4 shadow-lg">Question 3: Can I request a refund?</li>
-                </ul>
-
-                <h2 className="text-2xl sm:text-3xl text-orange-700 font-bold mt-12 mb-4 text-center shadow-lg">Opinion Box</h2>
-                <textarea id="opinion" name="opinion" rows="4" className="w-full text-lg bg-gray-100 rounded-md p-2 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                <button type="submit" className="w-full text-xl bg-blue-500 text-white rounded-md py-3 mt-4 shadow-lg hover:bg-blue-600 transition duration-300">Submit Opinion</button>
             </div>
+            <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <h2 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">Contact Us</h2>
+
+      <div className="flex flex-col md:flex-row justify-between">
+        <div className="md:w-1/2 md:pr-8">
+          <h3 className="text-2xl font-bold mb-4">Get in Touch</h3>
+          <p className="mb-4">We'd love to hear from you! Please fill out the form below and we'll get in touch with you as soon as possible.</p>
+
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                rows="4"
+                required
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div className="mt-12 md:mt-0 md:w-1/2 md:pl-8">
+          <h3 className="text-2xl font-bold mb-4">Customer Service</h3>
+          <p className="mb-4">For immediate assistance, you can reach our customer service team through the following methods:</p>
+          <div className="mb-4">
+            <FaPhoneAlt className="inline mr-2" /> <span>+123 456 7890</span>
+          </div>
+          <div className="mb-4">
+            <FaEnvelope className="inline mr-2" /> <span>support@trailwise.com</span>
+          </div>
+          <div className="mb-4">
+            <FaMapMarkerAlt className="inline mr-2" /> <span>123 Railway St, Colombo, Sri Lanka</span>
+          </div>
+
+          <h3 className="text-2xl font-bold mb-4">Follow Us</h3>
+          <div className="flex space-x-4">
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-blue-700">
+              <FaFacebook size={24} />
+            </a>
+            <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" className="text-blue-500">
+              <FaTwitter size={24} />
+            </a>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-pink-600">
+              <FaInstagram size={24} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-12">
+        <h3 className="text-2xl font-bold mb-4">Feedback</h3>
+        <p>We value your feedback and suggestions. Please let us know how we can improve our services to better meet your needs.</p>
+      </div>
+    </div>
+
+
+
         </div>
     );
 };

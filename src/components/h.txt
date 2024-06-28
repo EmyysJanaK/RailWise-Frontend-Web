@@ -1,0 +1,90 @@
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
+import trainImage from '../assets/trainImage.png';
+
+
+const Header = () => {
+  const location = useLocation();
+
+  // Function to determine if a link is active based on the current path
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
+  return (
+    <header className="bg-white shadow">
+      <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <Link to="/">
+          <img src={trainImage} alt="SL Railway Logo" className="w-12 h-12" />
+        </Link>
+
+        {/* Navigation Links */}
+        <nav>
+          <ul className="flex space-x-4">
+            <li>
+              <Link
+                to="/"
+                className={`transition duration-300 ${
+                  isActive('/Home') ? 'text-blue-700' : 'text-blue-500 hover:text-blue-700'
+                }`}
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/About"
+                className={`transition duration-300 ${
+                  isActive('/About') ? 'text-blue-700' : 'text-blue-500 hover:text-blue-700'
+                }`}
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/Contact"
+                className={`transition duration-300 ${
+                  isActive('/contact') ? 'text-blue-700' : 'text-blue-500 hover:text-blue-700'
+                }`}
+              >
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/Stations"
+                className={`transition duration-300 ${
+                  isActive('/stations') ? 'text-blue-700' : 'text-blue-500 hover:text-blue-700'
+                }`}
+              >
+                Stations
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/TrainStatus"
+                className={`transition duration-300 ${
+                  isActive('/train-status') ? 'text-blue-700' : 'text-blue-500 hover:text-blue-700'
+                }`}
+              >
+                Train Status
+              </Link>
+            </li>
+          </ul>
+        </nav>
+        {/* Login Button */}
+        <div>
+          <Link to="/Login">
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-purple-400 transition duration-300">
+              Login
+            </button>
+          </Link>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;

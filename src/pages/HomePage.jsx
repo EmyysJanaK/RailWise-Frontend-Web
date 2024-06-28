@@ -1,4 +1,3 @@
-//src/pages/HomePage.jsx
 import React from 'react';
 import Header from '../components/Header';
 import SearchForm from '../components/SearchForm';
@@ -7,19 +6,30 @@ import trainImage from '../assets/trainImage.png';
 
 const HomePage = () => {
   return (
-    <div className="relative max-w-container mx-auto px-4 py-8">
-        <img src={trainImage} alt="Train Background" className="absolute inset-0 w-full h-full object-cover opacity-10 z-0" />
+    <div className="relative min-h-screen flex flex-col">
+      {/* Background Image */}
+      <img 
+        src={trainImage} 
+        alt="Train Background" 
+        className="absolute inset-0 w-full h-full object-cover opacity-10 z-0" 
+      />
 
-      <div className="home-page">
+      <div className="relative z-10 flex-1">
+        {/* Header */}
         <Header />
-        <main className="container mx-auto p-4">
-          <SearchForm />
-          
 
+        {/* Main Content */}
+        <main className="flex flex-col items-center justify-center flex-1 p-4">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-extrabold text-gray-900">Welcome to TrailWise</h1>
+            <p className="text-lg text-gray-700 mt-2">Book your train tickets easily and quickly with our platform.</p>
+          </div>
+          <SearchForm />
         </main>
-        
-        <Footer />
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
