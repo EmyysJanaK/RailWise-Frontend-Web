@@ -1,18 +1,27 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ReservationContext } from '../context/ReservationContext';
+import { useEffect } from 'react';
 
 const PassengerDetails = () => {
-  const location = useLocation();
+
+  
+  
+  
+  const { reservationData, setReservationData } = useContext(ReservationContext);
   const navigate = useNavigate();
-  const queryParams = new URLSearchParams(location.search);
+  const { pax, departureStationId, arrivalStationId, departureDate, selectedClass } = reservationData;
+  
+  useEffect(() => {
+    if (!departureStationId || !arrivalStationId || !departureDate || !selectedClass) {
+      navigate('/');
+    }
+  }, [departureStationId, arrivalStationId, departureDate, selectedClass, navigate]);
 
-  // const departureStationId = queryParams.get('departureStationId');
-  // const arrivalStationId = queryParams.get('arrivalStationId');
-  // const departureDate = queryParams.get('departureDate');
-  // const selectedClass = queryParams.get('selectedClass');
-  const pax = parseInt(queryParams.get('pax'), 10);
 
-  const [passengers, setPassengers] = useState(Array(pax).fill({ firstName: '', lastName: '', dob: '' }));
+  const [passengers, setPassengers] = useState(
+    Array(pax).fill({ firstName: '', lastName: '', dob: '' })
+  );
   const [email, setEmail] = useState('');
 
   const handleInputChange = (index, field, value) => {
@@ -21,15 +30,13 @@ const PassengerDetails = () => {
     setPassengers(newPassengers);
   };
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   const handleSubmit = () => {
-    // Handle the submission of passenger details
-    console.log('Passengers:', passengers);
-    console.log('Email:', email);
-    // Navigate to a confirmation or success page if needed
+    setReservationData(prevData => ({
+      ...prevData,
+      passengers,
+      email,
+    }));
+    navigate('/reservationSummary');
   };
 
   return (
@@ -77,8 +84,12 @@ const PassengerDetails = () => {
         </div>
       </div>
       <div className="flex justify-between">
-        <button onClick={handleBack} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg">Back</button>
-        <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-lg">Submit</button>
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+        >
+          Submit
+        </button>
       </div>
     </div>
   );

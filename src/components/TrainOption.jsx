@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 const TrainOption = ({ option, onClick }) => {
+    useEffect(() => {
+        console.log('TrainOption rendered');
+    }
+    , []);
     return (
         <div
             className="border border-gray-300 p-4 mb-4 flex justify-between bg-white rounded-lg shadow-sm hover:shadow-md cursor-pointer"
