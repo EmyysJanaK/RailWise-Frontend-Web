@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png"; 
+import Header from "../components/Header";
 
 const Login = () => {
   const location = useLocation();
@@ -15,12 +16,11 @@ const Login = () => {
 
   return (
     <div className="relative min-h-screen flex flex-col justify-center items-center bg-gray-100">
-      {/* Background Image */}
-      <img
-        src={trainImage}
-        alt="Train Background"
-        className="absolute inset-0 w-full h-full object-cover opacity-10 z-0"
-      />
+      {/* Background color purple*/}
+      <div className="absolute inset-0 bg-purple-900 opacity-75"></div>
+      
+
+      
       <div className="relative z-10 w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
         {/* Breadcrumbs */}
         <Breadcrumbs title="Login" prevLocation={prevLocation} />
@@ -67,16 +67,18 @@ const Login = () => {
             </button>
           </div>
           <div className="mb-6 text-right">
-            <Link to="/forgot-password" className="text-blue-500">
+            <Link to="/ForgotPassword" className="text-blue-500">
               Forgot Password?
             </Link>
           </div>
+          <Link to= "/Options">
           <button
             type="submit"
             className="w-full bg-black text-white py-2 rounded-full hover:bg-gray-800 transition duration-300"
           >
             Login
           </button>
+          </Link>
         </form>
         <div className="text-center mt-4">
           <span className="text-gray-600">Don't you have an account?</span>

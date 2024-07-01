@@ -16,11 +16,7 @@ const SignUp = () => {
   return (
     <div className="relative min-h-screen flex flex-col justify-center items-center bg-gray-100">
       {/* Background Image */}
-      <img
-        src={trainImage}
-        alt="Train Background"
-        className="absolute inset-0 w-full h-full object-cover opacity-10 z-0"
-      />
+      <div className="absolute inset-0 bg-purple-900 opacity-75"></div>
       <div className="relative z-10 w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
         {/* Breadcrumbs */}
         <Breadcrumbs title="SignUp" prevLocation={prevLocation} />
