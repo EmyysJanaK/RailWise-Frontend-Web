@@ -1,60 +1,67 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
-import SearchForm from '../components/SearchForm';
 import Footer from '../components/Footer';
-import trainImage from '../assets/trainImage.png';
-import Filter from '../components/Filter';
+import SearchForm from '../components/SearchForm';
 import axios from 'axios';
+import QRCode from 'qrcode.react'; // You can use 'qrcode.react' library to generate QR codes
+import PopularRoutes from '../components/PopularRoutes';
 
 const HomePage = () => {
-  // const [stations, setStations] = useState([]);
-  // console.log(stations);
-  // useEffect(() => {
-  //   const getStations = async () => {
-  //     try {
-  //       const response = await axios.get('/api/stations');
-  //       setStations(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  //   getStations();
-  // }, []);
+  const [popularRoutes, setPopularRoutes] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+
+  useEffect(() => {
+    // Fetch popular routes
+    axios.get('/api/popular-routes')
+      .then(response => setPopularRoutes(response.data))
+      .catch(error => console.error('Error fetching popular routes:', error));
+
+    // Fetch announcements
+    axios.get('/api/announcements')
+      .then(response => setAnnouncements(response.data))
+      .catch(error => console.error('Error fetching announcements:', error));
+  }, []);
 
   return (
-    <div className="relative min-h-screen flex flex-col">
-      {/* Background Image */}
-      <div className="absolute inset-0 bg-purple-900 opacity-75"></div>
-
+    <div className="relative min-h-screen flex flex-col bg-gray-100">
       <div className="relative z-10 flex-1">
-        {/* Header */}
-        <Header />
-
-        {/* Main Content */}
         <main className="flex flex-col items-center justify-center flex-1 p-4">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-extrabold text-gray-900">Welcome to TrailWise</h1>
+            <h1 className="text-4xl font-extrabold text-gray-900">Welcome to RailWise</h1>
             <p className="text-lg text-gray-700 mt-2">Book your train tickets easily and quickly with our platform.</p>
           </div>
           <SearchForm />
-          {/* <div>
-            {stations.map((station) => (
-              <div key={station.id}>
-                <h1>{station.name}</h1>
-              </div>
-            ))}
-          </div> */}
+          <div className="mt-12 flex flex-col items-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Install Our Mobile App</h2>
+            <QRCode value="https://www.railwise.com/mobile-app" size={128} />
+            <p className="text-lg text-gray-700 mt-2">Scan the QR code to download our mobile app.</p>
+          </div>
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Popular Routes</h2>
+            <ul className="space-y-4">
+              {popularRoutes.map((route, index) => (
+                <li key={index} className="bg-white p-4 rounded-lg shadow-md">
+                  <h3 className="text-xl font-semibold text-gray-800">{route.name}</h3>
+                  <p className="text-gray-600">{route.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <PopularRoutes />
 
-
-
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Important Announcements</h2>
+            <ul className="space-y-4">
+              {announcements.map((announcement, index) => (
+                <li key={index} className="bg-white p-4 rounded-lg shadow-md">
+                  <h3 className="text-xl font-semibold text-gray-800">{announcement.title}</h3>
+                  <p className="text-gray-600">{announcement.content}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </main>
-        
       </div>
-
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 };

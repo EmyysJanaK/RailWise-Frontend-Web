@@ -60,7 +60,7 @@ const SearchForm = () => {
     setLoading(true);
     setError(null);
     axios
-      .get('/api/stationss', { params: searchParams })
+      .get('/api/stations', { params: searchParams })
       .then((response) => {
         setTrainData(response.data);
         setLoading(false);
@@ -72,7 +72,7 @@ const SearchForm = () => {
   };
 
   return (
-    <form className="search-form bg-gray-100 p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>
+    <form className="search-form bg-purple-900 p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="relative">
           <input
@@ -128,7 +128,7 @@ const SearchForm = () => {
           placeholder="Number of Seats"
           value={searchParams.seat}
           onChange={handleInputChange}
-          className="w-full p-3 border rounded text-xl"
+          className="w-full p-6 border rounded text-xl"
           style={{ fontSize: '1.4rem', height: '3.5rem' }}
         />
         <input
