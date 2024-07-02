@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
 import SeatOption from "../components/SeatOption";
 import { ReservationContext } from "../context/ReservationContext";
 
@@ -13,18 +13,46 @@ const Options = () => {
 	const navigate = useNavigate();
 	const queryParams = new URLSearchParams(location.search);
 
-	const departureStationId = queryParams.get("departureStationId");
-	const arrivalStationId = queryParams.get("arrivalStationId");
-	const departureDate = queryParams.get("departureDate");
-	const scheduleId = queryParams.get("scheduleId");
-	const pax = parseInt(queryParams.get("pax"), 10);
+	const departureStationId =
+		reservationData.departureStationId ||
+		queryParams.get("departureStationId");
+	const arrivalStationId =
+		reservationData.arrivalStationId || queryParams.get("arrivalStationId");
+	const departureDate =
+		reservationData.departureDate || queryParams.get("departureDate");
+	const scheduleId =
+		reservationData.scheduleId || queryParams.get("scheduleId");
+	const pax = reservationData.pax || parseInt(queryParams.get("pax"), 10);
 
 	const [selectedClass, setSelectedClass] = useState(null);
-	const [seatAvailability, setSeatAvailability] = useState({});
+	const [seatAvailability, setSeatAvailability] = useState({
+		reservationData,
+	});
 	const [scheduleInfo, setScheduleInfo] = useState({});
 
 	useEffect(() => {
-		if (scheduleId && pax) {
+		console.log(
+			reservationData.departureStationId,
+			reservationData.arrivalStationId,
+			reservationData.departureDate,
+			reservationData.pax,
+			reservationData.seatAvailability,
+			reservationData.selectedClass,
+			reservationData.departureTime,
+			reservationData.arrivalTime,
+			reservationData.passengers,
+			reservationData.email
+		);
+	}, [reservationData]);
+
+	useEffect(() => {
+		const isEmpty = (obj) => Object.keys(obj).length === 0;
+
+		if (
+			isEmpty(reservationData.seatAvailability) ||
+			isEmpty(reservationData.departureTime) ||
+			isEmpty(reservationData.arrivalTime)
+		) {
 			const getSeats = async () => {
 				try {
 					// Uncomment and use the actual API call when available
@@ -42,10 +70,9 @@ const Options = () => {
 
 					// Mock data for demonstration purposes
 					setSeatAvailability({
-						"2nd Class": 10,
-						Premium: 5,
 						"1st Class": 3,
-						VIP: 1,
+						"2nd Class": 10,
+						"3rd Class": 20,
 					});
 					setScheduleInfo({
 						departureTime: "10:00",
@@ -61,9 +88,16 @@ const Options = () => {
 					setLoading(false);
 				}
 			};
+
 			getSeats();
+		} else {
+			setSeatAvailability(reservationData.seatAvailability);
+			setScheduleInfo({
+				departureTime: reservationData.departureTime,
+				arrivalTime: reservationData.arrivalTime,
+			});
 		}
-	}, [scheduleId, pax, departureStationId, arrivalStationId, departureDate]);
+	}, []);
 
 	const handleBack = () => {
 		navigate(-1);

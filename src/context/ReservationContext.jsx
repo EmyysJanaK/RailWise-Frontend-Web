@@ -9,6 +9,7 @@ export const ReservationProvider = ({ children }) => {
 		arrivalStationId: "",
 		departureDate: "",
 		pax: 0,
+		seatAvailability: {},
 		selectedClass: "",
 		departureTime: "",
 		arrivalTime: "",

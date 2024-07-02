@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ReservationContext } from "../context/ReservationContext";
 
 const SearchForm = () => {
 	const [searchParams, setSearchParams] = useState({
@@ -9,6 +10,10 @@ const SearchForm = () => {
 		date: "",
 		seat: "",
 	});
+
+	const { reservationData, setReservationData } =
+	useContext(ReservationContext);
+
 	const [stations, setStations] = useState([]);
 	const [filteredDepartureStations, setFilteredDepartureStations] = useState(
 		[]
@@ -77,6 +82,12 @@ const SearchForm = () => {
 			setError("Please fill in all the fields.");
 			return;
 		}
+		setReservationData({
+			departureStationId: searchParams.departure,
+			arrivalStationId: searchParams.arrival,
+			departureDate: searchParams.date,
+			pax: parseInt(searchParams.seat,10),
+		})
 		const url = `/results?departureStationId=${searchParams.departure}&arrivalStationId=${searchParams.arrival}&departureDate=${searchParams.date}&pax=${searchParams.seat}`;
 		navigate(url);
 	};
