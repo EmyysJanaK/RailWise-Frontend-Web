@@ -27,17 +27,20 @@ const Options = () => {
 		if (scheduleId && pax) {
 			const getSeats = async () => {
 				try {
-					//   const response = await axios.get("/api/getClasses", {
-					//     params: {
-					//       scheduleId,
-					//       departureStationId,
-					//       arrivalStationId,
-					//       departureDate,
-					//     },
-					//   });
-					//   const data = response.data;
-					//   setSeatAvailability(data.classes);
-					//   setScheduleInfo({ departureTime: data.departureTime, arrivalTime: data.arrivalTime });
+					// Uncomment and use the actual API call when available
+					// const response = await axios.get("/api/getClasses", {
+					//   params: {
+					//     scheduleId,
+					//     departureStationId,
+					//     arrivalStationId,
+					//     departureDate,
+					//   },
+					// });
+					// const data = response.data;
+					// setSeatAvailability(data.classes);
+					// setScheduleInfo({ departureTime: data.departureTime, arrivalTime: data.arrivalTime });
+
+					// Mock data for demonstration purposes
 					setSeatAvailability({
 						"2nd Class": 10,
 						Premium: 5,
@@ -76,23 +79,25 @@ const Options = () => {
 			selectedClass,
 			passengers: [],
 			email: "",
-			departureTime: "", // Set these based on  API response
-			arrivalTime: "",
+			departureTime: scheduleInfo.departureTime,
+			arrivalTime: scheduleInfo.arrivalTime,
 		});
 		navigate("/passengerdetails");
 	};
-	
+
 	return (
-		<div className="container mx-auto p-4">
+		<div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
 			{loading ? (
 				<p>Loading...</p>
 			) : error ? (
 				<p className="text-red-500">{error}</p>
 			) : (
 				<>
-					<h1 className="text-2xl font-bold mb-4">Train Options</h1>
+					<h1 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
+						Train Options
+					</h1>
 					<div className="bg-white p-6 rounded-lg shadow-md mb-6">
-						<h2 className="text-xl font-bold mb-2">
+						<h2 className="text-2xl font-bold mb-2">
 							Selected Train Information
 						</h2>
 						<div>
@@ -114,8 +119,10 @@ const Options = () => {
 					</div>
 
 					<div className="bg-white p-6 rounded-lg shadow-md mb-6">
-						<h2 className="text-xl font-bold mb-2">Select Class</h2>
-						<div className="flex space-x-4">
+						<h2 className="text-2xl font-bold mb-2">
+							Select Class
+						</h2>
+						<div className="flex flex-col md:flex-row md:space-x-4">
 							{Object.keys(seatAvailability).map((className) => {
 								const seats = seatAvailability[className] || 0;
 								const isDisabled = pax > seats;
@@ -140,13 +147,13 @@ const Options = () => {
 					<div className="flex justify-between">
 						<button
 							onClick={handleBack}
-							className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg"
+							className="bg-gray-300 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-400 transition duration-300"
 						>
 							Back
 						</button>
 						<button
 							onClick={handleNext}
-							className={`bg-blue-500 text-white px-4 py-2 rounded-lg ${
+							className={`bg-purple-500 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition duration-300 ${
 								!selectedClass
 									? "opacity-50 cursor-not-allowed"
 									: ""
