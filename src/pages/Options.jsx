@@ -79,7 +79,7 @@ const Options = () => {
 			departureTime: "", // Set these based on  API response
 			arrivalTime: "",
 		});
-		navigate("/passenger-details");
+		navigate("/passengerdetails");
 	};
 	
 	return (
