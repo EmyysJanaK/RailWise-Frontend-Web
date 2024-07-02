@@ -91,11 +91,12 @@ const Options = () => {
 
 			getSeats();
 		} else {
-			setSeatAvailability(reservationData.seatAvailability);
+			setSeatAvailability(reservationData.seatAvailability);			
 			setScheduleInfo({
 				departureTime: reservationData.departureTime,
 				arrivalTime: reservationData.arrivalTime,
 			});
+			setLoading(false);
 		}
 	}, []);
 
