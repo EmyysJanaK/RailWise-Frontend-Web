@@ -40,11 +40,23 @@ const PassengerDetails = () => {
 	const [email, setEmail] = useState("");
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
+	const [isFormValid, setIsFormValid] = useState(false);
 
 	const handleInputChange = (index, field, value) => {
 		const newPassengers = [...passengers];
 		newPassengers[index][field] = value;
 		setPassengers(newPassengers);
+	};
+
+	const validateEmail = (emailaddr) => {
+		try {
+			emailSchema.parse(emailaddr);
+			setError("");
+			return true;
+		} catch {
+			setError("Invalid email address");
+			return false;
+		}
 	};
 
 	const validateForm = () => {
@@ -58,12 +70,19 @@ const PassengerDetails = () => {
 				return false;
 			}
 		}
+		if (!validateEmail(email)) {
+			return false;
+		}
 		setError("");
 		return true;
 	};
 
+	useEffect(() => {
+		setIsFormValid(validateForm());
+	}, [passengers, email]);
+
 	const handleSubmit = () => {
-		if (validateForm()) {
+		if (isFormValid) {
 			setReservationData((prevData) => ({
 				...prevData,
 				passengers,
@@ -71,16 +90,6 @@ const PassengerDetails = () => {
 			}));
 			setSuccess("Passenger details submitted successfully!");
 			navigate("/reservationSummary");
-		}
-	};
-
-	const validateEmail = (emailaddr) => {
-		setEmail(emailaddr);
-		try {
-			emailSchema.parse(emailaddr);
-			setError("");
-		} catch {
-			setError("Invalid email address");
 		}
 	};
 
@@ -150,7 +159,8 @@ const PassengerDetails = () => {
 						className="form-input mt-1 p-2 w-full border border-gray-300 rounded-md"
 						placeholder="Email"
 						value={email}
-						onChange={(e) => validateEmail(e.target.value)}
+						onChange={(e) => setEmail(e.target.value)}
+						onBlur={(e) => validateEmail(e.target.value)}
 					/>
 				</div>
 				{error && <p className="text-red-500">{error}</p>}
@@ -160,11 +170,9 @@ const PassengerDetails = () => {
 				<button
 					onClick={handleSubmit}
 					className={`bg-purple-500 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition duration-300 ${
-						pax != passengers.length || error
-							? "opacity-50 cursor-not-allowed"
-							: ""
+						!isFormValid ? "opacity-50 cursor-not-allowed" : ""
 					}`}
-					disabled={pax != passengers.length || error}
+					disabled={!isFormValid}
 				>
 					Next
 				</button>
