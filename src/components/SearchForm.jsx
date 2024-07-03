@@ -74,7 +74,7 @@ const SearchForm = () => {
 
     const departureStation = stations.find(station => station.name === searchParams.departure);
     const arrivalStation = stations.find(station => station.name === searchParams.arrival);
-
+    
     if (!departureStation || !arrivalStation) {
       setError("Invalid station selected.");
       return;

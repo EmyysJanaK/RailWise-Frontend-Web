@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
-// import axios from "axios";
+import axios from "axios";
 import SeatOption from "../components/SeatOption";
 import { ReservationContext } from "../context/ReservationContext";
 
@@ -56,28 +56,38 @@ const Options = () => {
 			const getSeats = async () => {
 				try {
 					// Uncomment and use the actual API call when available
-					// const response = await axios.get("/api/getClasses", {
-					//   params: {
-					//     scheduleId,
-					//     departureStationId,
-					//     arrivalStationId,
-					//     departureDate,
-					//   },
-					// });
-					// const data = response.data;
-					// setSeatAvailability(data.classes);
-					// setScheduleInfo({ departureTime: data.departureTime, arrivalTime: data.arrivalTime });
+					console.log(departureStationId, arrivalStationId, scheduleId, departureDate);
+					const response = await axios.get("/api/scheduleDetails", {
+						params: {
+							fromHaltId:departureStationId,
+							toHaltId:arrivalStationId,
+							scheduleId:scheduleId,
+							date:departureDate,
+						},
+					});
 
-					// Mock data for demonstration purposes
+					const data = response.data;
 					setSeatAvailability({
-						"1st Class": 3,
-						"2nd Class": 10,
-						"3rd Class": 20,
+						"1st Class": data.firstClassSeats,
+						"2nd Class": data.secondClassSeats,
+						"3rd Class": data.thirdClassSeats,
+					
 					});
 					setScheduleInfo({
-						departureTime: "10:00",
-						arrivalTime: "12:00",
+						departureTime: data.fromHalt.departureTime,
+						arrivalTime: data.toHalt.arrivalTime,
 					});
+					console.log(data);
+					// Mock data for demonstration purposes
+					// setSeatAvailability({
+					// 	"1st Class": 3,
+					// 	"2nd Class": 10,
+					// 	"3rd Class": 20,
+					// });
+					// setScheduleInfo({
+					// 	departureTime: "10:00",
+					// 	arrivalTime: "12:00",
+					// });
 
 					setLoading(false);
 				} catch (error) {
@@ -91,7 +101,7 @@ const Options = () => {
 
 			getSeats();
 		} else {
-			setSeatAvailability(reservationData.seatAvailability);			
+			setSeatAvailability(reservationData.seatAvailability);
 			setScheduleInfo({
 				departureTime: reservationData.departureTime,
 				arrivalTime: reservationData.arrivalTime,

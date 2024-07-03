@@ -19,6 +19,7 @@ const TrainOption = ({ option, onClick }) => {
 					seatAvailability: option.seatAvailability,
 					departureTime: option.departure,
 					arrivalTime: option.arrival,
+					scheduleId: option.id,
 				});
 
 				onClick();
@@ -49,8 +50,9 @@ TrainOption.propTypes = {
 		arrival: PropTypes.string.isRequired,
 		duration: PropTypes.string.isRequired,
 		changes: PropTypes.number.isRequired,
-    seatAvailability: PropTypes.object.isRequired,
+		seatAvailability: PropTypes.object.isRequired,
 		price: PropTypes.number.isRequired,
+		id: PropTypes.string.isRequired,
 	}).isRequired,
 	onClick: PropTypes.func.isRequired,
 };
