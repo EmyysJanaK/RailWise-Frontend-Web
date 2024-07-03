@@ -20,6 +20,8 @@ const TrainOption = ({ option, onClick }) => {
 					departureTime: option.departure,
 					arrivalTime: option.arrival,
 					scheduleId: option.id,
+					fromHaltId: option.fromHaltId,
+					toHaltId: option.toHaltId,
 				});
 
 				onClick();
@@ -53,6 +55,8 @@ TrainOption.propTypes = {
 		seatAvailability: PropTypes.object.isRequired,
 		price: PropTypes.number.isRequired,
 		id: PropTypes.string.isRequired,
+		toHaltId: PropTypes.string.isRequired,
+		fromHaltId: PropTypes.string.isRequired,
 	}).isRequired,
 	onClick: PropTypes.func.isRequired,
 };

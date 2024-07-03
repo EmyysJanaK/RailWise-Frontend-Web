@@ -23,12 +23,13 @@ const useTrainOptions = ({
 					},
 				});
 				const data = response.data;
-				console.log(departureStationId, arrivalStationId, departureDate, pax);
 
 				const formattedTrainOptions = data.map((item) => ({
 					id: item.schedule._id,
 					departure: item.fromHalt.departureTime,
 					arrival: item.toHalt.arrivalTime,
+					toHaltId: item.toHalt._id,
+					fromHaltId: item.fromHalt._id,
 					duration: calculateDuration(
 						item.fromHalt.departureTime,
 						item.toHalt.arrivalTime

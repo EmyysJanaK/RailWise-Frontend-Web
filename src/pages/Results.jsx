@@ -78,7 +78,9 @@ const Results = () => {
 	}, [isFilterVisible]);
 
 	const handleTrainOptionClick = (option) => {
-		const newUrl = `/options?scheduleId=${option.id}&departureStationId=${departureStationId}&arrivalStationId=${arrivalStationId}&departureDate=${departureDate}&pax=${pax}`;
+		console.log("Train option clicked");
+		console.log(option);
+		const newUrl = `/options?scheduleId=${option.id}&departureStationId=${option.fromHaltId}&arrivalStationId=${option.toHaltId}&departureDate=${departureDate}&pax=${pax}`;
 		navigate(newUrl);
 	};
 

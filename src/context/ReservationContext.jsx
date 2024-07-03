@@ -7,6 +7,8 @@ export const ReservationProvider = ({ children }) => {
 	const [reservationData, setReservationData] = useState({
 		scheduleId: "",
 		departureStationId: "",
+		fromHaltId: "",
+		toHaltId: "",
 		arrivalStationId: "",
 		departureDate: "",
 		pax: 0,
