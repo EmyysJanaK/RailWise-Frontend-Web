@@ -5,4 +5,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Define the keyframes for the typing effect */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  
+  /* Optional: Add a blinking cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: black; }
+  }
+  
+  /* Apply the animation to the element */
+  .animate-typing {
+    animation: typing 4s steps(40, end) forwards, blink-caret .75s step-end infinite;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid black; /* Simulate the cursor */
+    width: 0;
+  }
 
