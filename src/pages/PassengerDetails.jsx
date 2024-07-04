@@ -81,6 +81,10 @@ const PassengerDetails = () => {
 		setIsFormValid(validateForm());
 	}, [passengers, email]);
 
+	const handleBack = () => {
+		navigate(-1);
+	};
+
 	const handleSubmit = () => {
 		if (isFormValid) {
 			setReservationData((prevData) => ({
@@ -166,7 +170,13 @@ const PassengerDetails = () => {
 				{error && <p className="text-red-500">{error}</p>}
 				{success && <p className="text-green-500">{success}</p>}
 			</div>
-			<div className="flex justify-end">
+			<div className="flex justify-between">
+				<button
+					onClick={handleBack}
+					className="bg-gray-300 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-400 transition duration-300"
+				>
+					Back
+				</button>
 				<button
 					onClick={handleSubmit}
 					className={`bg-purple-500 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition duration-300 ${
