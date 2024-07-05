@@ -2,10 +2,9 @@ import PropTypes from "prop-types";
 
 const SeatOption = ({ className, seats, isDisabled, isSelected, onSelect }) => {
   const seatDetails = {
-    "2nd Class": { price: 174, features: ["Free WiFi", "Power outlets"] },
-    Premium: { price: 194, features: ["Free WiFi", "Power outlets", "Free drinks"] },
-    "1st Class": { price: 214, features: ["Free WiFi", "Power outlets", "Free drinks", "Wide seats"] },
-    VIP: { price: 234, features: ["Free WiFi", "Power outlets", "Free drinks", "Wide seats"] },
+    "1st Class": { price: 174, features: ["Free WiFi", "Power outlets"] },
+    "2nd Class": { price: 194, features: ["Free WiFi", "Power outlets", "Free drinks"] },
+    "3rd Class": { price: 214, features: ["Free WiFi", "Power outlets", "Free drinks", "Wide seats"] },
   };
 
   const { price, features } = seatDetails[className];

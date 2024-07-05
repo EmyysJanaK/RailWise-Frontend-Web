@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png"; 
-import Header from "../components/Header";
+import axios from "axios";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { login } = useContext(UserContext);
   const [prevLocation, setPrevLocation] = useState("HomePage");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (location.state && location.state.data) {
@@ -14,33 +20,47 @@ const Login = () => {
     }
   }, [location]);
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:3000/api/user/login", {
+        emailOrUsername: username,
+        password: password,
+      }, { withCredentials: true });
+      if (response.status === 200) {
+        // Save user data to localStorage or context
+        login(response.data);
+        navigate("/");
+      }
+    } catch (error) {
+      setError("Invalid username or password");
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col justify-center items-center bg-gray-100">
-      {/* Background color purple*/}
       <div className="absolute inset-0 bg-purple-900 opacity-75"></div>
-      
-
-      
       <div className="relative z-10 w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
-        {/* Breadcrumbs */}
         <Breadcrumbs title="Login" prevLocation={prevLocation} />
-      <div className="flex justify-center mb-8">
-        <img
-          src={trainImage}
-          alt="Railwise Logo"
-          className="w-20 h-20"
-        />
-      </div>
-
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        <div className="flex justify-center mb-8">
+          <img
+            src={trainImage}
+            alt="Railwise Logo"
+            className="w-20 h-20"
+          />
+        </div>
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Railwise Login
         </h2>
-        <form>
+        {error && <div className="mb-4 text-red-600">{error}</div>}
+        <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block text-gray-700">USERNAME</label>
             <input
               type="text"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div className="mb-4 relative">
@@ -48,6 +68,8 @@ const Login = () => {
             <input
               type="password"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <button type="button" className="absolute right-2 top-2">
               <svg
@@ -71,14 +93,12 @@ const Login = () => {
               Forgot Password?
             </Link>
           </div>
-          <Link to= "/Options">
           <button
             type="submit"
             className="w-full bg-black text-white py-2 rounded-full hover:bg-gray-800 transition duration-300"
           >
             Login
           </button>
-          </Link>
         </form>
         <div className="text-center mt-4">
           <span className="text-gray-600">Don't you have an account?</span>
@@ -86,14 +106,6 @@ const Login = () => {
             Sign Up
           </Link>
         </div>
-
-
-
-      
-        
-
-        
-
       </div>
     </div>
   );
