@@ -6,6 +6,7 @@
 @tailwind utilities;
 
 /* Define the keyframes for the typing effect */
+/* Define the keyframes for the typing effect */
 @keyframes typing {
     from { width: 0; }
     to { width: 100%; }

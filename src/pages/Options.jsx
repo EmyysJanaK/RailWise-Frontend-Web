@@ -13,81 +13,44 @@ const Options = () => {
 	const navigate = useNavigate();
 	const queryParams = new URLSearchParams(location.search);
 
-	const departureStationId =
-		reservationData.departureStationId ||
-		queryParams.get("departureStationId");
-	const arrivalStationId =
-		reservationData.arrivalStationId || queryParams.get("arrivalStationId");
-	const departureDate =
-		reservationData.departureDate || queryParams.get("departureDate");
-	const scheduleId =
-		reservationData.scheduleId || queryParams.get("scheduleId");
-	const pax = reservationData.pax || parseInt(queryParams.get("pax"), 10);
+	const departureStationId = queryParams.get("departureStationId");
+	const arrivalStationId = queryParams.get("arrivalStationId");
+	const departureDate = queryParams.get("departureDate");
+	const scheduleId = queryParams.get("scheduleId");
+	const pax = parseInt(queryParams.get("pax"), 10);
 
 	const [selectedClass, setSelectedClass] = useState(null);
-	const [seatAvailability, setSeatAvailability] = useState({
-		reservationData,
-	});
+	const [seatAvailability, setSeatAvailability] = useState({});
 	const [scheduleInfo, setScheduleInfo] = useState({});
 
 	useEffect(() => {
-		console.log(
-			reservationData.departureStationId,
-			reservationData.arrivalStationId,
-			reservationData.departureDate,
-			reservationData.pax,
-			reservationData.seatAvailability,
-			reservationData.selectedClass,
-			reservationData.departureTime,
-			reservationData.arrivalTime,
-			reservationData.passengers,
-			reservationData.email
-		);
-	}, [reservationData]);
-
-	useEffect(() => {
-		const isEmpty = (obj) => Object.keys(obj).length === 0;
-
-		if (
-			isEmpty(reservationData.seatAvailability) ||
-			isEmpty(reservationData.departureTime) ||
-			isEmpty(reservationData.arrivalTime)
-		) {
+		if (scheduleId && pax) {
 			const getSeats = async () => {
 				try {
 					// Uncomment and use the actual API call when available
-					console.log(departureStationId, arrivalStationId, scheduleId, departureDate);
-					const response = await axios.get("/api/scheduleDetails", {
-						params: {
-							fromHaltId:departureStationId,
-							toHaltId:arrivalStationId,
-							scheduleId:scheduleId,
-							date:departureDate,
-						},
-					});
+					// const response = await axios.get("/api/getClasses", {
+					//   params: {
+					//     scheduleId,
+					//     departureStationId,
+					//     arrivalStationId,
+					//     departureDate,
+					//   },
+					// });
+					// const data = response.data;
+					// setSeatAvailability(data.classes);
+					// setScheduleInfo({ departureTime: data.departureTime, arrivalTime: data.arrivalTime });
 
-					const data = response.data;
+					// Mock data for demonstration purposes
 					setSeatAvailability({
-						"1st Class": data.firstClassSeats,
-						"2nd Class": data.secondClassSeats,
-						"3rd Class": data.thirdClassSeats,
-					
+						"2nd Class": 10,
+						Premium: 5,
+						"1st Class": 3,
+						VIP: 1,
 					});
 					setScheduleInfo({
-						departureTime: data.fromHalt.departureTime,
-						arrivalTime: data.toHalt.arrivalTime,
+						departureTime: "10:00",
+						arrivalTime: "12:00",
 					});
-					console.log(data);
-					// Mock data for demonstration purposes
-					// setSeatAvailability({
-					// 	"1st Class": 3,
-					// 	"2nd Class": 10,
-					// 	"3rd Class": 20,
-					// });
-					// setScheduleInfo({
-					// 	departureTime: "10:00",
-					// 	arrivalTime: "12:00",
-					// });
 
 					setLoading(false);
 				} catch (error) {
@@ -98,17 +61,9 @@ const Options = () => {
 					setLoading(false);
 				}
 			};
-
 			getSeats();
-		} else {
-			setSeatAvailability(reservationData.seatAvailability);
-			setScheduleInfo({
-				departureTime: reservationData.departureTime,
-				arrivalTime: reservationData.arrivalTime,
-			});
-			setLoading(false);
 		}
-	}, []);
+	}, [scheduleId, pax, departureStationId, arrivalStationId, departureDate]);
 
 	const handleBack = () => {
 		navigate(-1);
