@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png"; // Replace with your actual image path
-import Tickets from "./Tickets";
+
 
 const TrainStatus = () => {
     const location = useLocation();

@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReservationContext } from "../context/ReservationContext";
 import { z } from "zod";
+import ToggleSidePane from "../components/ToggleSidePane";
 
 const emailSchema = z.string().email();
 
@@ -102,6 +103,7 @@ const PassengerDetails = () => {
 			<h1 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
 				Passenger Details
 			</h1>
+			<ToggleSidePane />
 			<div className="bg-white shadow-md rounded-lg p-6 mb-6">
 				<h2 className="text-2xl font-bold mb-4">
 					Enter Passenger Information

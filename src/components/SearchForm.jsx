@@ -152,9 +152,11 @@ const SearchForm = () => {
           className="w-full p-3 border rounded text-xl"
           style={{ fontSize: "1.4rem", height: "3.5rem" }}
         />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-3 rounded text-xl">
-          Search
-        </button>
+       <div className="col-span-1 sm:col-span-2 flex justify-center">
+          <button type="submit" className="bg-blue-600 text-white px-8 py-3 rounded text-2xl">
+             Search
+          </button>
+       </div>
       </div>
       {error && <p className="text-center mt-4 text-red-600">{error}</p>}
     </form>

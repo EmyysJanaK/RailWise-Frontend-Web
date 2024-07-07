@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png";
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+
 
 const About = () => {
   const location = useLocation();

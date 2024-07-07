@@ -4,14 +4,12 @@ import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Stations from './pages/Stations';
 import About from './pages/About';
-import TrainStatus from './pages/TrainStatus';
+// import TrainStatus from './pages/TrainStatus';
 import Contact from './pages/Contact';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import TrainDetails from './pages/TrainDetails';
 import './index.css';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import PassengerDetails from './pages/PassengerDetails';
 import { ReservationProvider } from './context/ReservationContext';
 import ReservationSummary from './pages/ReservationSummary';
@@ -34,7 +32,6 @@ function App() {
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/stations" element={<Stations />} />
-                  <Route path="/train-status" element={<TrainStatus />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<SignUp />} />
                   <Route path="/forgotpassword" element={<ForgotPassword />} />

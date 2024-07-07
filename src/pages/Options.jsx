@@ -164,10 +164,11 @@ const Options = () => {
 					</div>
 
 					<div className="bg-white p-6 rounded-lg shadow-md mb-6">
-						<h2 className="text-2xl font-bold mb-2">
-							Select Class
-						</h2>
-						<div className="flex flex-col md:flex-row md:space-x-4">
+						<div className="flex justify-center">
+							<h2 className="text-3xl font-bold mb-2 text-center">
+								Select Class
+							</h2> </div>
+						<div className="flex flex-col md:flex-row md:space-x-14 justify-center">
 							{Object.keys(seatAvailability).map((className) => {
 								const seats = seatAvailability[className] || 0;
 								const isDisabled = pax > seats;

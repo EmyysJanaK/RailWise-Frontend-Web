@@ -12,7 +12,7 @@ const TrainOption = ({ option, onClick }) => {
 
 	return (
 		<div
-			className="border border-gray-300 p-4 mb-4 flex justify-between bg-white rounded-lg shadow-sm hover:shadow-md cursor-pointer"
+			className="border border-gray-300 p-4 mb-4 flex justify-between items-center bg-white rounded-lg shadow-sm hover:shadow-md cursor-pointer transition-transform transform hover:scale-105"
 			onClick={() => {
 				setReservationData({
 					...reservationData,
