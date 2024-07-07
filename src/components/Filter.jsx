@@ -1,10 +1,10 @@
 import  { useState } from 'react';
 
 const Filter = () => {
-    const [selectedClass, setSelectedClass] = useState('2nd Class');
+    const [selectedClass, setSelectedClass] = useState('all');
     const [selectedFeatures, setSelectedFeatures] = useState([]);
 
-    const classes = ['2nd Class', 'Premium', '1st Class', 'VIP'];
+    const classes = ['all', '1st Class', '2nd Class', '3rd Class'];
     const features = ['High speed', 'Direct', 'Slower train', 'Overnight'];
 
     const handleClassChange = (event) => {

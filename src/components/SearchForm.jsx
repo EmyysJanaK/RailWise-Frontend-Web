@@ -1,172 +1,164 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ReservationContext } from "../context/ReservationContext";
 
 const SearchForm = () => {
-	const [searchParams, setSearchParams] = useState({
-		departure: "",
-		arrival: "",
-		date: "",
-		seat: "",
-	});
-	const [stations, setStations] = useState([]);
-	const [filteredDepartureStations, setFilteredDepartureStations] = useState(
-		[]
-	);
-	const [filteredArrivalStations, setFilteredArrivalStations] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
-	const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useState({
+    departure: "",
+    arrival: "",
+    date: "",
+    seat: "",
+  });
 
-	useEffect(() => {
-		const getStations = async () => {
-			try {
-				const response = await axios.get(
-					"http://localhost:3000/api/stations"
-				);
-				setStations(response.data);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-		getStations();
-	}, []);
+  const { setReservationData } = useContext(ReservationContext);
 
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setSearchParams((prevState) => ({
-			...prevState,
-			[name]: value,
-		}));
+  const [stations, setStations] = useState([]);
+  const [filteredDepartureStations, setFilteredDepartureStations] = useState([]);
+  const [filteredArrivalStations, setFilteredArrivalStations] = useState([]);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-		if (name === "departure") {
-			setFilteredDepartureStations(
-				stations.filter((station) =>
-					station.name.toLowerCase().startsWith(value.toLowerCase())
-				)
-			);
-		} else if (name === "arrival") {
-			setFilteredArrivalStations(
-				stations.filter((station) =>
-					station.name.toLowerCase().startsWith(value.toLowerCase())
-				)
-			);
-		}
-	};
+  useEffect(() => {
+    const getStations = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/stations");
+        setStations(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getStations();
+  }, []);
 
-	const handleStationClick = (name, station) => {
-		setSearchParams((prevState) => ({
-			...prevState,
-			[name]: station.name,
-		}));
-		if (name === "departure") {
-			setFilteredDepartureStations([]);
-		} else if (name === "arrival") {
-			setFilteredArrivalStations([]);
-		}
-	};
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSearchParams((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		if (
-			!searchParams.departure ||
-			!searchParams.arrival ||
-			!searchParams.date ||
-			!searchParams.seat
-		) {
-			setError("Please fill in all the fields.");
-			return;
-		}
-		const url = `/results?departureStationId=${searchParams.departure}&arrivalStationId=${searchParams.arrival}&departureDate=${searchParams.date}&pax=${searchParams.seat}`;
-		navigate(url);
-	};
+    if (name === "departure") {
+      setFilteredDepartureStations(
+        stations.filter((station) =>
+          station.name.toLowerCase().startsWith(value.toLowerCase())
+        )
+      );
+    } else if (name === "arrival") {
+      setFilteredArrivalStations(
+        stations.filter((station) =>
+          station.name.toLowerCase().startsWith(value.toLowerCase())
+        )
+      );
+    }
+  };
 
-	return (
-		<form
-			className="search-form bg-purple-900 p-6 rounded-lg shadow-lg"
-			onSubmit={handleSubmit}
-		>
-			<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-				<div className="relative">
-					<input
-						type="text"
-						name="departure"
-						placeholder="Departure Station"
-						value={searchParams.departure}
-						onChange={handleInputChange}
-						className="w-full p-3 border rounded text-xl"
-						style={{ fontSize: "1.4rem", height: "3.5rem" }}
-					/>
-					{filteredDepartureStations.length > 0 && (
-						<ul className="absolute z-10 bg-white border rounded mt-1 w-full max-h-40 overflow-y-auto">
-							{filteredDepartureStations.map((station) => (
-								<li
-									key={station._id}
-									onClick={() =>
-										handleStationClick("departure", station)
-									}
-									className="p-3 cursor-pointer hover:bg-gray-200"
-								>
-									{station.name}
-								</li>
-							))}
-						</ul>
-					)}
-				</div>
-				<div className="relative">
-					<input
-						type="text"
-						name="arrival"
-						placeholder="Arrival Station"
-						value={searchParams.arrival}
-						onChange={handleInputChange}
-						className="w-full p-3 border rounded text-xl"
-						style={{ fontSize: "1.4rem", height: "3.5rem" }}
-					/>
-					{filteredArrivalStations.length > 0 && (
-						<ul className="absolute z-10 bg-white border rounded mt-1 w-full max-h-40 overflow-y-auto">
-							{filteredArrivalStations.map((station) => (
-								<li
-									key={station._id}
-									onClick={() =>
-										handleStationClick("arrival", station)
-									}
-									className="p-3 cursor-pointer hover:bg-gray-200"
-								>
-									{station.name}
-								</li>
-							))}
-						</ul>
-					)}
-				</div>
-				<input
-					type="number"
-					name="seat"
-					placeholder="Number of Seats"
-					value={searchParams.seat}
-					onChange={handleInputChange}
-					className="w-full p-6 border rounded text-xl"
-					style={{ fontSize: "1.4rem", height: "3.5rem" }}
-				/>
-				<input
-					type="date"
-					name="date"
-					value={searchParams.date}
-					onChange={handleInputChange}
-					className="w-full p-3 border rounded text-xl"
-					style={{ fontSize: "1.4rem", height: "3.5rem" }}
-				/>
-				<button
-					type="submit"
-					className="bg-blue-600 text-white px-4 py-3 rounded text-2xl"
-				>
-					Search
-				</button>
-			</div>
-			{loading && <p className="text-center mt-4">Loading...</p>}
-			{error && <p className="text-center mt-4 text-red-600">{error}</p>}
-		</form>
-	);
+  const handleStationClick = (name, station) => {
+    setSearchParams((prevState) => ({
+      ...prevState,
+      [name]: station.name,
+    }));
+    if (name === "departure") {
+      setFilteredDepartureStations([]);
+    } else if (name === "arrival") {
+      setFilteredArrivalStations([]);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!searchParams.departure || !searchParams.arrival || !searchParams.date || !searchParams.seat) {
+      setError("Please fill in all the fields.");
+      return;
+    }
+
+    const departureStation = stations.find(station => station.name === searchParams.departure);
+    const arrivalStation = stations.find(station => station.name === searchParams.arrival);
+    
+    if (!departureStation || !arrivalStation) {
+      setError("Invalid station selected.");
+      return;
+    }
+
+    const url = `/results?departureStationId=${departureStation._id}&arrivalStationId=${arrivalStation._id}&departureDate=${searchParams.date}&pax=${searchParams.seat}`;
+    navigate(url);
+  };
+
+  return (
+    <form className="search-form bg-purple-900 p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="relative">
+          <input
+            type="text"
+            name="departure"
+            placeholder="Departure Station"
+            value={searchParams.departure}
+            onChange={handleInputChange}
+            className="w-full p-3 border rounded text-xl"
+            style={{ fontSize: "1.4rem", height: "3.5rem" }}
+          />
+          {filteredDepartureStations.length > 0 && (
+            <ul className="absolute z-10 bg-white border rounded mt-1 w-full max-h-40 overflow-y-auto">
+              {filteredDepartureStations.map((station) => (
+                <li
+                  key={station._id}
+                  onClick={() => handleStationClick("departure", station)}
+                  className="p-3 cursor-pointer hover:bg-gray-200"
+                >
+                  {station.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="relative">
+          <input
+            type="text"
+            name="arrival"
+            placeholder="Arrival Station"
+            value={searchParams.arrival}
+            onChange={handleInputChange}
+            className="w-full p-3 border rounded text-xl"
+            style={{ fontSize: "1.4rem", height: "3.5rem" }}
+          />
+          {filteredArrivalStations.length > 0 && (
+            <ul className="absolute z-10 bg-white border rounded mt-1 w-full max-h-40 overflow-y-auto">
+              {filteredArrivalStations.map((station) => (
+                <li
+                  key={station._id}
+                  onClick={() => handleStationClick("arrival", station)}
+                  className="p-3 cursor-pointer hover:bg-gray-200"
+                >
+                  {station.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <input
+          type="number"
+          name="seat"
+          placeholder="Number of Seats"
+          value={searchParams.seat}
+          onChange={handleInputChange}
+          className="w-full p-6 border rounded text-xl"
+          style={{ fontSize: "1.4rem", height: "3.5rem" }}
+        />
+        <input
+          type="date"
+          name="date"
+          value={searchParams.date}
+          onChange={handleInputChange}
+          className="w-full p-3 border rounded text-xl"
+          style={{ fontSize: "1.4rem", height: "3.5rem" }}
+        />
+        <button type="submit" className="bg-blue-600 text-white px-4 py-3 rounded text-xl">
+          Search
+        </button>
+      </div>
+      {error && <p className="text-center mt-4 text-red-600">{error}</p>}
+    </form>
+  );
 };
 
 export default SearchForm;
