@@ -17,6 +17,7 @@ import Layout from './components/Layout';
 import PopularRoutes from './components/PopularRoutes';
 import Options from './pages/Options';
 import { UserProvider } from './context/UserContext';
+import PaymentGateway from './pages/PaymentGateway';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
                   <Route path="/passengerdetails" element={<PassengerDetails />} />
                   <Route path="/options" element={<Options />} />
                   <Route path="/reservationsummary" element={<ReservationSummary />} />
+                  <Route path="/payment-gateway" element={<PaymentGateway />} />
                 </Routes>
               </Layout>
             </ReservationProvider>
