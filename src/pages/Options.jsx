@@ -131,18 +131,18 @@ const Options = () => {
 	};
 
 	return (
-		<div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+		<div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
 			{loading ? (
 				<p>Loading...</p>
 			) : error ? (
 				<p className="text-red-500">{error}</p>
 			) : (
 				<>
-					<h1 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
+					<h1 className="mb-8 text-3xl font-extrabold text-center text-gray-900">
 						Train Options
 					</h1>
-					<div className="bg-white p-6 rounded-lg shadow-md mb-6">
-						<h2 className="text-2xl font-bold mb-2">
+					<div className="p-6 mb-6 bg-white rounded-lg shadow-md">
+						<h2 className="mb-2 text-2xl font-bold">
 							Selected Train Information
 						</h2>
 						<div>
@@ -163,12 +163,12 @@ const Options = () => {
 						</div>
 					</div>
 
-					<div className="bg-white p-6 rounded-lg shadow-md mb-6">
+					<div className="p-6 mb-6 bg-white rounded-lg shadow-md">
 						<div className="flex justify-center">
-							<h2 className="text-3xl font-bold mb-2 text-center">
+							<h2 className="mb-2 text-3xl font-bold text-center">
 								Select Class
 							</h2> </div>
-						<div className="flex flex-col md:flex-row md:space-x-14 justify-center">
+						<div className="flex flex-col justify-center md:flex-row md:space-x-14">
 							{Object.keys(seatAvailability).map((className) => {
 								const seats = seatAvailability[className] || 0;
 								const isDisabled = pax > seats;
@@ -193,7 +193,7 @@ const Options = () => {
 					<div className="flex justify-between">
 						<button
 							onClick={handleBack}
-							className="bg-gray-300 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-400 transition duration-300"
+							className="px-4 py-2 text-gray-700 transition duration-300 bg-gray-300 rounded-full hover:bg-gray-400"
 						>
 							Back
 						</button>
