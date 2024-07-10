@@ -1,32 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import axios from "axios";
 
 import { ReservationContext } from "../context/ReservationContext";
 import Wagon from "./Wagon";
+// import SeatSelectionDispaly from "./SeatSelectionDisplay";
 
-const seats = [
-  { id: "1A", x: 20, y: 20 },
-  { id: "1B", x: 60, y: 20 },
-  { id: "1C", x: 100, y: 20 },
-  { id: "1D", x: 180, y: 20 },
-  { id: "1E", x: 220, y: 20 },
-  { id: "2A", x: 20, y: 60 },
-  { id: "2B", x: 60, y: 60 },
-  { id: "2C", x: 100, y: 60 },
-  { id: "2D", x: 180, y: 60 },
-  { id: "2E", x: 220, y: 60 },
-  { id: "3A", x: 20, y: 120 },
-  { id: "3B", x: 60, y: 120 },
-  { id: "3C", x: 100, y: 120 },
-  { id: "3D", x: 180, y: 120 },
-  { id: "3E", x: 220, y: 120 },
-  { id: "4A", x: 20, y: 160 },
-  { id: "4B", x: 60, y: 160 },
-  { id: "4C", x: 100, y: 160 },
-  { id: "4D", x: 180, y: 160 },
-  { id: "4E", x: 220, y: 160 },
-];
+
+
 
 const SeatSelectionPage = () => {
   const { reservationData, setReservationData } =
@@ -41,6 +26,14 @@ const SeatSelectionPage = () => {
     selectedClassId,
   } = reservationData;
   const [wagonsData, setWagonsData] = useState([]);
+
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
 
   console.log("reservationData", reservationData);
   console.log("selecte")
@@ -68,11 +61,19 @@ const SeatSelectionPage = () => {
     getSeats();
   }, [fromHaltId, toHaltId, scheduleId, departureDate, setReservationData]);
   console.log("Wagons Data", wagonsData)
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      {wagonsData.map((wagonData) =>{
-        return <Wagon key={wagonData._id} wagonNumber={wagonData.wagonNumber} seats={wagonData.seats} bookedSeats={wagonData.alreadyBookedSeats} />
-      }) }
+      {/* <Slider {...settings}> */}
+
+      {wagonsData.map((wagonData) =>(
+        <div key={wagonData._id}>
+         <Wagon  wagonNumber={wagonData.wagonNumber} seats={wagonData.seats} bookedSeats={wagonData.alreadyBookedSeats} />
+         </div>
+      )) }
+      {/* </Slider> */}
+      {/* <SeatSelectionDispaly /> */}
+
     </div>
 
   );
