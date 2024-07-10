@@ -43,6 +43,7 @@ const SeatSelectionPage = () => {
   const [wagonsData, setWagonsData] = useState([]);
 
   console.log("reservationData", reservationData);
+  console.log("selecte")
 
   useEffect(() => {
     const getSeats = async () => {
@@ -73,6 +74,7 @@ const SeatSelectionPage = () => {
         return <Wagon key={wagonData._id} wagonNumber={wagonData.wagonNumber} seats={wagonData.seats} bookedSeats={wagonData.alreadyBookedSeats} />
       }) }
     </div>
+
   );
 };
 
