@@ -18,6 +18,7 @@ import PopularRoutes from './components/PopularRoutes';
 import Options from './pages/Options';
 import { UserProvider } from './context/UserContext';
 import PaymentGateway from './pages/PaymentGateway';
+import SeatSelection from './pages/SeatSelection';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
                   <Route path="/options" element={<Options />} />
                   <Route path="/reservationsummary" element={<ReservationSummary />} />
                   <Route path="/payment-gateway" element={<PaymentGateway />} />
+                  <Route path="/seatselection" element={<SeatSelection />} />
                 </Routes>
               </Layout>
             </ReservationProvider>

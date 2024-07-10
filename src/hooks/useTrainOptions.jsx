@@ -26,21 +26,34 @@ const useTrainOptions = ({
 
 				const formattedTrainOptions = data.map((item) => ({
 					id: item.schedule._id,
-					departure: item.fromHalt.departureTime,
-					arrival: item.toHalt.arrivalTime,
-					toHaltId: item.toHalt._id,
-					fromHaltId: item.fromHalt._id,
+					departureDate,
+					// departure: item.fromHalt.departureTime,
+					// arrival: item.toHalt.arrivalTime,
+					toHalt: {
+						id: item.toHalt._id,
+						name: item.toHalt.stationRef.name,
+						arrivalTime: item.toHalt.arrivalTime,
+						platform: item.toHalt.platform,
+					},
+					fromHalt: {
+						id: item.fromHalt._id,
+						name: item.fromHalt.stationRef.name,
+						departureTime: item.fromHalt.departureTime,
+						platform: item.fromHalt.platform,
+					},
 					duration: calculateDuration(
 						item.fromHalt.departureTime,
 						item.toHalt.arrivalTime
 					),
-					changes: 0,
+					
 					price: item.toHalt.price - item.fromHalt.price,
 					seatAvailability: {
-						"1st Class": 10,
-						"2nd Class": 10,
-						"3rd Class": 10,
+						first: item.firstClassSeats,
+						second: item.secondClassSeats,
+						third: item.thirdClassSeats,
 					},
+					train: item.schedule.trainRef.name,
+					pax,
 				}));
 
 				setTrainOptions(formattedTrainOptions);

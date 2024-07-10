@@ -5,6 +5,7 @@ import Filter from "../components/Filter";
 import TrainOption from "../components/TrainOption";
 import { ReservationContext } from "../context/ReservationContext";
 import useTrainOptions from "../hooks/useTrainOptions";
+import SearchForm from "../components/SearchForm";
 
 const Results = () => {
   const { reservationData, setReservationData } =
@@ -78,15 +79,20 @@ const Results = () => {
   }, [isFilterVisible]);
 
   const handleTrainOptionClick = (option) => {
-    console.log("Train option clicked");
-    console.log(option);
-    const newUrl = `/options?scheduleId=${option.id}&departureStationId=${option.fromHaltId}&arrivalStationId=${option.toHaltId}&departureDate=${departureDate}&pax=${pax}`;
+    setReservationData({
+      ...reservationData,
+      scheduleId: option.id,
+      fromHaltId: option.fromHalt.id,
+      toHaltId: option.toHalt.id,
+    });
+    const newUrl = `/options?scheduleId=${option.id}&fromHaltId=${option.fromHalt.id}&toHaltId=${option.toHalt.id}&departureDate=${departureDate}&pax=${pax}`;
     navigate(newUrl);
   };
 
   return (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col md:flex-row lg:px-20">
+		
         <div
           className={`flex-1 w-full p-4 ${
             isFilterVisible ? "block" : "hidden"

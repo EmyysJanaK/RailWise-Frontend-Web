@@ -15,20 +15,13 @@ const PopularRoutes = () => {
     }
 
     // Fetch popular routes from the API
-    axios.get('/api/popularRoutes')
+    axios.get('/api/schedules/popularRoutes')
       .then(response => {
-        setPopularRoutes(response.data); // Assuming response.data is an array of routes
+        setPopularRoutes(response.data.popularRoutes); // Assuming response.data is an array of routes
       })
       .catch(error => console.error('Error fetching popular routes:', error));
   }, [location]);
 
-  const fallbackRoutes = [
-    { id: 1, name: "Station 1", location: "City 1", image: trainImage },
-    { id: 2, name: "Station 2", location: "City 2", image: "https://via.placeholder.com/150" },
-    { id: 3, name: "Station 3", location: "City 3", image: "https://via.placeholder.com/150" },
-  ];
-
-  const routesToDisplay = popularRoutes.length > 0 ? popularRoutes : fallbackRoutes;
 
   return (
     <section className="bg-gray-100 py-12">
@@ -37,12 +30,14 @@ const PopularRoutes = () => {
         <div className="max-w-container mx-auto px-4">
           <div className="pb-10">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {routesToDisplay.map((route) => (
-                <div key={route.id} className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+              {popularRoutes.map((route) => (
+                <div key={route.startHaltStation._id + route.endHaltStation._id}
+                className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
                   <img src={route.image || trainImage} alt={route.name} className="w-full h-32 sm:h-48 object-cover" />
                   <div className="p-4">
-                    <h2 className="text-2xl font-bold text-gray-800">{route.name}</h2>
-                    <p className="text-gray-600">{route.location}</p>
+                    <h2 className="text-2xl font-bold text-gray-800">{route.startHaltStation.name} → {route.endHaltStation.name}</h2>
+                    <p className="text-gray-600">{route.train.name}</p>
+                    <p className="text-gray-600">{route.count} Bookings in last month</p>
                   </div>
                 </div>
               ))}

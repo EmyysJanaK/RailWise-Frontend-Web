@@ -5,7 +5,6 @@ import QRCode from 'qrcode.react'; // You can use 'qrcode.react' library to gene
 import PopularRoutes from '../components/PopularRoutes';
 
 const HomePage = () => {
-  const [popularRoutes, setPopularRoutes] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
 
   // useEffect(() => {
@@ -33,17 +32,6 @@ const HomePage = () => {
             <h2 className="text-3xl font-bold text-gray-800 mb-4">Install Our Mobile App</h2>
             <QRCode value="https://www.railwise.com/mobile-app" size={128} />
             <p className="text-lg text-gray-700 mt-2">Scan the QR code to download our mobile app.</p>
-          </div>
-          <div className="mt-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Popular Routes</h2>
-            <ul className="space-y-4">
-              {popularRoutes.map((route, index) => (
-                <li key={index} className="bg-white p-4 rounded-lg shadow-md">
-                  <h3 className="text-2xl font-semibold text-gray-800">{route.name}</h3>
-                  <p className="text-gray-600">{route.description}</p>
-                </li>
-              ))}
-            </ul>
           </div>
           <PopularRoutes />
 

@@ -1,13 +1,6 @@
 import PropTypes from "prop-types";
 
-const SeatOption = ({ className, seats, isDisabled, isSelected, onSelect }) => {
-  const seatDetails = {
-    "1st Class": { price: 174, features: ["Free WiFi", "Power outlets"] },
-    "2nd Class": { price: 194, features: ["Free WiFi", "Power outlets", "Free drinks"] },
-    "3rd Class": { price: 214, features: ["Free WiFi", "Power outlets", "Free drinks", "Wide seats"] },
-  };
-
-  const { price, features } = seatDetails[className];
+const SeatOption = ({ wagonClassName, availableSeats, price, features, isDisabled, isSelected, onSelect }) => {
 
   return (
     <div
@@ -15,9 +8,9 @@ const SeatOption = ({ className, seats, isDisabled, isSelected, onSelect }) => {
          ${isSelected ? 'border-blue-500 bg-blue-100' : 'border-purple-500 bg-white' } ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-blue-500'}`}
       onClick={!isDisabled ? onSelect : null}
     >
-      <h3 className="font-bold text-3xl mb-4 text-black-900 text-center">{className}</h3>
+      <h3 className="font-bold text-3xl mb-4 text-black-900 text-center">{wagonClassName}</h3>
       <p className="text-3xl font-semibold text-gray-700 text-center">${price.toFixed(2)}</p>
-      <p className="text-3xl font-semibold text-gray-700 mt-2 text-center">Available seats: {seats}</p>
+      <p className="text-3xl font-semibold text-gray-700 mt-2 text-center">Available seats: {availableSeats}</p>
       <ul className="mt-6 space-y-3">
         {features.map((feature, index) => (
           <li key={index} className="flex items-center justify-center">

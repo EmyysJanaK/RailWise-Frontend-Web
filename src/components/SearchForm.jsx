@@ -83,7 +83,7 @@ const SearchForm = () => {
 		departureStationId: departureStation._id,
 		arrivalStationId: arrivalStation._id,
 		departureDate: searchParams.date,
-		pax: searchParams.seat,
+		pax: parseInt(searchParams.seat),
     });
 
     const url = `/results?departureStationId=${departureStation._id}&arrivalStationId=${arrivalStation._id}&departureDate=${searchParams.date}&pax=${searchParams.seat}`;
