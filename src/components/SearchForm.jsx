@@ -97,8 +97,7 @@ const SearchForm = () => {
       pax: parseInt(searchParams.seat),
     });
 
-    const url = `/results?departureStationId=${departureStation._id}&arrivalStationId=${arrivalStation._id}&departureDate=${searchParams.date}&pax=${searchParams.seat}`;
-    navigate(url);
+    navigate("/results");	
   };
 
   return (

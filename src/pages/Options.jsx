@@ -11,16 +11,8 @@ const Options = () => {
   const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const queryParams = new URLSearchParams(location.search);
 
-  const fromHaltId =
-    reservationData.fromHaltId || queryParams.get("fromHaltId");
-  const toHaltId = reservationData.toHaltId || queryParams.get("toHaltId");
-  const departureDate =
-    reservationData.departureDate || queryParams.get("departureDate");
-  const scheduleId =
-    reservationData.scheduleId || queryParams.get("scheduleId");
-  const pax = reservationData.pax || parseInt(queryParams.get("pax"), 10);
+  const { fromHaltId, toHaltId, scheduleId, departureDate, pax } = reservationData;
 
   const [selectedClass, setSelectedClass] = useState(null);
 
@@ -63,7 +55,9 @@ const Options = () => {
   };
 
   const handleNext = () => {
-	const selectedClassId = classInfo.find((classDetails) => classDetails.name === selectedClass)._id;
+    const selectedClassId = classInfo.find(
+      (classDetails) => classDetails.name === selectedClass
+    )._id;
     setReservationData({
       ...reservationData,
       selectedClassId,

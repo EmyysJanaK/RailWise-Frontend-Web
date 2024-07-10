@@ -16,52 +16,30 @@ const Results = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const departureStationId =
-    reservationData.departureStationId || queryParams.get("departureStationId");
-  const arrivalStationId =
-    reservationData.arrivalStationId || queryParams.get("arrivalStationId");
-  const departureDate =
-    reservationData.departureDate || queryParams.get("departureDate");
-  const pax = reservationData.pax || parseInt(queryParams.get("pax"), 10);
+  const { departureStationId, arrivalStationId, departureDate } =
+    reservationData;
 
   const { trainOptions, loading, error } = useTrainOptions({
     departureStationId,
     arrivalStationId,
     departureDate,
-    pax,
   });
-  console.log("reservato data: ", reservationData);
 
-  useEffect(() => {
-    setReservationData({
-      ...reservationData,
-      departureStationId,
-      arrivalStationId,
-      departureDate,
-      pax,
-    });
-  }, [
-    departureStationId,
-    arrivalStationId,
-    departureDate,
-    pax,
-    setReservationData,
-  ]);
-
-  useEffect(() => {
-    console.log(
-      reservationData.departureStationId,
-      reservationData.arrivalStationId,
-      reservationData.departureDate,
-      reservationData.pax,
-      reservationData.seatAvailability,
-      reservationData.selectedClass,
-      reservationData.departureTime,
-      reservationData.arrivalTime,
-      reservationData.passengers,
-      reservationData.email
-    );
-  }, [reservationData]);
+  // useEffect(() => {
+  //   setReservationData({
+  //     ...reservationData,
+  //     departureStationId,
+  //     arrivalStationId,
+  //     departureDate,
+  //     pax,
+  //   });
+  // }, [
+  //   departureStationId,
+  //   arrivalStationId,
+  //   departureDate,
+  //   pax,
+  //   setReservationData,
+  // ]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -86,8 +64,8 @@ const Results = () => {
       toHaltId: option.toHalt.id,
       trainId: option.train.id,
     });
-    const newUrl = `/options?scheduleId=${option.id}&fromHaltId=${option.fromHalt.id}&toHaltId=${option.toHalt.id}&departureDate=${departureDate}&pax=${pax}`;
-    navigate(newUrl);
+    // const newUrl = `/options?scheduleId=${option.id}&fromHaltId=${option.fromHalt.id}&toHaltId=${option.toHalt.id}&departureDate=${departureDate}&pax=${pax}`;
+    navigate("/options");
   };
 
   return (

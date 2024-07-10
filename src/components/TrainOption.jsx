@@ -107,7 +107,6 @@ TrainOption.propTypes = {
             id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
         }),
-        pax: PropTypes.number.isRequired,
     }).isRequired,
     onClick: PropTypes.func.isRequired,
 };

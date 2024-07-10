@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { ReservationContext } from "../context/ReservationContext";
-import Seat from "./Seat";
 import Wagon from "./Wagon";
 
 const seats = [
@@ -71,7 +70,7 @@ const SeatSelectionPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
       {wagonsData.map((wagonData) =>{
-        <Wagon key={wagonData._id} wagonNumber={wagonData.wagonNumber} seats={wagonData.seats} bookedSeats={wagonData.alreadyBookedSeats} />
+        return <Wagon key={wagonData._id} wagonNumber={wagonData.wagonNumber} seats={wagonData.seats} bookedSeats={wagonData.alreadyBookedSeats} />
       }) }
     </div>
   );

@@ -5,7 +5,6 @@ const useTrainOptions = ({
   departureStationId,
   arrivalStationId,
   departureDate,
-  pax,
 }) => {
   const [trainOptions, setTrainOptions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +18,6 @@ const useTrainOptions = ({
             fromStationId: departureStationId,
             toStationId: arrivalStationId,
             date: departureDate,
-            // pax: pax,
           },
         });
         const data = response.data;
@@ -56,7 +54,6 @@ const useTrainOptions = ({
             id: item.schedule.trainRef._id,
             name: item.schedule.trainRef.name,
           },
-          pax,
         }));
 
         setTrainOptions(formattedTrainOptions);
@@ -68,7 +65,7 @@ const useTrainOptions = ({
       }
     };
     getStations();
-  }, [departureStationId, arrivalStationId, departureDate, pax]);
+  }, [departureStationId, arrivalStationId, departureDate]);
 
   return { trainOptions, loading, error };
 };

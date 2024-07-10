@@ -2,6 +2,7 @@ import React from "react";
 import Seat from "./Seat"; // Assuming the Seat component is in the same directory
 
 const Wagon = ({ wagonNumber, seats, bookedSeats }) => {
+    console.log("Ïnside Wagon")
     console.log("seats", seats);
   return (
     <div className="relative w-80 h-64 bg-gray-200 border border-gray-400 rounded-xl p-4">
