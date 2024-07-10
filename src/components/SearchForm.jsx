@@ -22,7 +22,7 @@ const SearchForm = () => {
   useEffect(() => {
     const getStations = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/stations");
+        const response = await axios.get("/api/stations");
         setStations(response.data);
       } catch (error) {
         console.error(error);
@@ -79,6 +79,12 @@ const SearchForm = () => {
       setError("Invalid station selected.");
       return;
     }
+    setReservationData({
+		departureStationId: departureStation._id,
+		arrivalStationId: arrivalStation._id,
+		departureDate: searchParams.date,
+		pax: searchParams.seat,
+    });
 
     const url = `/results?departureStationId=${departureStation._id}&arrivalStationId=${arrivalStation._id}&departureDate=${searchParams.date}&pax=${searchParams.seat}`;
     navigate(url);
@@ -164,3 +170,6 @@ const SearchForm = () => {
 };
 
 export default SearchForm;
+
+
+                                        
