@@ -23,9 +23,7 @@ const Options = () => {
   const pax = reservationData.pax || parseInt(queryParams.get("pax"), 10);
 
   const [selectedClass, setSelectedClass] = useState(null);
-  const [seatAvailability, setSeatAvailability] = useState({
-    reservationData,
-  });
+
   const [scheduleInfo, setScheduleInfo] = useState({});
   const [classInfo, setClassInfo] = useState({});
 
@@ -70,7 +68,7 @@ const Options = () => {
       ...reservationData,
       selectedClassId,
     });
-    navigate("/passengerdetails");
+    navigate("/seat-selection");
   };
 
   return (

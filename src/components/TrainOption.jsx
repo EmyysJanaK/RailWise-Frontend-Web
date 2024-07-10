@@ -31,7 +31,7 @@ const TrainOption = ({ option, onClick }) => {
                 <div className="flex flex-col items-center md:items-start md:mr-4">
                     <FaTrain className="text-indigo-700 text-2xl mb-1" />
                     <div className="text-lg font-bold text-indigo-700">
-                        {option.train} → {option.arrival}
+                        {option.train.name} → {option.arrival}
                     </div>
                     <div className="text-gray-700 font-medium">
                         {option.fromHalt.name} → {option.toHalt.name}
@@ -103,7 +103,10 @@ TrainOption.propTypes = {
             second: PropTypes.number.isRequired,
             third: PropTypes.number.isRequired,
         }).isRequired,
-        train: PropTypes.string.isRequired,
+        train: PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+        }),
         pax: PropTypes.number.isRequired,
     }).isRequired,
     onClick: PropTypes.func.isRequired,

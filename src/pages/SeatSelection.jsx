@@ -1,97 +1,103 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReservationContext } from "../context/ReservationContext";
+import { z } from "zod";
+import SeatSelection from "../components/SeatSelection";
 
-const seats = [
-  { id: '1A', x: 20, y: 20 },
-  { id: '1B', x: 60, y: 20 },
-  { id: '1C', x: 100, y: 20 },
-  { id: '1D', x: 180, y: 20 },
-  { id: '1E', x: 220, y: 20 },
-  { id: '2A', x: 20, y: 60 },
-  { id: '2B', x: 60, y: 60 },
-  { id: '2C', x: 100, y: 60 },
-  { id: '2D', x: 180, y: 60 },
-  { id: '2E', x: 220, y: 60 },
-  { id: '3A', x: 20, y: 120 },
-  { id: '3B', x: 60, y: 120 },
-  { id: '3C', x: 100, y: 120 },
-  { id: '3D', x: 180, y: 120 },
-  { id: '3E', x: 220, y: 120 },
-  { id: '4A', x: 20, y: 160 },
-  { id: '4B', x: 60, y: 160 },
-  { id: '4C', x: 100, y: 160 },
-  { id: '4D', x: 180, y: 160 },
-  { id: '4E', x: 220, y: 160 },
-];
+const emailSchema = z.string().email();
 
-const SeatSelectionPage = () => {
-  const [selectedSeats, setSelectedSeats] = useState([]);
+const PassengerDetails = () => {
   const { reservationData, setReservationData } = useContext(ReservationContext);
   const navigate = useNavigate();
-  const { pax } = reservationData;
+  const { departureStationId, arrivalStationId, departureDate, selectedClassId } = reservationData;
 
-  useEffect(() => {
-    if (selectedSeats.length === pax) {
-      setReservationData((prevData) => ({ ...prevData, selectedSeats }));
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const validateEmail = (emailaddr) => {
+    try {
+      emailSchema.parse(emailaddr);
+      setError("");
+      return true;
+    } catch {
+      setError("Invalid email address");
+      return false;
     }
-  }, [selectedSeats, pax, setReservationData]);
-
-  const handleSeatClick = (seatId) => {
-    setSelectedSeats((prevSelectedSeats) =>
-      prevSelectedSeats.includes(seatId)
-        ? prevSelectedSeats.filter((id) => id !== seatId)
-        : [...prevSelectedSeats, seatId]
-    );
   };
 
-  const handleConfirmSelection = () => {
-    navigate('/ReservationSummary'); // Adjust the navigation target as needed
+  const validateForm = () => {
+    if (!email) {
+      setError("Email is required");
+      return false;
+    }
+    if (!validateEmail(email)) {
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
+  useEffect(() => {
+    setIsFormValid(validateForm());
+  }, [email]);
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  const handleSubmit = () => {
+    if (isFormValid) {
+      setReservationData((prevData) => ({
+        ...prevData,
+        email,
+      }));
+      setSuccess("Details submitted successfully!");
+      navigate("/reservationSummary");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
-        <h2 className="text-3xl font-bold mb-6 text-center">Seat Selection</h2>
-        <svg viewBox="0 0 270 210" width="270" height="210" className="border-black border mx-auto">
-          <rect x="10" y="10" width="250" height="190" stroke="black" fill="none" />
-          {seats.map((seat) => (
-            <React.Fragment key={seat.id}>
-              <rect
-                x={seat.x}
-                y={seat.y}
-                width="30"
-                height="30"
-                stroke="black"
-                fill={selectedSeats.includes(seat.id) ? 'green' : 'gray'}
-                onClick={() => handleSeatClick(seat.id)}
-                className="cursor-pointer hover:fill-blue-500 transition duration-300"
-              />
-              <text
-                x={seat.x + 15}
-                y={seat.y + 20}
-                fontSize="12"
-                fill="black"
-                textAnchor="middle"
-                alignmentBaseline="middle"
-              >
-                {seat.id}
-              </text>
-            </React.Fragment>
-          ))}
-        </svg>
-        <div className="text-center mt-6">
-          <button
-            onClick={handleConfirmSelection}
-            className="bg-purple-900 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition duration-300"
-            disabled={selectedSeats.length !== pax}
-          >
-            Confirm Selection
-          </button>
+    <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
+        Seat Selection and Email
+      </h1>
+      <SeatSelection />
+      <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+        <h2 className="text-2xl font-bold mb-4">Enter Email for Ticket</h2>
+        <div className="mb-4">
+          <input
+            type="email"
+            className="form-input mt-1 p-2 w-full border border-gray-300 rounded-md"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={(e) => validateEmail(e.target.value)}
+          />
         </div>
+        {error && <p className="text-red-500">{error}</p>}
+        {success && <p className="text-green-500">{success}</p>}
+      </div>
+      <div className="flex justify-between">
+        <button
+          onClick={handleBack}
+          className="bg-gray-300 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-400 transition duration-300"
+        >
+          Back
+        </button>
+        <button
+          onClick={handleSubmit}
+          className={`bg-purple-500 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition duration-300 ${
+            !isFormValid ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={!isFormValid}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
 };
 
-export default SeatSelectionPage;
+export default PassengerDetails;

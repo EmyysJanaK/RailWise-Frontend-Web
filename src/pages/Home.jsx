@@ -7,17 +7,6 @@ import PopularRoutes from '../components/PopularRoutes';
 const HomePage = () => {
   const [announcements, setAnnouncements] = useState([]);
 
-  // useEffect(() => {
-  //   // Fetch popular routes
-  //   axios.get('/api/popular-routes')
-  //     .then(response => setPopularRoutes(response.data))
-  //     .catch(error => console.error('Error fetching popular routes:', error));
-
-  //   // Fetch announcements
-  //   axios.get('/api/announcements')
-  //     .then(response => setAnnouncements(response.data))
-  //     .catch(error => console.error('Error fetching announcements:', error));
-  // }, []);
 
   return (
     <div className="relative min-h-screen flex flex-col bg-gray-100">

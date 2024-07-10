@@ -14,7 +14,9 @@ const SearchForm = () => {
   const { setReservationData } = useContext(ReservationContext);
 
   const [stations, setStations] = useState([]);
-  const [filteredDepartureStations, setFilteredDepartureStations] = useState([]);
+  const [filteredDepartureStations, setFilteredDepartureStations] = useState(
+    []
+  );
   const [filteredArrivalStations, setFilteredArrivalStations] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -67,23 +69,32 @@ const SearchForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!searchParams.departure || !searchParams.arrival || !searchParams.date || !searchParams.seat) {
+    if (
+      !searchParams.departure ||
+      !searchParams.arrival ||
+      !searchParams.date ||
+      !searchParams.seat
+    ) {
       setError("Please fill in all the fields.");
       return;
     }
 
-    const departureStation = stations.find(station => station.name === searchParams.departure);
-    const arrivalStation = stations.find(station => station.name === searchParams.arrival);
-    
+    const departureStation = stations.find(
+      (station) => station.name === searchParams.departure
+    );
+    const arrivalStation = stations.find(
+      (station) => station.name === searchParams.arrival
+    );
+
     if (!departureStation || !arrivalStation) {
       setError("Invalid station selected.");
       return;
     }
     setReservationData({
-		departureStationId: departureStation._id,
-		arrivalStationId: arrivalStation._id,
-		departureDate: searchParams.date,
-		pax: parseInt(searchParams.seat),
+      departureStationId: departureStation._id,
+      arrivalStationId: arrivalStation._id,
+      departureDate: searchParams.date,
+      pax: parseInt(searchParams.seat),
     });
 
     const url = `/results?departureStationId=${departureStation._id}&arrivalStationId=${arrivalStation._id}&departureDate=${searchParams.date}&pax=${searchParams.seat}`;
@@ -91,7 +102,10 @@ const SearchForm = () => {
   };
 
   return (
-    <form className="search-form bg-purple-900 p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>
+    <form
+      className="search-form bg-purple-900 p-6 rounded-lg shadow-lg"
+      onSubmit={handleSubmit}
+    >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="relative">
           <input
@@ -158,11 +172,14 @@ const SearchForm = () => {
           className="w-full p-3 border rounded text-xl"
           style={{ fontSize: "1.4rem", height: "3.5rem" }}
         />
-       <div className="col-span-1 sm:col-span-2 flex justify-center">
-          <button type="submit" className="bg-blue-600 text-white px-8 py-3 rounded text-2xl">
-             Search
+        <div className="col-span-1 sm:col-span-2 flex justify-center">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-8 py-3 rounded text-2xl"
+          >
+            Search
           </button>
-       </div>
+        </div>
       </div>
       {error && <p className="text-center mt-4 text-red-600">{error}</p>}
     </form>
@@ -170,6 +187,3 @@ const SearchForm = () => {
 };
 
 export default SearchForm;
-
-
-                                        

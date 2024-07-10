@@ -24,8 +24,10 @@ const SeatOption = ({ wagonClassName, availableSeats, price, features, isDisable
 };
 
 SeatOption.propTypes = {
-  className: PropTypes.string.isRequired,
-  seats: PropTypes.number.isRequired,
+  wagonClassName: PropTypes.string.isRequired,
+  availableSeats: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
+  features: PropTypes.arrayOf(PropTypes.string).isRequired,
   isDisabled: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onSelect: PropTypes.func.isRequired,

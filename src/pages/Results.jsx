@@ -30,7 +30,7 @@ const Results = () => {
     departureDate,
     pax,
   });
-  console.log("reservato data: ",reservationData)
+  console.log("reservato data: ", reservationData);
 
   useEffect(() => {
     setReservationData({
@@ -84,6 +84,7 @@ const Results = () => {
       scheduleId: option.id,
       fromHaltId: option.fromHalt.id,
       toHaltId: option.toHalt.id,
+      trainId: option.train.id,
     });
     const newUrl = `/options?scheduleId=${option.id}&fromHaltId=${option.fromHalt.id}&toHaltId=${option.toHalt.id}&departureDate=${departureDate}&pax=${pax}`;
     navigate(newUrl);
@@ -92,7 +93,6 @@ const Results = () => {
   return (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col md:flex-row lg:px-20">
-		
         <div
           className={`flex-1 w-full p-4 ${
             isFilterVisible ? "block" : "hidden"

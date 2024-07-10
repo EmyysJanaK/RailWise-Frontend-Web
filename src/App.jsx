@@ -1,24 +1,20 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Results from "./pages/Results";
-import HomePage from './pages/HomePage';
+import Home from './pages/Home';
 import Login from './pages/Login';
-import Stations from './pages/Stations';
+import History from './pages/History';
 import About from './pages/About';
-// import TrainStatus from './pages/TrainStatus';
 import Contact from './pages/Contact';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
-import TrainDetails from './pages/TrainDetails';
-import './index.css';
-import PassengerDetails from './pages/PassengerDetails';
 import { ReservationProvider } from './context/ReservationContext';
 import ReservationSummary from './pages/ReservationSummary';
 import Layout from './components/Layout';
-import PopularRoutes from './components/PopularRoutes';
 import Options from './pages/Options';
 import { UserProvider } from './context/UserContext';
 import PaymentGateway from './pages/PaymentGateway';
 import SeatSelection from './pages/SeatSelection';
+import './index.css';
 
 function App() {
   return (
@@ -29,20 +25,20 @@ function App() {
             <ReservationProvider>
               <Layout>
                 <Routes>
-                  <Route path="/" element={<HomePage />} />
+                  <Route path="/" element={<Home />} />
                   <Route path="/results" element={<Results />} />
+                  <Route path="/options" element={<Options />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />
-                  <Route path="/stations" element={<Stations />} />
+                  <Route path="/stations" element={<History />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<SignUp />} />
                   <Route path="/forgotpassword" element={<ForgotPassword />} />
-                  <Route path="/traindetails" element={<TrainDetails />} />
-                  <Route path="/passengerdetails" element={<PassengerDetails />} />
-                  <Route path="/options" element={<Options />} />
+                  {/* <Route path="/traindetails" element={<TrainDetails />} /> */}
+                  <Route path="/seat-selection" element={<SeatSelection />} />
                   <Route path="/reservationsummary" element={<ReservationSummary />} />
                   <Route path="/payment-gateway" element={<PaymentGateway />} />
-                  <Route path="/seatselection" element={<SeatSelection />} />
+                  {/* <Route path="/seatselection" element={<SeatSelection />} /> */}
                 </Routes>
               </Layout>
             </ReservationProvider>
