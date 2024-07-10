@@ -21,7 +21,7 @@ const Wagon = ({ wagonNumber, seats, bookedSeats }) => {
   }, [selectedSeats]);
 
   return (
-    <div className="flex justify-between w-full max-w-5xl mx-auto mt-8">
+    <div className="flex flex-col items-center w-full max-w-5xl mx-auto mt-8">
       <div className="relative w-[360px] h-[604px] p-4 bg-gray-200 border border-gray-400 rounded-xl">
         {seats.map((seat) => (
           <div
@@ -56,30 +56,8 @@ const Wagon = ({ wagonNumber, seats, bookedSeats }) => {
         <div className="absolute right-[-20px] top-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
         <div className="absolute right-[-20px] bottom-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
       </div>
-      {/* Displaying the selected seats as a one card */}
-      <div className="w-64 bg-white border border-gray-400 rounded-xl p-4 ml-4">
-        <h2 className="text-3xl font-bold mb-4">Display Seat Selection</h2>
-        <p>Wagon Number: {wagonNumber}</p>
-        <p>Selected Seats: {selectedSeats.length}</p>
-
-        <ul>
-          {selectedSeats.map((seatId) => {
-            const seat = seats.find((seat) => seat._id === seatId);
-            return <li key={seatId}>{seat.name}</li>;
-          })}
-        </ul>
-      </div>
-
-      {/* Displaying the final selected seats */}
-      {/* <div className="w-64 bg-white border border-gray-400 rounded-xl p-4 ml-4">
-        
-        <ul>
-          {finalSelectedSeats.map((seatId) => (
-            <li key={seatId}>{seatId}</li>
-          ))}
-        </ul>
-      </div> */}
     </div>
+      
   );
 };
 

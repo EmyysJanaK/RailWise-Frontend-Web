@@ -10,8 +10,16 @@ import { ReservationContext } from "../context/ReservationContext";
 import Wagon from "./Wagon";
 // import SeatSelectionDispaly from "./SeatSelectionDisplay";
 
-
-
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, background: "red", borderRadius: "50%" }}
+      onClick={onClick}
+    />
+  );
+}
 
 const SeatSelectionPage = () => {
   const { reservationData, setReservationData } =
@@ -33,10 +41,12 @@ const SeatSelectionPage = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    prevArrow: <SamplePrevArrow />,
+    nextArrow: <SamplePrevArrow />,
   };
 
   console.log("reservationData", reservationData);
-  console.log("selecte")
+  console.log("selecte");
 
   useEffect(() => {
     const getSeats = async () => {
@@ -60,22 +70,28 @@ const SeatSelectionPage = () => {
 
     getSeats();
   }, [fromHaltId, toHaltId, scheduleId, departureDate, setReservationData]);
-  console.log("Wagons Data", wagonsData)
+  console.log("Wagons Data", wagonsData);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      {/* <Slider {...settings}> */}
-
-      {wagonsData.map((wagonData) =>(
-        <div key={wagonData._id}>
-         <Wagon  wagonNumber={wagonData.wagonNumber} seats={wagonData.seats} bookedSeats={wagonData.alreadyBookedSeats} />
-         </div>
-      )) }
-      {/* </Slider> */}
+    <>
+    {/* <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100"> */}
+    <div className="w-1/2 mx-auto mt-8">
+      <Slider {...settings}>
+        {wagonsData.map((wagonData) => (
+          <div key={wagonData._id} className="p-10 bg-red-600">
+            <Wagon
+              wagonNumber={wagonData.wagonNumber}
+              seats={wagonData.seats}
+              bookedSeats={wagonData.alreadyBookedSeats}
+            />
+          </div>
+        ))}
+       
+      </Slider>
       {/* <SeatSelectionDispaly /> */}
-
     </div>
-
+    
+    </>
   );
 };
 
