@@ -8,7 +8,7 @@ const Wagon = ({ wagonNumber, seats, bookedSeats }) => {
 
 
   return (
-    <div className="relative w-80 h-64 bg-gray-200 border border-gray-400 rounded-xl p-4">
+    <div className="relative w-[360px] h-[604px] p-4 bg-gray-200 border border-gray-400 rounded-xl">
       {seats.map((seat) => (
         <div
           key={seat._id}
@@ -21,15 +21,21 @@ const Wagon = ({ wagonNumber, seats, bookedSeats }) => {
           <Seat name={seat.name} isBooked={bookedSeats.includes(seat._id)} />
         </div>
       ))}
+
+      {/* Wagon number */}
+      <div className="absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-gray-400 p-2 rounded-lg">
+        Wagon {wagonNumber}
+      </div>
+      
       {/* Left side wheels */}
 
-      <div className="absolute left-[-20px] top-34 w-6 h-12 bg-gray-800 rounded-lg"></div>
-      <div className="absolute left-[-20px] top-48 w-6 h-12 bg-gray-800 rounded-lg"></div>
+      <div className="absolute left-[-20px] top-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
+      <div className="absolute left-[-20px] bottom-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
 
       {/* Right side wheels */}
 
-      <div className="absolute right-[-20px] top-34 w-6 h-12 bg-gray-800 rounded-lg"></div>
-      <div className="absolute right-[-20px] top-48 w-6 h-12 bg-gray-800 rounded-lg"></div>
+      <div className="absolute right-[-20px] top-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
+      <div className="absolute right-[-20px] bottom-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
 
     </div>
   );
