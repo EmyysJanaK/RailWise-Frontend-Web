@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Seat = ({ name, isBooked, isSelected }) => {
+const Seat = ({ name, isBooked, isSelected, disabled }) => {
 
   const handleHover = (e) => {
     if (!isSelected) {
@@ -17,7 +17,7 @@ const Seat = ({ name, isBooked, isSelected }) => {
   return (
     <div
       className={`border rounded-lg w-12 h-12 flex items-center justify-center border-gray-400
-        ${isSelected ? 'bg-blue-500 text-white cursor-pointer' : isBooked ? 'bg-red-300' : 'bg-white cursor-pointer'}`}
+        ${isSelected ? 'bg-blue-500 text-white' : isBooked ? 'bg-red-300' : 'bg-white'} ${ (disabled || isBooked)? 'cursor-not-allowed' : 'cursor-pointer'}`}
       {...(!isBooked && { onMouseEnter: handleHover, onMouseLeave: handleMouseLeave })}
 
     >

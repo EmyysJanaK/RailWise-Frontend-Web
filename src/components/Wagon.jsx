@@ -1,26 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Seat from "./Seat"; // Assuming the Seat component is in the same directory
 
-const Wagon = ({ wagonNumber, seats, bookedSeats, handleSeatClick, selectedSeats }) => {
-//   const [selectedSeats, setSelectedSeats] = useState([]);
-//   const [finalSelectedSeats, setFinalSelectedSeats] = useState([]);
-
-//   const handleSeatClick = (seatId) => {
-//     if (bookedSeats.includes(seatId)) {
-//       return;
-//     }
-//     setSelectedSeats((prevSelectedSeats) =>
-//       prevSelectedSeats.includes(seatId)
-//         ? prevSelectedSeats.filter((id) => id !== seatId)
-//         : [...prevSelectedSeats, seatId]
-//     );
-//   };
-
-//   useEffect(() => {
-//     setFinalSelectedSeats(selectedSeats);
-//   }, [selectedSeats]);
-console.log("selectedSeats", selectedSeats)
-console.log("bookedSeats", bookedSeats)
+const Wagon = ({ wagonNumber, seats, bookedSeats, handleSeatClick, selectedSeats, disableSlider }) => {
 
   return (
     <div className="flex flex-col items-center w-full max-w-5xl mx-auto mt-8">
@@ -36,7 +17,7 @@ console.log("bookedSeats", bookedSeats)
                 left: `${seat.position[0]}px`,
                 top: `${seat.position[1]}px`,
               }}
-              {...(!isBooked && {
+              {...(!isBooked && !disableSlider && {
                 onClick: () => handleSeatClick(seat, wagonNumber),
               })}
             >
@@ -44,6 +25,7 @@ console.log("bookedSeats", bookedSeats)
                 name={seat.name}
                 isBooked={isBooked}
                 isSelected={isSelected ? true : false}
+                disabled={disableSlider}
               />
             </div>
           );
