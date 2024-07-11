@@ -40,6 +40,7 @@ const SeatSelectionPage = () => {
   const [disableSlider, setDisableSlider] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [email, setEmail] = useState("");
 
   const settings = {
     dots: true,
@@ -87,15 +88,15 @@ const SeatSelectionPage = () => {
         selectedSeats.filter((selectedSeat) => selectedSeat._id !== seat._id)
       );
     } else {
-      setSelectedSeats([
-        ...selectedSeats,
-        { _id: seat._id, name: seat.name, wagonNumber },
-      ]);
-      if (selectedSeats.length >= pax) {
+      if (selectedSeats.length >= pax - 1) {  
         setDisableSlider(true);
       } else {
         setDisableSlider(false);
       }
+      setSelectedSeats([
+        ...selectedSeats,
+        { _id: seat._id, name: seat.name, wagonNumber },
+      ]);
     }
   };
 
@@ -122,7 +123,7 @@ const SeatSelectionPage = () => {
       });
       setLoading(false);
       console.log("response", response.data);
-      navigate("/payment-gateway");
+      navigate("/payment-gateway", { state: { bookingId: response.data.bookingId, expireTime: response.data.expireTime } });
     } catch (error) {
       console.error(error);
       setError("Failed to proceed to payment");
@@ -165,6 +166,18 @@ const SeatSelectionPage = () => {
         >
           Proceed to payment
         </button>
+        <div className="p-6 mb-6 bg-white rounded-lg shadow-md">
+        <h2 className="mb-4 text-2xl font-bold">Enter Email for Ticket</h2>
+        <div className="mb-4">
+          <input
+            type="email"
+            className="w-full p-2 mt-1 border border-gray-300 rounded-md form-input"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+      </div>
       </div>
     </>
   );

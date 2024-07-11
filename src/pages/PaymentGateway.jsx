@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const PaymentGateway = ({ amount }) => {
   const [cardNumber, setCardNumber] = useState("");
@@ -9,6 +10,8 @@ const PaymentGateway = ({ amount }) => {
   const [error, setError] = useState("");
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
   const navigate = useNavigate();
+  const location = useLocation();
+  const { bookingId, expireTime } = location.state;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -50,15 +53,15 @@ const PaymentGateway = ({ amount }) => {
   };
 
 return (
-    <div className="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Payment Gateway</h1>
-      <div className="text-center mb-4">
+    <div className="max-w-md px-4 py-12 mx-auto sm:px-6 lg:px-8">
+      <h1 className="mb-8 text-4xl font-extrabold text-center text-gray-900">Payment Gateway</h1>
+      <div className="mb-4 text-center">
         <p className="text-2xl font-semibold">Amount to be paid: ${amount}</p>
-        <p className="text-red-600 font-semibold">Time left: {formatTime(timeLeft)}</p> {/* reset when page is refreshed since have to make not to reset when page is refreshed */}
+        <p className="font-semibold text-red-600">Time left: {formatTime(timeLeft)}</p> {/* reset when page is refreshed since have to make not to reset when page is refreshed */}
       </div>
-      <form onSubmit={handlePayment} className="bg-white p-6 rounded-lg shadow-md">
+      <form onSubmit={handlePayment} className="p-6 bg-white rounded-lg shadow-md">
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="cardHolderName">
+          <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cardHolderName">
             Card Holder Name
           </label>
           <input
@@ -70,7 +73,7 @@ return (
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="cardNumber">
+          <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cardNumber">
             Card Number
           </label>
           <input
@@ -81,9 +84,9 @@ return (
             onChange={(e) => setCardNumber(e.target.value)}
           />
         </div>
-        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="expiryDate">
+            <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="expiryDate">
               Expiry Date
             </label>
             <input
@@ -96,7 +99,7 @@ return (
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="cvv">
+            <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cvv">
               CVV
             </label>
             <input
@@ -108,10 +111,11 @@ return (
             />
           </div>
         </div>
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
         <button
           type="submit"
-          className="w-full bg-purple-900 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-indigo-900 transition duration-200"
+          className="w-full px-4 py-2 font-bold text-white transition duration-200 bg-purple-900 rounded-full shadow-lg hover:bg-indigo-900"
+          onClick={handlePayment}
         >
           Pay Now
         </button>
