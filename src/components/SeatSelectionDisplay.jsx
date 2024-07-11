@@ -1,32 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrain, faChair } from "@fortawesome/free-solid-svg-icons";
 
-
-const SeatSelectionDisplay = ({ wagon, selectedSeats, setSelectedSeats }) => {
-  const [finalSelectedSeats, setFinalSelectedSeats] = useState([]);
-
-  useEffect(() => {
-    setFinalSelectedSeats(selectedSeats);
-  }, [selectedSeats]);
-
+const SeatSelectionDisplay = ({ wagonNumber, selectedSeats }) => {
   return (
-    <div className="w-64 bg-white border border-gray-400 rounded-xl p-4 ml-4">
-      <h2 className="text-lg font-semibold">Selected Seats</h2>
-      <ul>
-        {finalSelectedSeats.map((seat) => (
-          <li key={seat._id} className="flex justify-between items-center">
-            <span>{seat.name}</span>
-            <button
-              onClick={() =>
-                setSelectedSeats((prevSelectedSeats) =>
-                  prevSelectedSeats.filter((id) => id !== seat._id)
-                )
-              }
-            >
-              Remove
-            </button>
-          </li>
-        ))}
+    <div className="w-64 bg-white border border-gray-400 rounded-2xl p-6 fixed right-5 top-1/2 transform -translate-y-1/2 shadow-lg">
+      <h2 className="text-lg font-semibold mb-4 text-gray-700 flex items-center">
+        <FontAwesomeIcon icon={faTrain} className="mr-2 text-blue-500" />
+        My Seat Selection
+      </h2>
+      <ul className="space-y-3">
+        <li className="flex items-center">
+          <FontAwesomeIcon icon={faChair} className="mr-2 text-red-500" />
+          <span className="font-medium text-gray-600 flex items-center">Total Seats Selected:</span>
+          <span className="ml-2 text-gray-800">{selectedSeats.length}</span>
+        </li>
+        <li>
+          <span className="font-medium text-gray-600 flex items-center">Selected Seats:</span>
+          <ul className="ml-4 list-disc space-y-1">
+            {selectedSeats.map((seat) => (
+              <li key={seat._id} className="text-sm text-gray-700 flex items-center">
+                <FontAwesomeIcon icon={faChair} className="mr-2 text-red-500" />
+                <span className="font-medium">Seat:</span> {seat.name},{" "}
+                <FontAwesomeIcon icon={faTrain} className="mr-2 text-green-500" />
+                <span className="font-medium">Wagon:</span> {seat.wagonNumber}
+              </li>
+            ))}
+          </ul>
+        </li>
       </ul>
     </div>
   );
-}
+};
+
+export default SeatSelectionDisplay;

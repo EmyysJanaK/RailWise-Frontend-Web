@@ -8,7 +8,8 @@ import axios from "axios";
 
 import { ReservationContext } from "../context/ReservationContext";
 import Wagon from "./Wagon";
-// import SeatSelectionDispaly from "./SeatSelectionDisplay";
+import SeatSelectionDispaly from "./SeatSelectionDisplay";
+
 
 function SamplePrevArrow(props) {
   const { className, style, onClick } = props;
@@ -32,8 +33,12 @@ const SeatSelectionPage = () => {
     toHaltId,
     departureDate,
     selectedClassId,
+    pax,
   } = reservationData;
   const [wagonsData, setWagonsData] = useState([]);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [selectedWagon, setSelectedWagon] = useState(null);
+  const [Maxpax, setMaxpax] = useState(0);
 
   const settings = {
     dots: true,
@@ -43,10 +48,27 @@ const SeatSelectionPage = () => {
     slidesToScroll: 1,
     prevArrow: <SamplePrevArrow />,
     nextArrow: <SamplePrevArrow />,
+    afterchange: (index) => {
+      setSelectedWagon(wagonsData[index]);
+    },
   };
+  console.log("selectedSeats", selectedSeats);
 
-  console.log("reservationData", reservationData);
-  console.log("selecte");
+  const handleSeatClick = (seat, wagonNumber) => {
+    const isAvailable = selectedSeats.find(
+      (selectedSeat) => selectedSeat._id === seat._id
+    );
+    if (isAvailable) {
+      setSelectedSeats(
+        selectedSeats.filter((selectedSeat) => selectedSeat._id !== seat._id)
+      );
+    } else {
+      setSelectedSeats([
+        ...selectedSeats,
+        { _id: seat._id, name: seat.name, wagonNumber },
+      ]);
+    }
+  };
 
   useEffect(() => {
     const getSeats = async () => {
@@ -74,23 +96,29 @@ const SeatSelectionPage = () => {
 
   return (
     <>
-    {/* <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100"> */}
-    <div className="w-1/2 mx-auto mt-8">
-      <Slider {...settings}>
-        {wagonsData.map((wagonData) => (
-          <div key={wagonData._id} className="p-10 bg-red-600">
-            <Wagon
-              wagonNumber={wagonData.wagonNumber}
-              seats={wagonData.seats}
-              bookedSeats={wagonData.alreadyBookedSeats}
-            />
+      {/* <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100"> */}
+      <div className="w-[500px] mx-auto mt-8">
+        <Slider {...settings}>
+          {wagonsData.map((wagonData) => (
+            <div key={wagonData._id} className="p-10 bg-red-600">
+              <Wagon
+                wagonNumber={wagonData.wagonNumber}
+                seats={wagonData.seats}
+                bookedSeats={wagonData.alreadyBookedSeats}
+                handleSeatClick={handleSeatClick}
+                selectedSeats={selectedSeats}
+              />
+            </div>
+          ))}
+        </Slider>
+        <div className="w-1/2 mx-auto mt-8">
+          <SeatSelectionDispaly
+            selectedSeats={selectedSeats}
+          ></SeatSelectionDispaly> 
           </div>
-        ))}
-       
-      </Slider>
-      {/* <SeatSelectionDispaly /> */}
-    </div>
-    
+          
+      </div>
+      
     </>
   );
 };
