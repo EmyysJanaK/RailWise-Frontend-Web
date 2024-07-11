@@ -38,7 +38,7 @@ const SeatSelectionPage = () => {
   const [wagonsData, setWagonsData] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [selectedWagon, setSelectedWagon] = useState(null);
-  const [Maxpax, setMaxpax] = useState(0);
+  const [disableSlider, setDisableSlider] = useState(false);
 
   const settings = {
     dots: true,
@@ -48,28 +48,9 @@ const SeatSelectionPage = () => {
     slidesToScroll: 1,
     prevArrow: <SamplePrevArrow />,
     nextArrow: <SamplePrevArrow />,
-    afterchange: (index) => {
-      setSelectedWagon(wagonsData[index]);
-    },
   };
-  console.log("selectedSeats", selectedSeats);
-
-  const handleSeatClick = (seat, wagonNumber) => {
-    const isAvailable = selectedSeats.find(
-      (selectedSeat) => selectedSeat._id === seat._id
-    );
-    if (isAvailable) {
-      setSelectedSeats(
-        selectedSeats.filter((selectedSeat) => selectedSeat._id !== seat._id)
-      );
-    } else {
-      setSelectedSeats([
-        ...selectedSeats,
-        { _id: seat._id, name: seat.name, wagonNumber },
-      ]);
-    }
-  };
-
+  
+  
   useEffect(() => {
     const getSeats = async () => {
       try {
@@ -92,7 +73,32 @@ const SeatSelectionPage = () => {
 
     getSeats();
   }, [fromHaltId, toHaltId, scheduleId, departureDate, setReservationData]);
-  console.log("Wagons Data", wagonsData);
+
+
+  const handleSeatClick = (seat, wagonNumber) => {
+    const isAvailable = selectedSeats.find(
+      (selectedSeat) => selectedSeat._id === seat._id
+    );
+    if (isAvailable) {
+      setSelectedSeats(
+        selectedSeats.filter((selectedSeat) => selectedSeat._id !== seat._id)
+      );
+    } else {
+      setSelectedSeats([
+        ...selectedSeats,
+        { _id: seat._id, name: seat.name, wagonNumber },
+      ]);
+    }
+    if (selectedSeats.length >= pax) {
+      setDisableSlider(true);
+    } else {
+      setDisableSlider(false);
+    }
+  };
+
+  const handleReset = () => {
+    setSelectedSeats([]);
+  };
 
   return (
     <>
@@ -114,6 +120,7 @@ const SeatSelectionPage = () => {
         <div className="w-1/2 mx-auto mt-8">
           <SeatSelectionDispaly
             selectedSeats={selectedSeats}
+            handleReset={handleReset}
           ></SeatSelectionDispaly> 
           </div>
           
