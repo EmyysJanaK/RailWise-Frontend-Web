@@ -123,7 +123,7 @@ const SeatSelectionPage = () => {
       });
       setLoading(false);
       console.log("response", response.data);
-      navigate("/payment-gateway", { state: { bookingId: response.data.bookingId, expireTime: response.data.expireTime } });
+      navigate("/payment-gateway", { state: { bookingId: response.data.bookingId, expireTime: response.data.expireTime, email } });
     } catch (error) {
       console.error(error);
       setError("Failed to proceed to payment");

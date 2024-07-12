@@ -11,7 +11,7 @@ const PaymentGateway = ({ amount }) => {
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
   const navigate = useNavigate();
   const location = useLocation();
-  const { bookingId, expireTime } = location.state;
+  const { bookingId, expireTime, email } = location.state;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -26,13 +26,13 @@ const PaymentGateway = ({ amount }) => {
     return () => clearInterval(timer);
   }, [timeLeft, navigate]);
 
-  const handlePayment = (e) => {
+  const handlePayment = async (e) => {
     e.preventDefault();
 
-    if (!cardNumber || !expiryDate || !cvv || !cardHolderName) {
-      setError("All fields are required.");
-      return;
-    }
+    // if (!cardNumber || !expiryDate || !cvv || !cardHolderName) {
+    //   setError("All fields are required.");
+    //   return;
+    // }
 
     // Here you would integrate with a payment gateway API
     console.log("Payment submitted", { cardNumber, expiryDate, cvv, cardHolderName });
@@ -43,7 +43,19 @@ const PaymentGateway = ({ amount }) => {
     setCvv("");
     setCardHolderName("");
     setError("");
-    alert("Payment Successful!");
+
+    try{
+      const response = await axios.post("/api/bookings/confirmBooking", {
+        bookingId,
+        email,
+      });
+      console.log("response", response.data);
+      navigate("/success", { state: { bookingId } });
+    } catch (error) {
+      console.error(error);
+      setError("Failed to confirm booking");
+    }
+    
   };
 
   const formatTime = (seconds) => {
