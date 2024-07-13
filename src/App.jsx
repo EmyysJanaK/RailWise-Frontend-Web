@@ -14,6 +14,7 @@ import Options from './pages/Options';
 import { UserProvider } from './context/UserContext';
 import PaymentGateway from './pages/PaymentGateway';
 import SeatSelection from './pages/SeatSelection';
+import ProfilePage from './pages/Profile';
 import './index.css';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                   <Route path="/stations" element={<History />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<SignUp />} />
+                  <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/forgotpassword" element={<ForgotPassword />} />
                   {/* <Route path="/traindetails" element={<TrainDetails />} /> */}
                   <Route path="/seat-selection" element={<SeatSelection />} />
