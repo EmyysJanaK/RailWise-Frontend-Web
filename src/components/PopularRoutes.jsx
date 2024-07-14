@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import Slider from 'react-slick';
 import trainImage from "../assets/trainImage.png";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const PopularRoutes = () => {
   const [popularRoutes, setPopularRoutes] = useState([]);
@@ -22,34 +25,65 @@ const PopularRoutes = () => {
       .catch(error => console.error('Error fetching popular routes:', error));
   }, [location]);
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
 
   return (
-    <section className="bg-gray-100 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-purple-950 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Popular Routes</h2>
-        <div className="max-w-container mx-auto px-4">
-          <div className="pb-10">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {popularRoutes.map((route) => (
-                <div key={route.startHaltStation._id + route.endHaltStation._id}
-                className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                  <img src={route.image || trainImage} alt={route.name} className="w-full h-32 sm:h-48 object-cover" />
-                  <div className="p-4">
-                    <h2 className="text-2xl font-bold text-gray-800">{route.startHaltStation.name} → {route.endHaltStation.name}</h2>
-                    <p className="text-gray-600">{route.train.name}</p>
-                    <p className="text-gray-600">{route.count} Bookings in last month</p>
-                  </div>
+        <Slider {...settings}>
+          {popularRoutes.map((route) => (
+            <div 
+              key={route.startHaltStation._id + route.endHaltStation._id}
+              className="p-2"
+            >
+              <div className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                <img 
+                  src={route.image || trainImage} 
+                  alt={route.name} 
+                  className="w-full h-32 sm:h-48 object-cover" 
+                />
+                <div className="p-4">
+                  <h2 className="text-2xl font-bold text-gray-800">{route.startHaltStation.name} → {route.endHaltStation.name}</h2>
+                  <p className="text-gray-600">{route.train.name}</p>
+                  <p className="text-gray-600 text-justify">{route.count} Bookings in last month</p>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-        </div>
+          ))}
+        </Slider>
       </div>
     </section>
   );
 };
 
 export default PopularRoutes;
+
+
 
 
 // <!-- Custom Style -->

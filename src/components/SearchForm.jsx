@@ -102,7 +102,7 @@ const SearchForm = () => {
 
   return (
     <form
-      className="search-form bg-purple-900 p-6 rounded-lg shadow-lg"
+      className="search-form bg-purple-950 p-6 rounded-lg shadow-lg"
       onSubmit={handleSubmit}
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
