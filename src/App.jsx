@@ -12,13 +12,13 @@ import ReservationSummary from './pages/ReservationSummary';
 import Layout from './components/Layout';
 import Options from './pages/Options';
 import { UserProvider } from './context/UserContext';
-import PaymentGateway from './pages/PaymentGateway';
 import SeatSelection from './pages/SeatSelection';
 import './index.css';
+import Payment from './pages/Payment';
 
 function App() {
   return (
-    <div className="relative min-h-screen flex flex-col bg-gray-100 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-200">
+    <div className="relative flex flex-col min-h-screen bg-gray-100 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-200">
       <div className="relative z-10 flex-1 overflow-y-auto">
         <BrowserRouter>
           <UserProvider>
@@ -37,7 +37,7 @@ function App() {
                   {/* <Route path="/traindetails" element={<TrainDetails />} /> */}
                   <Route path="/seat-selection" element={<SeatSelection />} />
                   <Route path="/reservationsummary" element={<ReservationSummary />} />
-                  <Route path="/payment-gateway" element={<PaymentGateway />} />
+                  <Route path="/payment-gateway" element={<Payment />} />
                   {/* <Route path="/seatselection" element={<SeatSelection />} /> */}
                 </Routes>
               </Layout>

@@ -3,9 +3,8 @@ import { useFormik } from "formik";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
-import { Circles } from 'react-loader-spinner'; // Import the spinner
+import { Circles } from "react-loader-spinner"; // Import the spinner
 
-// Define the validation schema using yup
 const validationSchema = yup.object().shape({
   cardHolderName: yup.string().required("Card Holder Name is required"),
   cardNumber: yup
@@ -15,14 +14,17 @@ const validationSchema = yup.object().shape({
   expiryDate: yup
     .string()
     .required("Expiry Date is required")
-    .matches(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/, "Expiry Date must be in MM/YY format"),
+    .matches(
+      /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
+      "Expiry Date must be in MM/YY format"
+    ),
   cvv: yup
     .string()
     .required("CVV is required")
     .matches(/^\d{3}$/, "CVV must be exactly 3 digits"),
 });
 
-const PaymentGateway = ({ amount }) => {
+function CardDetails() {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isExpired, setIsExpired] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Add a loading state
@@ -59,10 +61,10 @@ const PaymentGateway = ({ amount }) => {
 
   const formik = useFormik({
     initialValues: {
-      cardHolderName: '',
-      cardNumber: '',
-      expiryDate: '',
-      cvv: '',
+      cardHolderName: "",
+      cardNumber: "",
+      expiryDate: "",
+      cvv: "",
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -94,52 +96,73 @@ const PaymentGateway = ({ amount }) => {
   };
 
   return (
-    <div className="max-w-md px-4 py-12 mx-auto sm:px-6 lg:px-8">
-      <h1 className="mb-8 text-4xl font-extrabold text-center text-gray-900">Payment Gateway</h1>
+    <div className="max-w-md px-4 py-12 sm:px-6 lg:px-8">
+      {/* <h1 className="mb-8 text-4xl font-extrabold text-center text-gray-900">Payment Gateway</h1>
       <div className="mb-4 text-center">
         <p className="text-2xl font-semibold">Amount to be paid: ${amount}</p>
         <p className="font-semibold text-red-600">Time left: {formatTime(timeLeft)}</p>
-      </div>
+      </div> */}
 
       {isLoading ? (
-        <div className="flex items-center justify-center h-64"> {/* Center the spinner */}
+        <div className="flex items-center justify-center h-64">
+          {" "}
+          {/* Center the spinner */}
           <Circles color="#4A90E2" height={80} width={80} />
         </div>
       ) : (
-        <form onSubmit={formik.handleSubmit} className="p-6 bg-white rounded-lg shadow-md">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="p-6 bg-white rounded-lg shadow-md"
+        >
+          <h1 className="mb-4 text-3xl font-extrabold text-gray-900">
+            Enter Card Details
+          </h1>
           <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cardHolderName">
+            <label
+              className="block mb-1 text-sm font-medium text-gray-700"
+              htmlFor="cardHolderName"
+            >
               Card Holder Name
             </label>
             <input
               type="text"
               id="cardHolderName"
               className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              {...formik.getFieldProps('cardHolderName')}
+              {...formik.getFieldProps("cardHolderName")}
               disabled={isExpired}
             />
             {formik.touched.cardHolderName && formik.errors.cardHolderName ? (
-              <p className="mt-1 text-sm text-red-500">{formik.errors.cardHolderName}</p>
+              <p className="mt-1 text-sm text-red-500">
+                {formik.errors.cardHolderName}
+              </p>
             ) : null}
           </div>
           <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cardNumber">
+            <label
+              className="block mb-1 text-sm font-medium text-gray-700"
+              htmlFor="cardNumber"
+            >
               Card Number
             </label>
             <input
               type="text"
               id="cardNumber"
               className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              {...formik.getFieldProps('cardNumber')}
+              {...formik.getFieldProps("cardNumber")}
               disabled={isExpired}
             />
             {formik.touched.cardNumber && formik.errors.cardNumber ? (
-              <p className="mt-1 text-sm text-red-500">{formik.errors.cardNumber}</p>
+              <p className="mt-1 text-sm text-red-500">
+                {formik.errors.cardNumber}
+              </p>
             ) : null}
           </div>
           <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
             <div>
-              <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="expiryDate">
+              <label
+                className="block mb-1 text-sm font-medium text-gray-700"
+                htmlFor="expiryDate"
+              >
                 Expiry Date
               </label>
               <input
@@ -147,22 +170,27 @@ const PaymentGateway = ({ amount }) => {
                 id="expiryDate"
                 placeholder="MM/YY"
                 className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                {...formik.getFieldProps('expiryDate')}
+                {...formik.getFieldProps("expiryDate")}
                 disabled={isExpired}
               />
               {formik.touched.expiryDate && formik.errors.expiryDate ? (
-                <p className="mt-1 text-sm text-red-500">{formik.errors.expiryDate}</p>
+                <p className="mt-1 text-sm text-red-500">
+                  {formik.errors.expiryDate}
+                </p>
               ) : null}
             </div>
             <div>
-              <label className="block mb-1 text-sm font-medium text-gray-700" htmlFor="cvv">
+              <label
+                className="block mb-1 text-sm font-medium text-gray-700"
+                htmlFor="cvv"
+              >
                 CVV
               </label>
               <input
                 type="text"
                 id="cvv"
                 className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                {...formik.getFieldProps('cvv')}
+                {...formik.getFieldProps("cvv")}
                 disabled={isExpired}
               />
               {formik.touched.cvv && formik.errors.cvv ? (
@@ -172,8 +200,10 @@ const PaymentGateway = ({ amount }) => {
           </div>
           <button
             type="submit"
-            className={`w-full px-4 py-2 font-bold text-white transition duration-200 rounded-full shadow-lg ${
-              isExpired ? "bg-gray-400 cursor-not-allowed" : "bg-purple-900 hover:bg-indigo-900"
+            className={`w-full px-4 py-2 font-bold text-white transition duration-200 rounded shadow-lg mt-2 ${
+              isExpired
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-purple-900 hover:bg-indigo-900"
             }`}
             disabled={isExpired}
           >
@@ -183,6 +213,6 @@ const PaymentGateway = ({ amount }) => {
       )}
     </div>
   );
-};
+}
 
-export default PaymentGateway;
+export default CardDetails;
