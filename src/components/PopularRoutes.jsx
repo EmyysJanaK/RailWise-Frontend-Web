@@ -52,9 +52,9 @@ const PopularRoutes = () => {
   };
 
   return (
-    <section className="bg-purple-950 py-12">
+    <section className="bg-white-950 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Popular Routes</h2>
+        <h2 className="text-4xl font-bold text-black-900 text-center mb-8">Popular Routes</h2>
         <Slider {...settings}>
           {popularRoutes.map((route) => (
             <div 
@@ -67,9 +67,9 @@ const PopularRoutes = () => {
                   alt={route.name} 
                   className="w-full h-32 sm:h-48 object-cover" 
                 />
-                <div className="p-4">
+                <div className="p-4 flex flex-col justify-center items-center">
                   <h2 className="text-2xl font-bold text-gray-800">{route.startHaltStation.name} → {route.endHaltStation.name}</h2>
-                  <p className="text-gray-600">{route.train.name}</p>
+                  <h3 className="text-gray-600">{route.train.name}</h3>
                   <p className="text-gray-600 text-justify">{route.count} Bookings in last month</p>
                 </div>
               </div>

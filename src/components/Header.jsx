@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/trainImage.png";
 import UserMenu from "./UserMenu";
 import NavLinkItem from "./NavLinkItem";
 
 const Header = () => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
     { to: "/contact", label: "Contact" },
     { to: "/stations", label: "Stations" },
   ];
+
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
 
   return (
     <header className="relative isolate overflow-hidden bg-gray-900 text-white p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center">
@@ -45,23 +50,28 @@ const Header = () => {
       </div>
 
       <div className="flex justify-between items-center w-full sm:w-auto">
-        <Link to="/Home">
+        <Link to="/">
           <img
             src={logo}
             alt="Logo"
-            className="h-24 sm:h-36" // Responsive image size
+            className="h-16 sm:h-24" // Responsive image size
           />
         </Link>
         <button
           className="sm:hidden text-3xl"
           aria-label="Toggle navigation"
+          onClick={toggleNav}
         >
           <i className="fas fa-bars"></i> {/* FontAwesome icon for menu */}
         </button>
       </div>
 
       {/* Navigation Links */}
-      <nav className="w-full sm:w-auto">
+      <nav
+        className={`${
+          isNavOpen ? "block" : "hidden"
+        } sm:block w-full sm:w-auto mt-4 sm:mt-0`}
+      >
         <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
           {navLinks.map((link) => (
             <NavLinkItem key={link.to} to={link.to} label={link.label} />
@@ -69,7 +79,7 @@ const Header = () => {
         </ul>
       </nav>
 
-      <UserMenu />
+      <UserMenu className="hidden sm:block" />
 
       <div className="flex items-center space-x-4 mt-4 sm:mt-0">
         <button className="hover:text-gray-300 transition duration-300 text-2xl">

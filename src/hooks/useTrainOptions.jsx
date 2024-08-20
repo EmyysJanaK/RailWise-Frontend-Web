@@ -25,8 +25,7 @@ const useTrainOptions = ({
         const formattedTrainOptions = data.map((item) => ({
           id: item.schedule._id,
           departureDate,
-          // departure: item.fromHalt.departureTime,
-          // arrival: item.toHalt.arrivalTime,
+          scheduleType: item.schedule.scheduleType,
           toHalt: {
             id: item.toHalt._id,
             name: item.toHalt.stationRef.name,
