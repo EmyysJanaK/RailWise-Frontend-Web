@@ -34,7 +34,8 @@ const SeatSelectionPage = () => {
     selectedClassId,
     pax,
   } = reservationData;
-  const userId = useContext(UserContext)?.user?._id;
+  const { userData } = useContext(UserContext);
+  const userId = userData ? userData._id : null;
   const [wagonsData, setWagonsData] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [disableSlider, setDisableSlider] = useState(false);
