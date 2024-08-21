@@ -165,7 +165,7 @@ function CardDetails({ isExpired }) {
               className={`w-full px-4 py-2 font-bold text-white transition duration-200 rounded shadow-lg mt-2 ${
                 isExpired
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-purple-900 hover:bg-indigo-900"
+                  : "bg-purple-600 hover:bg-purple-700"
               }`}
               disabled={isExpired}
             >

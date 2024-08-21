@@ -91,7 +91,7 @@ function TripDetails({ timeLeft }) {
           <div className="mb-4">
             <ul className="space-y-1 list-disc">
               <li className="flex text-gray-700 text-md">
-                <span className="mr-2 font-medium">Departure Date:</span>
+                <span className="mr-2 font-medium">Date:</span>
                 <p>{departureDate}</p>
               </li>
               <li className="flex text-gray-700 text-md">

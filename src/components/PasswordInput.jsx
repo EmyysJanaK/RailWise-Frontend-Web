@@ -6,8 +6,8 @@ const PasswordInput = ({ label, value, onChange, required = true, ...props }) =>
   const [visible, setVisible] = useState(false);
 
   return (
-    <div className="mb-4 relative">
-      <label className="block text-gray-700">{label.toUpperCase()}</label>
+    <div className="relative mb-4">
+      <label className="block mb-1 text-gray-700">{label}</label>
       <div className="relative">
         <input
           type={visible ? "text" : "password"}

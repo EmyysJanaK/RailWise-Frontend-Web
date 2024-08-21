@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
-import trainImage from "../assets/trainImage.png"; 
+import trainImage from "../assets/trainImage.png";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
 import useFormInput from "../hooks/useFormInput";
@@ -29,6 +29,7 @@ const Login = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="relative isolate overflow-hidden bg-gray-700 py-24 sm:py-32">
         
         <div
@@ -60,26 +61,38 @@ const Login = () => {
           
           <TextInput label="Username" {...username} />
           <PasswordInput label="Password" {...password} />
+=======
+    <div className="relative z-10 w-full max-w-md p-8 mx-auto my-12 bg-white rounded-lg shadow-lg">
+      {/* <Breadcrumbs title="Login" prevLocation={prevLocation} /> */}
+      <div className="flex justify-center mb-6">
+        <img src={trainImage} alt="Railwise Logo" className="w-40 h-40" />
+      </div>
+      <h1 className="mb-4 text-3xl font-extrabold text-center text-gray-900">
+        Railwise Login
+      </h1>
+      {error && <div className="mb-4 text-red-600">{error}</div>}
+      <form onSubmit={handleLogin}>
+        <TextInput label="Username or Email" {...username} />
+        <PasswordInput label="Password" {...password} />
+>>>>>>> a8740e7dfa53d714ab18e78e2073d39512b2b675
 
-
-          <div className="mb-6 text-right">
-            <Link to="/ForgotPassword" className="text-blue-500">
-              Forgot Password?
-            </Link>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-black text-white py-2 rounded-full hover:bg-gray-800 transition duration-300"
-          >
-            Login
-          </button>
-        </form>
-        <div className="text-center mt-4">
-          <span className="text-gray-600">Don't you have an account?</span>
-          <Link to="/SignUp" className="text-blue-500 ml-2">
-            Sign Up
+        <div className="mb-4">
+          <Link to="/ForgotPassword" className="text-blue-500">
+            Forgot Password?
           </Link>
         </div>
+        <button
+          type="submit"
+          className="w-full py-2 text-white transition duration-200 bg-purple-600 rounded shadow-sm hover:bg-purple-700"
+        >
+          Login
+        </button>
+      </form>
+      <div className="mt-4">
+        <span className="text-gray-600">Don't have an account?</span>
+        <Link to="/register" className="ml-2 text-blue-500">
+          Register
+        </Link>
       </div>
     </div>
   );

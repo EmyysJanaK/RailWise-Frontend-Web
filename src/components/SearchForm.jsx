@@ -104,10 +104,10 @@ const SearchForm = () => {
     
     
     <form
-      className="search-form bg-purple-950 p-6 rounded-lg shadow-lg"
+      className="p-6 rounded-lg shadow-lg search-form bg-purple-950"
       onSubmit={handleSubmit}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="relative">
           <input
             type="text"
@@ -115,11 +115,11 @@ const SearchForm = () => {
             placeholder="Departure Station"
             value={searchParams.departure}
             onChange={handleInputChange}
-            className="w-full p-3 border rounded text-xl"
+            className="w-full p-3 text-xl border rounded"
             style={{ fontSize: "1.4rem", height: "3.5rem" }}
           />
           {filteredDepartureStations.length > 0 && (
-            <ul className="absolute z-10 bg-white border rounded mt-1 w-full max-h-40 overflow-y-auto">
+            <ul className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border rounded max-h-40">
               {filteredDepartureStations.map((station) => (
                 <li
                   key={station._id}
@@ -139,11 +139,11 @@ const SearchForm = () => {
             placeholder="Arrival Station"
             value={searchParams.arrival}
             onChange={handleInputChange}
-            className="w-full p-3 border rounded text-xl"
+            className="w-full p-3 text-xl border rounded"
             style={{ fontSize: "1.4rem", height: "3.5rem" }}
           />
           {filteredArrivalStations.length > 0 && (
-            <ul className="absolute z-10 bg-white border rounded mt-1 w-full max-h-40 overflow-y-auto">
+            <ul className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border rounded max-h-40">
               {filteredArrivalStations.map((station) => (
                 <li
                   key={station._id}
@@ -162,7 +162,7 @@ const SearchForm = () => {
           placeholder="Number of Seats"
           value={searchParams.seat}
           onChange={handleInputChange}
-          className="w-full p-6 border rounded text-xl"
+          className="w-full p-6 text-xl border rounded"
           style={{ fontSize: "1.4rem", height: "3.5rem" }}
         />
         <input
@@ -170,19 +170,19 @@ const SearchForm = () => {
           name="date"
           value={searchParams.date}
           onChange={handleInputChange}
-          className="w-full p-3 border rounded text-xl"
+          className="w-full p-3 text-xl border rounded"
           style={{ fontSize: "1.4rem", height: "3.5rem" }}
         />
-        <div className="col-span-1 sm:col-span-2 flex justify-center">
+        <div className="flex justify-center col-span-1 sm:col-span-2">
           <button
             type="submit"
-            className="bg-purple-600 text-white px-8 py-3 rounded text-2xl shadow-sm hover:bg-purple-700 transition duration-200"
+            className="px-8 py-3 text-2xl text-white transition duration-200 bg-purple-600 rounded shadow-sm hover:bg-purple-700"
           >
             Search
           </button>
         </div>
       </div>
-      {error && <p className="text-center mt-4 text-red-600">{error}</p>}
+      {error && <p className="mt-4 text-center text-red-600">{error}</p>}
     </form>
   );
 };
