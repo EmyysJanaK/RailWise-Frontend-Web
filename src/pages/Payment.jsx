@@ -44,13 +44,16 @@ function Payment() {
   };
 
   return (
-    <>
-      <p className="font-semibold text-red-600">
-        Time left: {formatTime(timeLeft)}
-      </p>
-      <CardDetails isExpired={isExpired} />
-      <TripDetails />
-    </>
+    <div className="container px-4 mx-auto my-12">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+        <div className="flex justify-center order-1 lg:order-2 lg:justify-start">
+          <TripDetails timeLeft={formatTime(timeLeft)} />
+        </div>
+        <div className="flex justify-center order-2 lg:order-1 lg:justify-end">
+          <CardDetails isExpired={isExpired} />
+        </div>
+      </div>
+    </div>
   );
 }
 

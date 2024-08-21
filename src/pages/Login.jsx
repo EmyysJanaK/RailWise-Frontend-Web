@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png"; 
-import axios from "axios";
-import { UserContext } from "../context/UserContext";
+import TextInput from "../components/TextInput";
+import PasswordInput from "../components/PasswordInput";
+import useFormInput from "../hooks/useFormInput";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { login } = useContext(UserContext);
+  const { loginUser, error } = useAuth();
   const [prevLocation, setPrevLocation] = useState("HomePage");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const username = useFormInput("");
+  const password = useFormInput("");
 
   useEffect(() => {
     if (location.state && location.state.data) {
@@ -22,19 +22,10 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:3000/api/user/login", {
-        emailOrUsername: username,
-        password: password,
-      }, { withCredentials: true });
-      if (response.status === 200) {
-        // Save user data to localStorage or context
-        login(response.data);
-        navigate("/");
-      }
-    } catch (error) {
-      setError("Invalid username or password");
-    }
+    await loginUser({
+      emailOrUsername: username.value,
+      password: password.value,
+    });
   };
 
   return (
@@ -54,40 +45,11 @@ const Login = () => {
         </h2>
         {error && <div className="mb-4 text-red-600">{error}</div>}
         <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label className="block text-gray-700">USERNAME</label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div className="mb-4 relative">
-            <label className="block text-gray-700">PASSWORD</label>
-            <input
-              type="password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="button" className="absolute right-2 top-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-5 h-5 text-gray-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.875 18.825a10.05 10.05 0 01-3.75 0M12 4.75v.01M21.95 8.538a7.5 7.5 0 00-2.8-3.487M3.05 8.538a7.5 7.5 0 012.8-3.487M4.075 19.528a7.5 7.5 0 002.8 3.487m10.25-3.487a7.5 7.5 0 01-2.8 3.487M16.9 7.862a3 3 0 11-5.8 0m0 0a7.5 7.5 0 00-2.8-3.487m8.6 3.487a7.5 7.5 0 00-2.8-3.487"
-                />
-              </svg>
-            </button>
-          </div>
+          
+          <TextInput label="Username" {...username} />
+          <PasswordInput label="Password" {...password} />
+
+
           <div className="mb-6 text-right">
             <Link to="/ForgotPassword" className="text-blue-500">
               Forgot Password?

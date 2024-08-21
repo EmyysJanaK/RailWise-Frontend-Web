@@ -1,24 +1,21 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png"; 
-import axios from "axios";
-import { UserContext } from "../context/UserContext";
+import TextInput from "../components/TextInput";
+import PasswordInput from "../components/PasswordInput";
+import useFormInput from "../hooks/useFormInput";
+import useAuth from "../hooks/useAuth";
 
 const SignUp = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { login } = useContext(UserContext);
+  const { register, error } = useAuth();
   const [prevLocation, setPrevLocation] = useState("HomePage");
-  const [username, setUsername] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [gender, setGender] = useState("");
-  const [error, setError] = useState("");
+  const username = useFormInput("");
+  const email = useFormInput("");
+  const phone = useFormInput("");
+  const password = useFormInput("");
+  const confirmPassword = useFormInput("");
 
   useEffect(() => {
     if (location.state && location.state.data) {
@@ -28,31 +25,17 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
+    if (password.value !== confirmPassword.value) {
+      alert("Passwords do not match");
       return;
     }
 
-    try {
-      const response = await axios.post("http://localhost:3000/api/user/register", {
-        username,
-        firstName,
-        lastName,
-        email,
-        phone,
-        password,
-        gender,
-      }, { withCredentials: true });
-
-      if (response.status === 200) {
-        // Save user data to localStorage and context
-        login(response.data);
-        // Navigate to the home page
-        navigate("/");
-      }
-    } catch (error) {
-      setError(error.response.data.message || "Registration failed");
-    }
+    await register({
+      username: username.value,
+      email: email.value,
+      phone: phone.value,
+      password: password.value,
+    });
   };
 
   return (
@@ -73,106 +56,11 @@ const SignUp = () => {
         </h2>
         {error && <div className="mb-4 text-red-600">{error}</div>}
         <form onSubmit={handleSignUp}>
-          <div className="mb-4">
-            <label className="block text-gray-700">USERNAME</label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">FIRST NAME</label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">LAST NAME</label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">EMAIL</label>
-            <input
-              type="email"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">PHONE</label>
-            <input
-              type="tel"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">GENDER</label>
-            <select
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              required
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div className="mb-4 relative">
-            <label className="block text-gray-700">PASSWORD</label>
-            <input
-              type="password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button type="button" className="absolute right-2 top-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-5 h-5 text-gray-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.875 18.825a10.05 10.05 0 01-3.75 0M12 4.75v.01M21.95 8.538a7.5 7.5 0 00-2.8-3.487M3.05 8.538a7.5 7.5 0 012.8-3.487M4.075 19.528a7.5 7.5 0 002.8 3.487m10.25-3.487a7.5 7.5 0 01-2.8 3.487M16.9 7.862a3 3 0 11-5.8 0m0 0a7.5 7.5 0 00-2.8-3.487m8.6 3.487a7.5 7.5 0 00-2.8-3.487"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700">CONFIRM PASSWORD</label>
-            <input
-              type="password"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
+          <TextInput label="Username" {...username} />
+          <TextInput label="Email" type="email" {...email} />
+          <TextInput label="Phone" type="tel" {...phone} />
+          <PasswordInput label="Password" {...password} />
+          <PasswordInput label="Confirm Password" {...confirmPassword} />
           <button
             type="submit"
             className="w-full bg-black text-white py-2 rounded-full hover:bg-gray-800 transition duration-300"

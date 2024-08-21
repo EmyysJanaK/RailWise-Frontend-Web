@@ -3,11 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import { ReservationContext } from "../context/ReservationContext";
 import { useLocation } from "react-router-dom";
 import { calculateDuration } from "../utils/duration";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrain, faClock, faStopwatch } from "@fortawesome/free-solid-svg-icons";
+import { MdChair } from "react-icons/md";
 import axios from "axios";
 
-function TripDetails() {
-  const { reservationData, setReservationData } =
-    useContext(ReservationContext);
+function TripDetails({ timeLeft }) {
+  const { reservationData } = useContext(ReservationContext);
   const { selectedSeats, departureDate, pax } = reservationData;
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -15,15 +17,13 @@ function TripDetails() {
   const [tripDetails, setTripDetails] = useState({});
 
   const { bookingId } = location.state;
-  console.log("bookingId: ", bookingId);   
+  console.log("bookingId: ", bookingId);
 
   useEffect(() => {
     const getSeats = async () => {
-      console.log("bookingId inside useEffect: ", bookingId);
       setLoading(true);
       try {
         const response = await axios.get(`/api/bookings/${bookingId}`);
-        console.log("response Data: ", response.data);
         setTripDetails({
           bookingDetails: response.data.booking,
           selectedSeats,
@@ -37,86 +37,104 @@ function TripDetails() {
         setLoading(false);
       }
     };
-
     getSeats();
   }, [bookingId]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
+  const bookingDetails = tripDetails.bookingDetails || {};
+
   return (
-    <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-lg">
+    <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
       <h1 className="mb-4 text-3xl font-extrabold text-gray-900">
         Trip Details
       </h1>
-      <div className="p-4 mb-4 text-gray-500 bg-blue-100 rounded-lg">
-        <p>{tripDetails.bookingDetails.startHalt.stationRef.name}</p>
-        <p>{tripDetails.bookingDetails.startHalt.departureTime}</p>
-        <p>platform: {tripDetails.bookingDetails.startHalt.platform}</p>
-      </div>
-
-      <div className="mb-4">
-        <div className="font-medium text-gray-800">
-          {tripDetails.bookingDetails.startHalt.stationRef.name} →{" "}
-          {tripDetails.bookingDetails.endHalt.stationRef.name}
-        </div>
-        <div className="text-sm text-gray-500">
-          {tripDetails.bookingDetails.startHalt.departureTime} -{" "}
-          {tripDetails.bookingDetails.endHalt.arrivalTime}
-        </div>
-        <div className="text-sm text-gray-500">
-          Duration:{" "}
-          {calculateDuration(
-            tripDetails.bookingDetails.startHalt.departureTime,
-            tripDetails.bookingDetails.endHalt.arrivalTime
-          )}
-        </div>
-        <div className="text-sm text-gray-500">{pax} passengers</div>
-        <div className="mt-4 font-medium text-right text-gray-800">$124.00</div>
-      </div>
-      <div className="my-4 border-t border-gray-300"></div>
-      <div className="mb-4">
-        <div className="flex items-center">
-          <span className="mr-2 text-gray-600 material-icons">train</span>
-          <span className="font-semibold text-gray-800">
-            Frecciarossa · 9400
-          </span>
-        </div>
-        <div className="mt-2 ml-8">
-          <div className="text-sm text-gray-800">
-            05:35 <span className="text-gray-500">Roma Termini</span>
-          </div>
-          <div className="ml-4 text-sm text-gray-500">3h 59m</div>
-          <div className="mt-2 text-sm text-gray-800">
-            09:34 <span className="text-gray-500">Venezia San Lucia</span>
-          </div>
-        </div>
-      </div>
-      <div className="mb-4">
-        <div className="font-medium text-gray-800">Seating · My selection</div>
-        <div className="mt-2 ml-4">
-          <div className="flex items-center">
-            <span className="text-gray-800">Adult 1 · Pasan Madhuranga</span>
-            <span className="ml-auto text-gray-800">$3.00</span>
-          </div>
-          <div className="flex items-center text-sm text-gray-500">
-            <span className="mr-2 material-icons">event_seat</span>
-            <span>2 · 12B</span>
-          </div>
-        </div>
-        <div className="mt-2 ml-4">
-          <div className="flex items-center">
-            <span className="text-gray-800">
-              Adult 2 · Pasanrr Madhurangarr
+      {bookingDetails.startHalt && (
+        <>
+        <div className="flex items-center mb-2 text-gray-700 text-md">
+            <FontAwesomeIcon icon={faStopwatch} className="mr-2 text-red-500" />
+            <span className="flex items-center font-medium text-red-500">
+              Held for:{" "} {timeLeft}
             </span>
-            <span className="ml-auto text-gray-800">$3.00</span>
-          </div>
-          <div className="flex items-center text-sm text-gray-500">
-            <span className="mr-2 material-icons">event_seat</span>
-            <span>2 · 13B</span>
-          </div>
         </div>
-      </div>
-      <div className="my-4 border-t border-gray-300"></div>
-      <div className="flex justify-end font-semibold text-gray-800">
-        $130.00
-      </div>
+          <div className="flex justify-between mb-6">
+            <div className="w-1/3 p-4 text-center bg-blue-100 rounded-lg">
+              <p className="font-medium ">
+                {bookingDetails.startHalt.stationRef.name}
+              </p>
+              <p>{bookingDetails.startHalt.departureTime}</p>
+              <p className="text-sm ">
+                platform: {bookingDetails.startHalt.platform}
+              </p>
+            </div>
+            <div className="flex items-center">
+              <FontAwesomeIcon icon={faClock} className="mr-2 text-gray-500" />
+              <p className="text-sm text-gray-700">
+                {calculateDuration(
+                  bookingDetails.startHalt.departureTime,
+                  bookingDetails.endHalt.arrivalTime
+                )}
+              </p>
+            </div>
+            <div className="w-1/3 p-4 text-center bg-blue-100 rounded-lg">
+              <p className="font-medium ">
+                {bookingDetails.endHalt.stationRef.name}
+              </p>
+              <p>{bookingDetails.endHalt.arrivalTime}</p>
+              <p className="text-sm ">
+                platform: {bookingDetails.endHalt.platform}
+              </p>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <ul className="space-y-1 list-disc">
+              <li className="flex text-gray-700 text-md">
+                <span className="mr-2 font-medium">Departure Date:</span>
+                <p>{departureDate}</p>
+              </li>
+              <li className="flex text-gray-700 text-md">
+                <span className="mr-2 font-medium">Passengers:</span>
+                <p>{pax}</p>
+              </li>
+            </ul>
+          </div>
+
+          <div className="mb-4">
+            <h2 className="mb-3 text-lg">Seating · My selection</h2>
+            <ul className="ml-2 space-y-3 list-disc">
+              {selectedSeats.map((seat) => (
+                <li
+                  key={seat._id}
+                  className="flex items-center text-gray-700 text-md"
+                >
+                  <div className="flex items-center mr-6">
+                    <MdChair className="mr-2 text-indigo-900 size-6" />
+                    <span className="mr-2 font-medium">Seat:</span>
+                    <p>{seat.name}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <FontAwesomeIcon
+                      icon={faTrain}
+                      className="mr-2 text-indigo-900 size-5"
+                    />
+                    <span className="mr-2 font-medium">Wagon:</span>
+                    <p>{seat.wagonNumber}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex justify-between pt-4 mt-4 border-t border-gray-300">
+            <p className="text-xl font-semibold text-gray-700">Price</p>
+            <p className="text-xl font-semibold text-gray-700">
+              ${bookingDetails.totalFare}
+            </p>
+          </div>
+        </>
+      )}
     </div>
   );
 }
