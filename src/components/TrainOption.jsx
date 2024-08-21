@@ -42,14 +42,14 @@ const TrainOption = ({ option, onClick }) => {
         <div className="flex items-center">
           
           <div className="font-bold text-xl text-gray-800">
-            FROM ${option.price}
+            From ${option.price}
           </div>
         </div>
       </div>
       <div className="w-full flex flex-wrap justify-between items-center gap-4 mb-4">
         <div className="flex items-center">
           <div className="text-lg font-bold text-gray-800 mr-3">
-            {option.fromHalt.name.toUpperCase()}
+            {option.fromHalt.name}
           </div>
         </div>
 
@@ -60,7 +60,7 @@ const TrainOption = ({ option, onClick }) => {
         <div className="flex items-center">
           
           <div className="font-bold text-xl text-gray-800">
-            {option.toHalt.name.toUpperCase()}
+            {option.toHalt.name}
           </div>
         </div>
       </div>

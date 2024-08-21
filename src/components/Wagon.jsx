@@ -38,13 +38,13 @@ const Wagon = ({ wagonNumber, seats, bookedSeats, handleSeatClick, selectedSeats
 
         {/* Left side wheels */}
 
-        <div className="absolute left-[-20px] top-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
-        <div className="absolute left-[-20px] bottom-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
+        <div className="absolute left-[-20px] top-[80px] w-6 h-24 bg-gray-900 rounded-lg"></div>
+        <div className="absolute left-[-20px] bottom-[80px] w-6 h-24 bg-gray-900 rounded-lg"></div>
 
         {/* Right side wheels */}
 
-        <div className="absolute right-[-20px] top-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
-        <div className="absolute right-[-20px] bottom-[80px] w-6 h-24 bg-gray-600 rounded-lg"></div>
+        <div className="absolute right-[-20px] top-[80px] w-6 h-24 bg-gray-900 rounded-lg"></div>
+        <div className="absolute right-[-20px] bottom-[80px] w-6 h-24 bg-gray-900 rounded-lg"></div>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ const Seat = ({ name, isBooked, isSelected, disabled }) => {
   return (
     <div
       className={`border rounded-lg w-12 h-12 flex items-center justify-center border-gray-400
-        ${isSelected ? 'bg-blue-500 text-white' : isBooked ? 'bg-red-300' : 'bg-white'} ${ (disabled || isBooked)? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        ${isSelected ? 'bg-purple-900 text-white' : isBooked ? 'bg-red-300' : 'bg-white'} ${ (disabled || isBooked)? 'cursor-not-allowed' : 'cursor-pointer'}`}
       {...(!isBooked && { onMouseEnter: handleHover, onMouseLeave: handleMouseLeave })}
 
     >

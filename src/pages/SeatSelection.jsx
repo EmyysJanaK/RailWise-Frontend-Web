@@ -15,7 +15,7 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, background: "red", borderRadius: "50%" }}
+      style={{ ...style,  background: "purple", borderRadius: "50%" }}
       onClick={onClick}
     />
   );
@@ -132,14 +132,16 @@ const SeatSelectionPage = () => {
   };
 
   return (
-    <>
+
+      <>
+    
       <h1 className="mb-8 text-3xl font-extrabold text-center text-gray-900">
         Seat Selection and Email
       </h1>
       <div className="w-[500px] mx-auto mt-8">
         <Slider {...settings}>
           {wagonsData.map((wagonData) => (
-            <div key={wagonData._id} className="p-10 bg-red-600">
+            <div key={wagonData._id} className="p-10 bg-gray-700">
               <Wagon
                 wagonNumber={wagonData.wagonNumber}
                 seats={wagonData.seats}
@@ -157,30 +159,41 @@ const SeatSelectionPage = () => {
             handleReset={handleReset}
           ></SeatSelectionDispaly>
         </div>
-        <button
-          className={`w-1/2 p-2 mx-auto mt-8 text-white rounded-lg ${
-            disableSlider
-              ? "bg-blue-500 cursor-pointer"
-              : "bg-gray-400 cursor-not-allowed"
-          }`}
-          onClick={() => handleProceed(selectedSeats)}
-          disabled={selectedSeats.length < pax}
-        >
-          Proceed to payment
-        </button>
-        <div className="p-6 mb-6 bg-white rounded-lg shadow-md">
-        <h2 className="mb-4 text-2xl font-bold">Enter Email for Ticket</h2>
-        <div className="mb-4">
-          <input
-            type="email"
-            className="w-full p-2 mt-1 border border-gray-300 rounded-md form-input"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        
+        
+        
+        <div className="p-8 mb-8 bg-white rounded-xl shadow-lg max-w-lg mx-auto">
+            <h2 className="mb-6 text-2xl font-extrabold text-center text-gray-800">
+              Enter Email for Ticket
+            </h2>
+            <div className="mb-4">
+              <input
+                type="email"
+                className="w-full p-3 mt-1 text-gray-700 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="flex justify-center items-center">
+              <button
+                className={`w-1/2 p-2 mt-8 text-white rounded-lg ${
+                  disableSlider
+                    ? "bg-purple-900 cursor-pointer"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+                onClick={() => handleProceed(selectedSeats)}
+                disabled={selectedSeats.length < pax}
+              >
+                Proceed to payment
+              </button>
+            </div>
         </div>
+          
+
+
       </div>
-      </div>
+      
     </>
   );
 };

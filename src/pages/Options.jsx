@@ -74,34 +74,34 @@ const Options = () => {
       ) : (
         <>
           <h1 className="mb-8 text-3xl font-extrabold text-center text-gray-900">
-            Train Options
+            TRAIN OPTIONS
           </h1>
-          <div className="p-6 mb-6 bg-white rounded-lg shadow-md">
-            <h2 className="mb-2 text-2xl font-bold">
-              Selected Train Information
+          <div className="p-6 mb-6 bg-purple-900 rounded-lg shadow-md">
+            <h2 className="mb-2 text-3xl font-bold text-center ">
+              TRIP DETAILS
             </h2>
-            <div>
+            <div><h6 className="mb-2 text-xl text-white ">
               <p>
-                <strong>Departure Station:</strong>{" "}
+                <strong>Departure :</strong>{" "}
                 {scheduleInfo.fromHalt.stationRef.name}
               </p>
               <p>
-                <strong>Arrival Station:</strong>{" "}
+                <strong>Arrival Station :</strong>{" "}
                 {scheduleInfo.toHalt.stationRef.name}
               </p>
               <p>
-                <strong>Departure Date:</strong> {departureDate}
+                <strong>Departure Date :</strong> {departureDate}
               </p>
               <p>
-                <strong>Passengers:</strong> {pax}
-              </p>
+                <strong>Passenger :</strong> {pax}
+              </p></h6>
             </div>
           </div>
 
           <div className="p-6 mb-6 bg-white rounded-lg shadow-md">
             <div className="flex justify-center">
               <h2 className="mb-2 text-3xl font-bold text-center">
-                Select Class
+                SELECT CLASS
               </h2>{" "}
             </div>
             <div className="flex flex-col justify-center md:flex-row md:space-x-14">
@@ -132,7 +132,7 @@ const Options = () => {
             </button>
             <button
               onClick={handleNext}
-              className={`bg-purple-500 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition duration-300 ${
+              className={`bg-purple-900 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition duration-300 ${
                 !selectedClass ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={!selectedClass}

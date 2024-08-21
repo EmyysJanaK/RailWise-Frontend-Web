@@ -5,10 +5,10 @@ const SeatOption = ({ wagonClassName, availableSeats, price, features, isDisable
   return (
     <div
       className={`p-8 border-2 rounded-lg shadow-lg transition duration-300 transform hover:scale-105
-         ${isSelected ? 'border-blue-500 bg-blue-100' : 'border-purple-500 bg-white' } ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-blue-500'}`}
+         ${isSelected ? 'border-purple-900 bg-blue-100' : 'border-purple-900 bg-white' } ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-blue-500'}`}
       onClick={!isDisabled ? onSelect : null}
     >
-      <h3 className="font-bold text-3xl mb-4 text-black-900 text-center">{wagonClassName}</h3>
+      <h3 className="font-bold text-3xl mb-4 text-black-900 text-center">{wagonClassName.toUpperCase()}</h3>
       <p className="text-3xl font-semibold text-gray-700 text-center">${price.toFixed(2)}</p>
       <p className="text-3xl font-semibold text-gray-700 mt-2 text-center">Available seats: {availableSeats}</p>
       <ul className="mt-6 space-y-3">

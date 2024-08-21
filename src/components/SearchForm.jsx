@@ -174,7 +174,7 @@ const SearchForm = () => {
         <div className="col-span-1 sm:col-span-2 flex justify-center">
           <button
             type="submit"
-            className="bg-blue-600 text-white px-8 py-3 rounded text-2xl"
+            className="bg-purple-600 text-white px-8 py-3 rounded text-2xl shadow-sm hover:bg-purple-700 transition duration-200"
           >
             Search
           </button>
