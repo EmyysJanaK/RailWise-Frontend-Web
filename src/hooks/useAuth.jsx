@@ -10,13 +10,14 @@ const useAuth = () => {
 
   const register = async ({ username, email, phone, password }) => {
     try {
-      const response = await axios.post("http://localhost:3000/api/user/register", {
+      const response = await axios.post("/api/user/register", {
         username,
         email,
         phone,
         password,
       }, { withCredentials: true });
 
+      console.log("register hook", response.data);
       if (response.status === 200) {
         login(response.data);
         navigate("/");
@@ -28,7 +29,7 @@ const useAuth = () => {
 
   const loginUser = async ({ emailOrUsername, password }) => {
     try {
-      const response = await axios.post("http://localhost:3000/api/user/login", {
+      const response = await axios.post("/api/user/login", {
         emailOrUsername,
         password,
       }, { withCredentials: true });

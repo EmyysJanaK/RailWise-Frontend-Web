@@ -59,7 +59,7 @@ const TrainOption = ({ option, onClick }) => {
         </div>
 
         <div className="flex items-center text-xl text-gray-700 capitalize">
-        <FaClock className="ml-10 mr-2 text-gray-500" /> 
+        <FaClock className="mr-2 text-gray-500" /> 
           {option.duration}
         </div>
 

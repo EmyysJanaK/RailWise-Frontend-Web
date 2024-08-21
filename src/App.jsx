@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import History from './pages/History';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import SignUp from './pages/SignUp';
+import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import { ReservationProvider } from './context/ReservationContext';
 import ReservationSummary from './pages/ReservationSummary';
@@ -33,7 +33,7 @@ function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/stations" element={<History />} />
                   <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/register" element={<Register />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/forgotpassword" element={<ForgotPassword />} />
                   {/* <Route path="/traindetails" element={<TrainDetails />} /> */}

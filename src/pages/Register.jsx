@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png";
 import TextInput from "../components/TextInput";
@@ -7,11 +7,14 @@ import PasswordInput from "../components/PasswordInput";
 import useFormInput from "../hooks/useFormInput";
 import useAuth from "../hooks/useAuth";
 
-const Login = () => {
+function Register() {
   const location = useLocation();
-  const { loginUser, error } = useAuth();
+  const { register, error } = useAuth();
   const [prevLocation, setPrevLocation] = useState("HomePage");
+  const navigate = useNavigate();
   const username = useFormInput("");
+  const email = useFormInput("");
+  const phone = useFormInput("");
   const password = useFormInput("");
 
   useEffect(() => {
@@ -20,12 +23,16 @@ const Login = () => {
     }
   }, [location]);
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    await loginUser({
-      emailOrUsername: username.value,
+
+    await register({
+      username: username.value,
+      email: email.value,
+      phone: phone.value,
       password: password.value,
     });
+    
   };
 
   return (
@@ -35,33 +42,29 @@ const Login = () => {
         <img src={trainImage} alt="Railwise Logo" className="w-40 h-40" />
       </div>
       <h1 className="mb-4 text-3xl font-extrabold text-center text-gray-900">
-        Railwise Login
+        Railwise Register
       </h1>
       {error && <div className="mb-4 text-red-600">{error}</div>}
-      <form onSubmit={handleLogin}>
-        <TextInput label="Username or Email" {...username} />
+      <form onSubmit={handleRegister}>
+        <TextInput label="Username" {...username} />
+        <TextInput label="Email" type="email" {...email} />
+        <TextInput label="Phone" type="tel" {...phone} />
         <PasswordInput label="Password" {...password} />
-
-        <div className="mb-4">
-          <Link to="/ForgotPassword" className="text-blue-500">
-            Forgot Password?
-          </Link>
-        </div>
         <button
           type="submit"
-          className="w-full py-2 text-white transition duration-200 bg-purple-600 rounded shadow-sm hover:bg-purple-700"
+          className="w-full py-2 mt-2 text-white transition duration-200 bg-purple-600 rounded shadow-sm hover:bg-purple-700"
         >
-          Login
+          Register
         </button>
       </form>
       <div className="mt-4">
-        <span className="text-gray-600">Don't have an account?</span>
-        <Link to="/register" className="ml-2 text-blue-500">
-          Register
+        <span className="text-gray-600">Already have an account?</span>
+        <Link to="/Login" className="ml-2 text-blue-500">
+          Login
         </Link>
       </div>
     </div>
   );
-};
+}
 
-export default Login;
+export default Register;
