@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useContext, useEffect } from "react";
 import { ReservationContext } from "../context/ReservationContext";
 import { FaTrain, FaClock, FaChair } from "react-icons/fa";
+import { MdChair } from "react-icons/md";
 
 const TrainOption = ({ option, onClick }) => {
   const { reservationData, setReservationData } =
@@ -13,7 +14,7 @@ const TrainOption = ({ option, onClick }) => {
 
   return (
     <div
-      className="border border-gray-300 p-6 mb-6 justify-between items-center bg-white rounded-xl shadow-lg hover:shadow-xl cursor-pointer transition-transform transform hover:scale-105"
+      className="items-center justify-between p-6 mb-6 transition-transform transform bg-white border border-gray-300 shadow-lg cursor-pointer rounded-xl hover:shadow-xl hover:scale-105"
       onClick={() => {
         setReservationData({
           ...reservationData,
@@ -27,48 +28,53 @@ const TrainOption = ({ option, onClick }) => {
         onClick();
       }}
     >
-      <div className="w-full flex flex-wrap justify-between items-center gap-4 mb-4">
+      <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
         <div className="flex items-center">
-          <div className="text-lg font-bold text-indigo-700 mr-3">
-            {option.scheduleType.toUpperCase()}
+          <div className="mr-3 text-2xl font-bold text-indigo-700 capitalize">
+            {option.scheduleType}
           </div>
-          <FaTrain className="text-gray-800 text-4xl" />
+          
         </div>
 
-        <div className="text-2xl font-bold text-gray-800">
-          {option.train.name.toUpperCase( )}
+        <div className="flex items-center">
+        <FaTrain className="text-3xl text-gray-800" />
+          <div className="ml-3 text-2xl font-bold text-gray-700 capitalize">
+            {option.train.name}
+          </div>
+          
         </div>
 
         <div className="flex items-center">
           
-          <div className="font-bold text-xl text-gray-800">
+          <div className="text-xl font-bold text-gray-800">
             From ${option.price}
           </div>
         </div>
       </div>
-      <div className="w-full flex flex-wrap justify-between items-center gap-4 mb-4">
+      <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
         <div className="flex items-center">
-          <div className="text-lg font-bold text-gray-800 mr-3">
+          <div className="mr-3 text-lg text-gray-800">
             {option.fromHalt.name}
           </div>
         </div>
 
-        <div className="text-lg font-bold text-indigo-700">
-          {option.duration.toUpperCase()}
+        <div className="flex items-center text-xl text-gray-700 capitalize">
+        <FaClock className="ml-10 mr-2 text-gray-500" /> 
+          {option.duration}
         </div>
 
         <div className="flex items-center">
           
-          <div className="font-bold text-xl text-gray-800">
+          <div className="text-xl text-gray-800">
             {option.toHalt.name}
           </div>
         </div>
       </div>
 
-      <div className="w-full flex flex-wrap justify-between items-center gap-4 mb-4">
+      <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
         <div className="flex items-center">
-          <div className="text-lg font-bold text-gray-800 mr-3">
-            {option.fromHalt.departureTime.toUpperCase()}
+          <div className="mr-3 text-xl text-gray-500">
+            {option.fromHalt.departureTime}
           </div>
         </div>
         
@@ -79,27 +85,27 @@ const TrainOption = ({ option, onClick }) => {
 
         <div className="flex items-center">
           
-          <div className="font-bold text-xl text-gray-800">
-            {option.toHalt.arrivalTime.toUpperCase()}
+          <div className="text-xl text-gray-500">
+            {option.toHalt.arrivalTime}
           </div>
         </div>
       </div>
       
 
-      <div className="w-full flex bg-blue-100 p-6 rounded-lg justify-between">
-        {/* <div className="text-gray-600 font-semibold flex flex-wrap"> */}
-          <div className="flex items-center mr-6 mb-2">
-            <FaChair className="text-indigo-900 mr-2 size-8" />
+      <div className="flex justify-between w-full p-6 bg-blue-100 rounded-lg">
+        {/* <div className="flex flex-wrap font-semibold text-gray-600"> */}
+          <div className="flex items-center mb-2 mr-6">
+            <MdChair className="mr-2 text-indigo-900 size-8" />
             <span>First : {option.seatAvailability.first}</span>
           </div>
 
-          <div className="flex items-center mr-6 mb-2">
-            <FaChair className="text-indigo-900 mr-2 size-8" />
+          <div className="flex items-center mb-2 mr-6">
+            <MdChair className="mr-2 text-indigo-900 size-8" />
             <span> Second : {option.seatAvailability.second}</span>
           </div>
 
           <div className="flex items-center mb-2">
-            <FaChair className="text-indigo-900 mr-2 size-8" />
+            <MdChair className="mr-2 text-indigo-900 size-8" />
             <span> Third : {option.seatAvailability.third}</span>
           </div>
         {/* </div> */}

@@ -4,6 +4,9 @@ import axios from "axios";
 import SeatOption from "../components/SeatOption";
 import { ReservationContext } from "../context/ReservationContext";
 
+import { FaTrain, FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
+import { MdLocationOn } from 'react-icons/md';
+
 const Options = () => {
   const { reservationData, setReservationData } =
     useContext(ReservationContext);
@@ -73,14 +76,12 @@ const Options = () => {
         <p className="text-red-500">{error}</p>
       ) : (
         <>
-          <h1 className="mb-8 text-3xl font-extrabold text-center text-gray-900">
-            TRAIN OPTIONS
-          </h1>
-          <div className="p-6 mb-6 bg-purple-900 rounded-lg shadow-md">
+          
+          {/* <div className="p-6 mb-6 bg-purple-500 rounded-lg shadow-md bg-opacity-90">
             <h2 className="mb-2 text-3xl font-bold text-center ">
-              TRIP DETAILS
+              Trip Details
             </h2>
-            <div><h6 className="mb-2 text-xl text-white ">
+            <div><h6 className="mb-2 text-xl text-black ">
               <p>
                 <strong>Departure :</strong>{" "}
                 {scheduleInfo.fromHalt.stationRef.name}
@@ -96,12 +97,38 @@ const Options = () => {
                 <strong>Passenger :</strong> {pax}
               </p></h6>
             </div>
-          </div>
+          </div> */}
+
+
+
+<div className="p-6 mb-6 text-gray-700 bg-blue-200 rounded-lg shadow-md bg-opacity-90">
+    <h1 className="mb-2 text-3xl font-extrabold text-center text-gray-900">
+        Trip Details
+    </h1>
+    <div className="space-y-2">
+        <div className="flex items-center ">
+            <MdLocationOn className="mr-2 text-2xl"/>
+            <span className="mb-1 text-xl"><strong>Departure:</strong> {scheduleInfo.fromHalt.stationRef.name}</span>
+        </div>
+        <div className="flex items-center ">
+            <MdLocationOn className="mr-2 text-2xl"/>
+            <span className="mb-1 text-xl"><strong>Arrival Station:</strong> {scheduleInfo.toHalt.stationRef.name}</span>
+        </div>
+        <div className="flex items-center">
+            <FaCalendarAlt className="mr-2 text-2xl"/>
+            <span className="mb-1 text-xl"><strong>Departure Date:</strong> {departureDate}</span>
+        </div>
+        <div className="flex items-center">
+            <FaUserFriends className="mr-2 text-2xl"/>
+            <span className="text-xl"><strong>Passengers:</strong> {pax}</span>
+        </div>
+    </div>
+</div>
 
           <div className="p-6 mb-6 bg-white rounded-lg shadow-md">
             <div className="flex justify-center">
-              <h2 className="mb-2 text-3xl font-bold text-center">
-                SELECT CLASS
+              <h2 className="mb-4 text-4xl font-extrabold text-center">
+                Select Class
               </h2>{" "}
             </div>
             <div className="flex flex-col justify-center md:flex-row md:space-x-14">
