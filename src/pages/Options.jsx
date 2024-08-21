@@ -77,7 +77,7 @@ const Options = () => {
             TRAIN OPTIONS
           </h1>
           <div className="p-6 mb-6 bg-purple-900 rounded-lg shadow-md">
-            <h2 className="mb-2 text-3xl font-bold text-center ">
+            <h2 className="mb-2 text-3xl font-bold text-center text-white ">
               TRIP DETAILS
             </h2>
             <div><h6 className="mb-2 text-xl text-white ">
@@ -126,13 +126,13 @@ const Options = () => {
           <div className="flex justify-between">
             <button
               onClick={handleBack}
-              className="px-4 py-2 text-gray-700 transition duration-300 bg-gray-300 rounded-full hover:bg-gray-400"
+              className="bg-purple-900 text-white px-6 py-2 rounded-lg hover:bg-purple-900 transition duration-300"
             >
               Back
             </button>
             <button
               onClick={handleNext}
-              className={`bg-purple-900 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition duration-300 ${
+              className={`bg-purple-900 text-white px-6 py-2 rounded-lg hover:bg-purple-900 transition duration-300 ${
                 !selectedClass ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={!selectedClass}
@@ -147,3 +147,10 @@ const Options = () => {
 };
 
 export default Options;
+
+{/* <button
+                            onClick={handleReset}
+                            className="bg-purple-900 text-white px-4 py-2 rounded-lg hover:bg-purple-900 transition duration-300"
+                        >
+                            Reset Selection
+                        </button> */}
