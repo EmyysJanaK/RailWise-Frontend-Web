@@ -32,8 +32,8 @@ const Wagon = ({ wagonNumber, seats, bookedSeats, handleSeatClick, selectedSeats
         })}
 
         {/* Wagon number */}
-        <div className="absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-gray-400 p-2 rounded-lg">
-          Wagon {wagonNumber}
+        <div className="absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-gray-400 p-2 rounded-lg ">
+          <div className="text-xl font-extraboldtext-white font-extrabold">Wagon {wagonNumber} </div>
         </div>
 
         {/* Left side wheels */}

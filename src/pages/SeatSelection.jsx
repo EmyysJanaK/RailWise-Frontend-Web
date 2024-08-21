@@ -135,7 +135,7 @@ const SeatSelectionPage = () => {
   return (
 
     <>
-    <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
+    <div className="relative isolate overflow-hidden bg-gray-700 py-24 sm:py-32">
       
       <div
         aria-hidden="true"

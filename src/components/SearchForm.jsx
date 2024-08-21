@@ -101,6 +101,8 @@ const SearchForm = () => {
   };
 
   return (
+    
+    
     <form
       className="search-form bg-purple-950 p-6 rounded-lg shadow-lg"
       onSubmit={handleSubmit}

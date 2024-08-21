@@ -12,8 +12,7 @@ const Stations = () => {
   }, [location]);
 
   return (
-    <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
-      
+    <div className="relative isolate overflow-hidden bg-gray-700 py-24 sm:py-32">
       <div
         aria-hidden="true"
         className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
@@ -50,7 +49,7 @@ const Stations = () => {
         </div>
         <div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">
           <div className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center justify-center px-4 py-8 bg-gray-800 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <h3 className="text-2xl font-bold leading-9 tracking-tight text-white">
                 Train Visuals
               </h3>
@@ -58,7 +57,7 @@ const Stations = () => {
                 Experience the beauty of train journeys through stunning visuals.
               </p>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center justify-center px-4 py-8 bg-gray-800 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <h3 className="text-2xl font-bold leading-9 tracking-tight text-white">
                 Features
               </h3>
@@ -66,7 +65,7 @@ const Stations = () => {
                 Enjoy a range of features including real-time tracking, easy cancellations, and more.
               </p>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center justify-center px-4 py-8 bg-gray-800 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <h3 className="text-2xl font-bold leading-9 tracking-tight text-white">
                 Testimonials
               </h3>
@@ -74,7 +73,7 @@ const Stations = () => {
                 Hear from our satisfied customers about their experiences.
               </p>
             </div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center justify-center px-4 py-8 bg-gray-800 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <h3 className="text-2xl font-bold leading-9 tracking-tight text-white">
                 Contact Us
               </h3>

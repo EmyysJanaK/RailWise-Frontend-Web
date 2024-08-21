@@ -18,12 +18,7 @@ const Header = () => {
   };
 
   return (
-    <header className="relative isolate overflow-hidden bg-gray-900 text-white p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center">
-      {/* <img
-        alt="Background"
-        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
-        className="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"
-      /> */}
+    <header className="relative isolate overflow-hidden bg-gray-900 text-white py-4 sm:py-6 px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center">
       <div
         aria-hidden="true"
         className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
@@ -54,15 +49,15 @@ const Header = () => {
           <img
             src={logo}
             alt="Logo"
-            className="h-16 sm:h-24" // Responsive image size
+            className="h-16 sm:h-24 transition-all duration-300 transform hover:scale-105"
           />
         </Link>
         <button
-          className="sm:hidden text-3xl"
+          className="sm:hidden text-3xl transition-colors duration-300 hover:text-gray-400"
           aria-label="Toggle navigation"
           onClick={toggleNav}
         >
-          <i className="fas fa-bars"></i> {/* FontAwesome icon for menu */}
+          <i className="fas fa-bars"></i>
         </button>
       </div>
 
@@ -74,7 +69,12 @@ const Header = () => {
       >
         <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
           {navLinks.map((link) => (
-            <NavLinkItem key={link.to} to={link.to} label={link.label} />
+            <NavLinkItem
+              key={link.to}
+              to={link.to}
+              label={link.label}
+              className="transition-colors duration-300 hover:text-gray-400"
+            />
           ))}
         </ul>
       </nav>
@@ -82,13 +82,13 @@ const Header = () => {
       <UserMenu className="hidden sm:block" />
 
       <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-        <button className="hover:text-gray-300 transition duration-300 text-2xl">
+        <button className="hover:text-gray-400 transition duration-300 text-2xl">
           <span className="sr-only">Change Language</span>
-          <i className="fas fa-language"></i> {/* FontAwesome icon for language */}
+          <i className="fas fa-language"></i>
         </button>
-        <button className="hover:text-gray-300 transition duration-300 text-2xl">
+        <button className="hover:text-gray-400 transition duration-300 text-2xl">
           <span className="sr-only">Search</span>
-          <i className="fas fa-search"></i> {/* FontAwesome icon for search */}
+          <i className="fas fa-search"></i>
         </button>
       </div>
     </header>
