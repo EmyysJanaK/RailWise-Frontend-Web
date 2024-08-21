@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
-import { Circles } from "react-loader-spinner"; // Import the spinner
+import { Circles } from "react-loader-spinner";
 
 const validationSchema = yup.object().shape({
   cardHolderName: yup.string().required("Card Holder Name is required"),
@@ -24,40 +24,11 @@ const validationSchema = yup.object().shape({
     .matches(/^\d{3}$/, "CVV must be exactly 3 digits"),
 });
 
-function CardDetails() {
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [isExpired, setIsExpired] = useState(false);
+function CardDetails({isExpired}) {
   const [isLoading, setIsLoading] = useState(false); // Add a loading state
   const navigate = useNavigate();
   const location = useLocation();
-  const { bookingId, expireTime, email } = location.state;
-
-  useEffect(() => {
-    // Calculate the time left from current time to expireTime
-    const expireDate = new Date(expireTime);
-    const currentTime = new Date();
-    const differenceInSeconds = Math.floor((expireDate - currentTime) / 1000);
-
-    if (differenceInSeconds > 0) {
-      setTimeLeft(differenceInSeconds);
-    } else {
-      setIsExpired(true);
-      setTimeLeft(0);
-    }
-
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timer);
-          setIsExpired(true);
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [expireTime]);
+  const { bookingId, email } = location.state;
 
   const formik = useFormik({
     initialValues: {
@@ -89,11 +60,7 @@ function CardDetails() {
     },
   });
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
-  };
+  
 
   return (
     <div className="max-w-md px-4 py-12 sm:px-6 lg:px-8">
