@@ -144,10 +144,10 @@ const ProfilePage = () => {
       <div className="flex-1 p-8">
         {activeTab === 'profile' && (
           <div>
-            <h2 className="text-2xl font-bold mb-4">Profile</h2>
+            <h2 className="text-4xl font-bold mb-4 text-center">Profile</h2>
             {error && <div className="mb-4 text-red-600">{error}</div>}
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold">Profile Details</h3>
+              <h3 className="text-3xl font-semibold">Profile Details</h3>
               {!isEditing ? (
                 <button onClick={() => setIsEditing(true)} className="text-blue-500">
                   <FontAwesomeIcon icon={faEdit} />

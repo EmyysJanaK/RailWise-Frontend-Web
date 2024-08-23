@@ -39,18 +39,18 @@ const UserMenu = () => {
             <span className="font-bold">{`${userData.username}`}</span>
           </button>
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-36 bg-white rounded-md shadow-lg py-1 z-20">
+            <div className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg py-0.5 z-20">
               <button
                 onClick={handleLogout}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-right"
-              >
-                Logout
+                className="block px-3 py-0.5 text-sm text-gray-700 hover:bg-gray-100 w-full text-right"
+              > <div className="font-bold text-center">Logout</div>
+                
               </button>
               <button
                 onClick={handleProfile}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-right"
+                className="block px-3 py-0.5 text-sm text-gray-700 hover:bg-gray-100 w-full text-right"
               >
-                profile
+                <div className="font-bold text-center">profile</div>
               </button>
             </div>
           )}
