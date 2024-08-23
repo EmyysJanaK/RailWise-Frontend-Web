@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <h3 className="text-lg font-bold mb-2">Contact Us</h3>
-          <p>Email: <a href="mailto:info@railwise.com" className="text-blue-400 hover:underline">info@railwise.com</a></p>
+          <p>Email: <a href="mailto:railwise21@gmail.com" className="text-blue-400 hover:underline">info@railwise.com</a></p>
           <p>Phone: <a href="tel:123-456-7890" className="text-blue-400 hover:underline">123-456-7890</a></p>
         </div>
         <div>

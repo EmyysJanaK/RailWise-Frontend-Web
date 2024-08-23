@@ -56,7 +56,7 @@ const Contact = () => {
                 href="#"
                 className="flex flex-row items-center justify-center gap-2 text-base font-semibold text-indigo-500 lg:justify-start hover:text-indigo-400"
               >
-                Button CTA
+               
                 <svg
                   width="20"
                   height="20"

@@ -54,7 +54,7 @@ const SearchForm = () => {
       );
     }
   };
-
+  
   const handleStationClick = (name, station) => {
     setSearchParams((prevState) => ({
       ...prevState,
@@ -86,10 +86,11 @@ const SearchForm = () => {
       (station) => station.name === searchParams.arrival
     );
 
-    if (!departureStation || !arrivalStation) {
+    if (!departureStation || !arrivalStation || departureStation === arrivalStation) {
       setError("Invalid station selected.");
       return;
     }
+    
     setReservationData({
       departureStationId: departureStation._id,
       arrivalStationId: arrivalStation._id,
