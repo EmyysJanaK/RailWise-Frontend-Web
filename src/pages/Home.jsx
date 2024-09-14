@@ -9,7 +9,7 @@ const HomePage = () => {
 
 
   return (
-    <div className="relative isolate overflow-hidden bg-gray-700 py-24 sm:py-32">
+    <div className="relative py-24 overflow-hidden bg-gray-700 isolate sm:py-32">
       <div
         aria-hidden="true"
         className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
@@ -36,29 +36,29 @@ const HomePage = () => {
       </div>
       <div className="relative z-10 flex-1">
         <main className="flex flex-col items-center justify-center flex-1 p-4">
-          <div className="text-center mb-8">
-            <h1 className="text-7xl font-extrabold text-white">Welcome to RailWise</h1>
-            <p className="text-2xl text-white mt-2">Book your train tickets easily and quickly with our platform.</p>
+          <div className="mb-8 text-center">
+            <h1 className="font-extrabold text-white text-7xl">Welcome to RailWise</h1>
+            <p className="mt-2 text-2xl text-white">Book your train tickets easily and quickly with our platform.</p>
           </div>
           <SearchForm />
-          <div className="mt-12 flex flex-col items-center">
-            <h2 className="text-3xl font-bold text-white mb-4">Install Our Mobile App</h2>
+          <div className="flex flex-col items-center mt-12">
+            <h2 className="mb-4 text-3xl font-bold text-white">Install Our Mobile App</h2>
             <QRCode value="https://www.railwise.com/mobile-app" size={128} />
-            <p className="text-2xl text-white mt-2">Scan the QR code to download our mobile app.</p>
+            <p className="mt-2 text-2xl text-white">Scan the QR code to download our mobile app.</p>
           </div>
           <PopularRoutes />
 
           <div className="w-max">
-            <p className="font-extrabold text-3xl  text-white text-center sm:font-extrabold sm:text-7xl animate-typing overflow-hidden whitespace-nowrap border-r-2 border-black pr-5 mb-4 mt-4 md:text-4xl items-center sm:text-center xl:my-10 xl:text-7xl" style={{ opacity: 1 }}>
+            <p className="items-center pr-5 mt-4 mb-4 overflow-hidden text-3xl font-extrabold text-center text-white border-r-2 border-black sm:font-extrabold sm:text-7xl animate-typing whitespace-nowrap md:text-4xl sm:text-center xl:my-10 xl:text-7xl" style={{ opacity: 1 }}>
               Book,Ride,Enjoy
             </p>
           </div>
 
           <div className="mt-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Important Announcements</h2>
+            <h2 className="mb-4 text-3xl font-bold text-gray-800">Important Announcements</h2>
             <ul className="space-y-4">
               {announcements.map((announcement, index) => (
-                <li key={index} className="bg-white p-4 rounded-lg shadow-md">
+                <li key={index} className="p-4 bg-white rounded-lg shadow-md">
                   <h3 className="text-2xl font-semibold text-gray-800">{announcement.title}</h3>
                   <p className="text-gray-600">{announcement.content}</p>
                 </li>
