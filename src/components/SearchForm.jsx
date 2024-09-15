@@ -173,6 +173,7 @@ const SearchForm = () => {
           onChange={handleInputChange}
           className="w-full p-3 text-xl border rounded"
           style={{ fontSize: "1.4rem", height: "3.5rem" }}
+          min = {new Date().toISOString().split('T')[0]}
         />
         <div className="flex justify-center col-span-1 sm:col-span-2">
           <button
