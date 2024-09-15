@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
-import { Circles } from "react-loader-spinner";
 
 const validationSchema = yup.object().shape({
   cardHolderName: yup.string().required("Card Holder Name is required"),

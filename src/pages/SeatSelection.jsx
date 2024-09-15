@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
+import { z } from "zod"; 
 
 import { ReservationContext } from "../context/ReservationContext";
 import { UserContext } from "../context/UserContext";
@@ -42,6 +43,10 @@ const SeatSelectionPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+
+  const emailSchema = z.string().email({ message: "Invalid email format" });
 
   const settings = {
     dots: true,
@@ -104,6 +109,17 @@ const SeatSelectionPage = () => {
   const handleReset = () => {
     setSelectedSeats([]);
     setDisableSlider(false);
+  };
+
+  const validateEmail = (email) => {
+    try {
+      emailSchema.parse(email);
+      setEmailError("");
+      return true;
+    } catch (error) {
+      setEmailError(error.errors[0].message);
+      return false;
+    }
   };
 
   const handleProceed = async (selectedSeats) => {
@@ -196,24 +212,29 @@ const SeatSelectionPage = () => {
               Enter Email for Ticket
             </h2>
             <div className="mb-4">
-              <input
+            <input
                 type="email"
                 className="w-full p-3 mt-1 text-gray-700 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={() => validateEmail(email)} // Validate on blur
               />
+              {emailError && (
+                <p className="text-red-500 text-sm mt-1">{emailError}</p>
+              )}
             </div>
             <div className="flex items-center justify-center">
-              <button
+            <button
                 className={`w-1/2 p-2 mt-8 text-white rounded-lg ${
-                  disableSlider
-                    ? "bg-purple-900 cursor-pointer"
-                    : "bg-gray-400 cursor-not-allowed"
+                  !disableSlider || !email || emailError
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-purple-900 cursor-pointer"
                 }`}
                 onClick={() => handleProceed(selectedSeats)}
-                disabled={selectedSeats.length < pax}
+                disabled={selectedSeats.length < pax || !email || emailError}
               >
+                {console.log(emailError)}
                 Proceed to payment
               </button>
             </div>
