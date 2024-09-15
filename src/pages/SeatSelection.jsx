@@ -113,7 +113,7 @@ const SeatSelectionPage = () => {
     });
     setLoading(true);
     try {
-      const response = await axios.post("/api/bookings/createPendingBooking", {
+      const data = {
         scheduleId,
         date: departureDate,
         fromHaltId,
@@ -121,7 +121,9 @@ const SeatSelectionPage = () => {
         selectedSeatIds: selectedSeats.map((seat) => seat._id),
         selectedClassId,
         userId,
-      });
+      }
+      console.log("data", data);
+      const response = await axios.post("/api/bookings/createPendingBooking", data);
       setLoading(false);
       console.log("response", response.data);
       navigate("/payment-gateway", { state: { bookingId: response.data.bookingId, expireTime: response.data.expireTime, email } });
@@ -135,7 +137,7 @@ const SeatSelectionPage = () => {
   return (
 
     <>
-    <div className="relative isolate overflow-hidden bg-gray-700 py-24 sm:py-32">
+    <div className="relative py-24 overflow-hidden bg-gray-700 isolate sm:py-32">
       
       <div
         aria-hidden="true"
@@ -189,7 +191,7 @@ const SeatSelectionPage = () => {
         
         
         
-        <div className="p-8 mb-8 bg-white rounded-xl shadow-lg max-w-lg mx-auto">
+        <div className="max-w-lg p-8 mx-auto mb-8 bg-white shadow-lg rounded-xl">
             <h2 className="mb-6 text-2xl font-extrabold text-center text-gray-800">
               Enter Email for Ticket
             </h2>
@@ -202,7 +204,7 @@ const SeatSelectionPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="flex justify-center items-center">
+            <div className="flex items-center justify-center">
               <button
                 className={`w-1/2 p-2 mt-8 text-white rounded-lg ${
                   disableSlider
