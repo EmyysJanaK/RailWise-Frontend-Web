@@ -3,9 +3,16 @@ import SearchForm from '../components/SearchForm';
 import axios from 'axios';
 import QRCode from 'qrcode.react'; // You can use 'qrcode.react' library to generate QR codes
 import PopularRoutes from '../components/PopularRoutes';
+import { useRef } from 'react';
 
 const HomePage = () => {
   const [announcements, setAnnouncements] = useState([]);
+  const [departure, setDeparture] = useState("");
+  const [arrival, setArrival] = useState("");
+  const [date, setDate] = useState("");
+  const [seat, setSeat] = useState("");
+  const searchFormRef = useRef(null);
+  
 
 
   return (
@@ -35,18 +42,18 @@ const HomePage = () => {
         />
       </div>
       <div className="relative z-10 flex-1">
-        <main className="flex flex-col items-center justify-center flex-1 p-4">
+        <main className="flex flex-col items-center justify-center flex-1 p-4" ref={searchFormRef}>
           <div className="mb-8 text-center">
             <h1 className="font-extrabold text-white text-7xl">Welcome to RailWise</h1>
             <p className="mt-2 text-2xl text-white">Book your train tickets easily and quickly with our platform.</p>
           </div>
-          <SearchForm />
+          <SearchForm departure={departure} arrival={arrival} date={date} seat={seat} />
           <div className="flex flex-col items-center mt-12">
             <h2 className="mb-4 text-3xl font-bold text-white">Install Our Mobile App</h2>
             <QRCode value="https://www.railwise.com/mobile-app" size={128} />
             <p className="mt-2 text-2xl text-white">Scan the QR code to download our mobile app.</p>
           </div>
-          <PopularRoutes />
+          <PopularRoutes setDeparture={setDeparture} setArrival={setArrival} searchFormRef={searchFormRef} />
 
           <div className="w-max">
             <p className="items-center pr-5 mt-4 mb-4 overflow-hidden text-3xl font-extrabold text-center text-white border-r-2 border-black sm:font-extrabold sm:text-7xl animate-typing whitespace-nowrap md:text-4xl sm:text-center xl:my-10 xl:text-7xl" style={{ opacity: 1 }}>

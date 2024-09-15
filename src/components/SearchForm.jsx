@@ -2,14 +2,24 @@ import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ReservationContext } from "../context/ReservationContext";
+import { useRef } from "react";
 
-const SearchForm = () => {
+const SearchForm = ({departure,arrival,date,seat}) => {
   const [searchParams, setSearchParams] = useState({
-    departure: "",
-    arrival: "",
-    date: "",
-    seat: "",
+    departure: departure,
+    arrival: arrival,
+    date: date,
+    seat: seat,
   });
+
+  useEffect(() => {
+    setSearchParams({
+      departure: departure || "",
+      arrival: arrival || "",
+      date: date || "",
+      seat: seat || "",
+    });
+  }, [departure, arrival, date, seat]);
 
   const { setReservationData } = useContext(ReservationContext);
 

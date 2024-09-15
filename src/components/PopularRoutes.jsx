@@ -6,7 +6,7 @@ import trainImage from "../assets/trainImage.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const PopularRoutes = () => {
+const PopularRoutes = ({setDeparture,setArrival,searchFormRef }) => {
   const [popularRoutes, setPopularRoutes] = useState([]);
   const [prevLocation, setPrevLocation] = useState(null);
   const location = useLocation();
@@ -51,6 +51,15 @@ const PopularRoutes = () => {
     ]
   };
 
+  const handleClick = (departure, arrival) => {
+    setDeparture(departure);
+    setArrival(arrival);
+
+    if (searchFormRef && searchFormRef.current) {
+      searchFormRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="bg-white-950 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
@@ -60,6 +69,7 @@ const PopularRoutes = () => {
             <div 
               key={route.startHaltStation._id + route.endHaltStation._id}
               className="p-2"
+              onClick={() => {handleClick(route.startHaltStation.name, route.endHaltStation.name)}}
             >
               <div className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
                 <img 
