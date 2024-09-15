@@ -52,6 +52,7 @@ function CardDetails({ isExpired, setIsLoading }) {
       } catch (error) {
         console.error(error);
         formik.setErrors({ cardHolderName: "Failed to confirm booking" });
+        navigate("/failed", { state: { bookingId } });
       } finally {
         setIsLoading(false); // Set loading state to false
       }
