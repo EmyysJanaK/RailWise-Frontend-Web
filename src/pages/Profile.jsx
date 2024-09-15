@@ -6,6 +6,7 @@ import PasswordInput from '../components/PasswordInput';
 import Modal from '../components/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faSave, faUser, faClipboardList, faLock, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FaClock, FaTrain } from 'react-icons/fa';
 
 const ProfilePage = () => {
   const { userData, login, loading, logout } = useContext(UserContext);
@@ -187,17 +188,77 @@ const ProfilePage = () => {
             {bookings.length > 0 ? (
               <ul>
                 {bookings.map((booking) => (
-                  <li key={booking._id} className="mb-4 p-4 border rounded-lg">
-                    <div>Booking ID: {booking._id}</div>
-                    <div>Train: {booking.train}</div>
-                    <div>Date: {booking.date}</div>
+                <li
+                  key={booking._id}
+                  className="items-center justify-between p-6 mb-6 transition-transform transform bg-white border border-gray-300 shadow-lg cursor-pointer rounded-xl hover:shadow-xl hover:scale-105"
+                >
+                  <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
+                    <div className="flex items-center">
+                      <div className="mr-3 text-2xl font-bold text-indigo-700">
+                        Booking ID: {booking._id}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <FaTrain className="text-3xl text-gray-800" />
+                      <div className="ml-3 text-2xl font-bold text-gray-700 capitalize">
+                        {booking.scheduleRef.trainRef.name}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <div className="text-xl font-bold text-gray-800">
+                        Total Price: ${booking.totalFare}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
+                    <div className="flex items-center">
+                      <div className="mr-3 text-lg text-gray-800">
+                        From: {booking.startHalt.stationRef.name}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <div className="text-lg text-gray-800">
+                        To: {booking.endHalt.stationRef.name}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <div className="text-xl text-gray-700">
+                        {booking.date.substring(0, 10)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
+                    <div className="flex items-center">
+                      <FaClock className="mr-2 text-gray-500" />
+                      <div className="mr-3 text-xl text-gray-500">
+                        Departure: {booking.startHalt.departureTime}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <FaClock className="mr-2 text-gray-500" />
+                      <div className="text-xl text-gray-500">
+                        Arrival: {booking.endHalt.arrivalTime}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between w-full p-6 bg-blue-100 rounded-lg">
                     <button
                       onClick={() => handleDeleteBooking(booking._id)}
-                      className="mt-2 bg-red-500 text-white py-1 px-4 rounded"
+                      className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
                     >
                       Delete Booking
                     </button>
-                  </li>
+                  </div>
+                </li>
+
                 ))}
               </ul>
             ) : (
