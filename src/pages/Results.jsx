@@ -44,13 +44,18 @@ export default function Results() {
           ) : error ? (
             <div className="text-red-500">{error}</div>
           ) : (
-            trainOptions.map((option) => (
+            trainOptions.length>0 ?
+            (trainOptions.map((option) => (
               <TrainOption
                 key={option.id}
                 option={option}
                 onClick={() => handleTrainOptionClick(option)}
               />
-            ))
+            ))):(
+              <div className="ml-3 text-2xl font-bold text-gray-700 capitalize">
+            No trains available
+          </div>
+            )
           )}
         </div>
       </div>
