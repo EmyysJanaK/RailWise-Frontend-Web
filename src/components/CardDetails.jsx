@@ -24,8 +24,7 @@ const validationSchema = yup.object().shape({
     .matches(/^\d{3}$/, "CVV must be exactly 3 digits"),
 });
 
-function CardDetails({ isExpired }) {
-  const [isLoading, setIsLoading] = useState(false); // Add a loading state
+function CardDetails({ isExpired, setIsLoading }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { bookingId, email } = location.state;
@@ -62,13 +61,7 @@ function CardDetails({ isExpired }) {
 
   return (
     <>
-      {isLoading ? (
-        <div className="flex items-center justify-center h-64">
-          {" "}
-          {/* Center the spinner */}
-          <Circles color="#4A90E2" height={80} width={80} />
-        </div>
-      ) : (
+
         <div className="max-w-md">
           <form
             onSubmit={formik.handleSubmit}
@@ -173,7 +166,7 @@ function CardDetails({ isExpired }) {
             </button>
           </form>
         </div>
-      )}
+
     </>
   );
 }

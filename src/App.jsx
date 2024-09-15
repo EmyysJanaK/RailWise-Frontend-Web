@@ -16,6 +16,7 @@ import SeatSelection from './pages/SeatSelection';
 import ProfilePage from './pages/Profile';
 import './index.css';
 import Payment from './pages/Payment';
+import Success from './pages/Success';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
                   <Route path="/seat-selection" element={<SeatSelection />} />
                   <Route path="/reservationsummary" element={<ReservationSummary />} />
                   <Route path="/payment-gateway" element={<Payment />} />
+                  <Route path="/success" element={<Success />} />
                   {/* <Route path="/seatselection" element={<SeatSelection />} /> */}
                 </Routes>
               </Layout>
