@@ -119,8 +119,8 @@ const ProfilePage = () => {
 
   return (
     <div className="flex min-h-screen">
-      <div className="w-64 bg-gray-800 text-white p-4">
-        <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
+      <div className="w-64 p-4 text-white bg-gray-800">
+        <h2 className="mb-6 text-2xl font-bold">Dashboard</h2>
         <ul>
           <li className={`mb-4 ${activeTab === 'profile' ? 'text-blue-500' : ''}`}>
             <button onClick={() => setActiveTab('profile')} className="flex items-center">
@@ -145,7 +145,7 @@ const ProfilePage = () => {
       <div className="flex-1 p-8">
         {activeTab === 'profile' && (
           <div>
-            <h2 className="text-4xl font-bold mb-4 text-center">Profile</h2>
+            <h2 className="mb-4 text-4xl font-bold text-center">Profile</h2>
             {error && <div className="mb-4 text-red-600">{error}</div>}
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-3xl font-semibold">Profile Details</h3>
@@ -167,7 +167,7 @@ const ProfilePage = () => {
                 <TextInput label="Phone" type="tel" value={phone} onChange={handleInputChange(setPhone)} />
                 <button
                   type="submit"
-                  className="w-full bg-black text-white py-2 mt-4 rounded-full hover:bg-gray-800 transition duration-300"
+                  className="w-full py-2 mt-4 text-white transition duration-300 bg-black rounded-full hover:bg-gray-800"
                   disabled={!changesMade}
                 >
                   Save
@@ -184,7 +184,7 @@ const ProfilePage = () => {
         )}
         {activeTab === 'bookings' && (
           <div>
-            <h2 className="text-2xl font-bold mb-4">Booking History</h2>
+            <h2 className="mb-4 text-2xl font-bold">Booking History</h2>
             {bookings.length > 0 ? (
               <ul>
                 {bookings.map((booking) => (
@@ -252,7 +252,7 @@ const ProfilePage = () => {
                   <div className="flex justify-between w-full p-6 bg-blue-100 rounded-lg">
                     <button
                       onClick={() => handleDeleteBooking(booking._id)}
-                      className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+                      className="px-4 py-2 text-white transition bg-red-500 rounded hover:bg-red-600"
                     >
                       Delete Booking
                     </button>
@@ -268,16 +268,16 @@ const ProfilePage = () => {
         )}
         {activeTab === 'security' && (
           <div>
-            <h2 className="text-2xl font-bold mb-4">Security & Privacy</h2>
+            <h2 className="mb-4 text-2xl font-bold">Security & Privacy</h2>
             <button
               onClick={handleChangePasswordClick}
-              className="w-full bg-blue-500 text-white py-2 rounded-full hover:bg-blue-700 transition duration-300 mb-4"
+              className="w-full py-2 mb-4 text-white transition duration-300 bg-blue-500 rounded-full hover:bg-blue-700"
             >
               Change Password
             </button>
             <button
               onClick={handleDeleteAccountClick}
-              className="w-full bg-red-500 text-white py-2 rounded-full hover:bg-red-700 transition duration-300"
+              className="w-full py-2 text-white transition duration-300 bg-red-500 rounded-full hover:bg-red-700"
             >
               Delete Account
             </button>
@@ -287,11 +287,11 @@ const ProfilePage = () => {
 
       {showModal && (
         <Modal onClose={() => setShowModal(false)}>
-          <h2 className="text-xl font-bold mb-4">Enter Password to Confirm</h2>
+          <h2 className="mb-4 text-xl font-bold">Enter Password to Confirm</h2>
           <PasswordInput label="Password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
           <button
             onClick={handleUpdateProfile}
-            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+            className="px-4 py-2 mt-4 text-white bg-blue-500 rounded"
           >
             Confirm
           </button>
@@ -300,7 +300,7 @@ const ProfilePage = () => {
 
       {showChangePasswordModal && (
         <Modal onClose={() => setShowChangePasswordModal(false)}>
-          <h2 className="text-xl font-bold mb-4">Change Password</h2>
+          <h2 className="mb-4 text-xl font-bold">Change Password</h2>
           <PasswordInput label="Old Password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
           <PasswordInput label="New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
           <PasswordInput label="Confirm New Password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} />
@@ -309,7 +309,7 @@ const ProfilePage = () => {
               await handleUpdateProfile();
               setShowChangePasswordModal(false);
             }}
-            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+            className="px-4 py-2 mt-4 text-white bg-blue-500 rounded"
           >
             Change Password
           </button>
@@ -318,11 +318,11 @@ const ProfilePage = () => {
 
       {showDeleteAccountModal && (
         <Modal onClose={() => setShowDeleteAccountModal(false)}>
-          <h2 className="text-xl font-bold mb-4">Delete Account</h2>
+          <h2 className="mb-4 text-xl font-bold">Delete Account</h2>
           <PasswordInput label="Password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
           <button
             onClick={handleDeleteAccount}
-            className="mt-4 bg-red-500 text-white py-2 px-4 rounded"
+            className="px-4 py-2 mt-4 text-white bg-red-500 rounded"
           >
             Confirm
           </button>
