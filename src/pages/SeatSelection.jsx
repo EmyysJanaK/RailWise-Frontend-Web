@@ -112,6 +112,7 @@ const SeatSelectionPage = () => {
   };
 
   const validateEmail = (email) => {
+    setEmail(email);
     try {
       emailSchema.parse(email);
       setEmailError("");
@@ -217,8 +218,8 @@ const SeatSelectionPage = () => {
                 className="w-full p-3 mt-1 text-gray-700 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onBlur={() => validateEmail(email)} // Validate on blur
+                onChange={(e) => validateEmail(e.target.value)}
+                // onBlur={() => validateEmail(email)} // Validate on blur
               />
               {emailError && (
                 <p className="text-red-500 text-sm mt-1">{emailError}</p>
@@ -234,7 +235,6 @@ const SeatSelectionPage = () => {
                 onClick={() => handleProceed(selectedSeats)}
                 disabled={selectedSeats.length < pax || !email || emailError}
               >
-                {console.log(emailError)}
                 Proceed to payment
               </button>
             </div>
