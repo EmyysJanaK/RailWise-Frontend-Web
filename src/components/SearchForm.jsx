@@ -2,9 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ReservationContext } from "../context/ReservationContext";
-import { useRef } from "react";
 
-const SearchForm = ({departure,arrival,date,seat}) => {
+const SearchForm = ({ departure, arrival, date, seat }) => {
   const [searchParams, setSearchParams] = useState({
     departure: departure,
     arrival: arrival,
@@ -29,6 +28,8 @@ const SearchForm = ({departure,arrival,date,seat}) => {
   );
   const [filteredArrivalStations, setFilteredArrivalStations] = useState([]);
   const [error, setError] = useState(null);
+  const [isDepartureFocused, setIsDepartureFocused] = useState(false);
+  const [isArrivalFocused, setIsArrivalFocused] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const SearchForm = ({departure,arrival,date,seat}) => {
       );
     }
   };
-  
+
   const handleStationClick = (name, station) => {
     setSearchParams((prevState) => ({
       ...prevState,
@@ -72,8 +73,10 @@ const SearchForm = ({departure,arrival,date,seat}) => {
     }));
     if (name === "departure") {
       setFilteredDepartureStations([]);
+      setIsDepartureFocused(false);
     } else if (name === "arrival") {
       setFilteredArrivalStations([]);
+      setIsArrivalFocused(false);
     }
   };
 
@@ -100,7 +103,7 @@ const SearchForm = ({departure,arrival,date,seat}) => {
       setError("Invalid station selected.");
       return;
     }
-    
+
     setReservationData({
       departureStationId: departureStation._id,
       arrivalStationId: arrivalStation._id,
@@ -108,12 +111,10 @@ const SearchForm = ({departure,arrival,date,seat}) => {
       pax: parseInt(searchParams.seat),
     });
 
-    navigate("/results");	
+    navigate("/results");
   };
 
   return (
-    
-    
     <form
       className="p-6 rounded-lg shadow-lg search-form bg-purple-950"
       onSubmit={handleSubmit}
@@ -126,10 +127,12 @@ const SearchForm = ({departure,arrival,date,seat}) => {
             placeholder="Departure Station"
             value={searchParams.departure}
             onChange={handleInputChange}
+            onFocus={() => setIsDepartureFocused(true)}
+            onBlur={() => setTimeout(() => setIsDepartureFocused(false), 200)}
             className="w-full p-3 text-xl border rounded"
             style={{ fontSize: "1.4rem", height: "3.5rem" }}
           />
-          {filteredDepartureStations.length > 0 && (
+          {isDepartureFocused && filteredDepartureStations.length > 0 && (
             <ul className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border rounded max-h-40">
               {filteredDepartureStations.map((station) => (
                 <li
@@ -150,10 +153,12 @@ const SearchForm = ({departure,arrival,date,seat}) => {
             placeholder="Arrival Station"
             value={searchParams.arrival}
             onChange={handleInputChange}
+            onFocus={() => setIsArrivalFocused(true)}
+            onBlur={() => setTimeout(() => setIsArrivalFocused(false), 200)}
             className="w-full p-3 text-xl border rounded"
             style={{ fontSize: "1.4rem", height: "3.5rem" }}
           />
-          {filteredArrivalStations.length > 0 && (
+          {isArrivalFocused && filteredArrivalStations.length > 0 && (
             <ul className="absolute z-10 w-full mt-1 overflow-y-auto bg-white border rounded max-h-40">
               {filteredArrivalStations.map((station) => (
                 <li
@@ -183,12 +188,12 @@ const SearchForm = ({departure,arrival,date,seat}) => {
           onChange={handleInputChange}
           className="w-full p-3 text-xl border rounded"
           style={{ fontSize: "1.4rem", height: "3.5rem" }}
-          min = {new Date().toISOString().split('T')[0]}
+          min={new Date().toISOString().split("T")[0]}
         />
         <div className="flex justify-center col-span-1 sm:col-span-2">
           <button
             type="submit"
-            className="px-8 py-3 text-2xl text-white transition duration-200 bg-purple-600 rounded shadow-sm hover:bg-purple-700"
+            className="searchButton px-8 py-3 text-2xl text-white transition duration-200 bg-purple-600 rounded shadow-sm hover:bg-purple-700"
           >
             Search
           </button>
