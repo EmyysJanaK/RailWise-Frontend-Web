@@ -43,7 +43,7 @@ const Login = () => {
         <PasswordInput label="Password" {...password} />
 
         <div className="mb-4">
-          <Link to="/ForgotPassword" className="text-blue-500">
+          <Link to="/forgot-password" className="text-blue-500">
             Forgot Password?
           </Link>
         </div>

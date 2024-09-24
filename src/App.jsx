@@ -18,6 +18,7 @@ import './index.css';
 import Payment from './pages/Payment';
 import Success from './pages/Success';
 import Failed from './pages/Failed';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   return (
@@ -37,7 +38,8 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="/forgotpassword" element={<ForgotPassword />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reset-password/:token" element={<ResetPassword />} />
                   {/* <Route path="/traindetails" element={<TrainDetails />} /> */}
                   <Route path="/seat-selection" element={<SeatSelection />} />
                   <Route path="/reservationsummary" element={<ReservationSummary />} />
