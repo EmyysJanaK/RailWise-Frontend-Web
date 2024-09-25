@@ -1,22 +1,39 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { z } from "zod";
 
-export default function ForgotPassword(){
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Zod schema for email validation
+  const emailSchema = z.string().email({ message: "Invalid email address" });
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     setError("");
     setMessage("");
 
+    // Validate email using Zod
+    const validationResult = emailSchema.safeParse(email);
+
+    if (!validationResult.success) {
+      setError(validationResult.error.errors[0].message);
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
       const response = await axios.post("/api/user/forgotPassword", { email });
       setMessage("A password reset link has been sent to your email.");
     } catch (error) {
       setError("Failed to send the reset link. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -43,9 +60,12 @@ export default function ForgotPassword(){
         </div>
         <button
           type="submit"
-          className="w-full py-2 text-white transition duration-200 bg-purple-600 rounded shadow-sm hover:bg-purple-700"
+          className={`w-full py-2 text-white transition duration-200 bg-purple-600 rounded shadow-sm ${
+            isLoading ? "cursor-not-allowed" : "hover:bg-purple-700"
+          }`}
+          disabled={isLoading}
         >
-          Send Reset Link
+          {isLoading ? "Sending Email..." : "Send Reset Link"}
         </button>
       </form>
       <div className="mt-4">
@@ -55,4 +75,4 @@ export default function ForgotPassword(){
       </div>
     </div>
   );
-};
+}

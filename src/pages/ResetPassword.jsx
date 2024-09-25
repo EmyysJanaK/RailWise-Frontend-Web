@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import PasswordInput from "../components/PasswordInput";
+import { useNavigate } from "react-router-dom";
 
 export default function ResetPassword() {
   const { token } = useParams();
@@ -9,6 +10,7 @@ export default function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -27,6 +29,9 @@ export default function ResetPassword() {
         newPassword: password,
       });
       setMessage("Password has been successfully reset.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       console.log(error);
       setError("Failed to reset password. Please try again.");
