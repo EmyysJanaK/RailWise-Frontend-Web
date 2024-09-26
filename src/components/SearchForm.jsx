@@ -78,6 +78,8 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
       setFilteredArrivalStations([]);
       setIsArrivalFocused(false);
     }
+    
+    
   };
 
   const handleSubmit = (e) => {
@@ -128,7 +130,7 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
             value={searchParams.departure}
             onChange={handleInputChange}
             onFocus={() => setIsDepartureFocused(true)}
-            onBlur={() => setTimeout(() => setIsDepartureFocused(false), 200)}
+            // onBlur={() => setTimeout(() => setIsDepartureFocused(false), 200)}
             className="w-full p-3 text-xl border rounded"
             style={{ fontSize: "1.4rem", height: "3.5rem" }}
           />
@@ -154,7 +156,7 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
             value={searchParams.arrival}
             onChange={handleInputChange}
             onFocus={() => setIsArrivalFocused(true)}
-            onBlur={() => setTimeout(() => setIsArrivalFocused(false), 200)}
+            // onBlur={() => setTimeout(() => setIsArrivalFocused(false), 200)}
             className="w-full p-3 text-xl border rounded"
             style={{ fontSize: "1.4rem", height: "3.5rem" }}
           />
@@ -193,7 +195,7 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
         <div className="flex justify-center col-span-1 sm:col-span-2">
           <button
             type="submit"
-            className="searchButton px-8 py-3 text-2xl text-white transition duration-200 bg-purple-600 rounded shadow-sm hover:bg-purple-700"
+            className="px-8 py-3 text-2xl text-white transition duration-200 bg-purple-600 rounded shadow-sm searchButton hover:bg-purple-700"
           >
             Search
           </button>
