@@ -25,10 +25,10 @@ const Failed = () => {
     <>
     {state && state.bookingId &&
     (<div className="flex items-center justify-center min-h-screen bg-green-100">
-      <div className="flex flex-col text-center items-center justify-center p-8 bg-white rounded-lg shadow-lg">
-        <MdCancel className="  text-9xl text-red-600" />
-        <h1 className=" text-3xl font-bold text-red-600 mb-4">Payment Failed</h1>
-        <p className="text-lg  text-gray-700">Your payment was failed! You will be redirected shortly.</p>
+      <div className="flex flex-col items-center justify-center p-8 text-center bg-white rounded-lg shadow-lg">
+        <MdCancel className="text-red-600 text-9xl" />
+        <h1 className="mb-4 text-3xl font-bold text-red-600 ">Payment Failed</h1>
+        <p className="text-lg text-gray-700">Your payment was failed! You will be redirected to Home shortly.</p>
       </div>
     </div>)
 }

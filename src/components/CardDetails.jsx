@@ -1,7 +1,10 @@
-import { useNavigate, useLocation } from "react-router-dom";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { useState } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+// Custom style for the CardElement
 const CARD_ELEMENT_OPTIONS = {
   style: {
     base: {
@@ -20,40 +23,17 @@ const CARD_ELEMENT_OPTIONS = {
   },
 };
 
-function CardDetails({ isExpired, setIsLoading }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { bookingId, email } = location.state;
+function CardDetails({ isExpired }) {
   const stripe = useStripe();
   const elements = useElements();
-
-  console.log("Stripe instance:", stripe);
-  console.log("Elements instance:", elements);
+  const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const { bookingId, email } = location.state;
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
-
-    if (isExpired) {
-      navigate("/failed", { state: { bookingId } });
-      return;
-    }
-
-    if (!stripe || !elements) {
-      console.error("Stripe.js has not loaded yet.");
-      return;
-    }
-    console.log("Before creating payment method");
-
-    // console.log("Before creating payment method");
-    // const cardElement = elements.getElement(CardElement);
-    // console.log("Card Element:", cardElement);
-
-    // if (!cardElement) {
-    //   console.error("Card Element not found or not mounted.");
-    //   setIsLoading(false);
-    //   return;
-    // }
+    setLoading(true);
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
@@ -63,7 +43,6 @@ function CardDetails({ isExpired, setIsLoading }) {
     if (!error) {
       try {
         const { id } = paymentMethod;
-        console.log("Payment method ID:", id);
         await axios.post("/api/bookings/confirmBooking", {
           id,
           bookingId,
@@ -77,8 +56,7 @@ function CardDetails({ isExpired, setIsLoading }) {
     } else {
       console.error(error.message);
     }
-
-    setIsLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -94,14 +72,14 @@ function CardDetails({ isExpired, setIsLoading }) {
       </div>
       <button
         type="submit"
-        disabled={!stripe || !elements}
-        className={`w-full py-2 text-lg text-center text-white transition-colors duration-300 rounded-md ${
-          isExpired
-            ? "bg-gray-400 cursor-not-allowed"
+        disabled={!stripe || loading}
+        className={`w-full text-center text-white text-lg py-2 rounded-md transition-colors duration-300 ${
+          loading || isExpired
+            ? "bg-gray-500 cursor-not-allowed"
             : "bg-purple-600 hover:bg-purple-700"
         }`}
       >
-        Pay Now
+        {loading ? "Processing..." : "Pay Now"}
       </button>
     </form>
   );
