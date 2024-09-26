@@ -2,6 +2,7 @@ import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Custom style for the CardElement
 const CARD_ELEMENT_OPTIONS = {
@@ -22,12 +23,13 @@ const CARD_ELEMENT_OPTIONS = {
   },
 };
 
-function CheckoutForm() {
+function CheckoutForm({ isExpired }) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { bookingId, email } = location.state;
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,10 +43,15 @@ function CheckoutForm() {
     if (!error) {
       try {
         const { id } = paymentMethod;
-        await axios.post("/api/bookings/confirmBooking", { id, bookingId, email });
-        alert("Payment successful!");
+        await axios.post("/api/bookings/confirmBooking", {
+          id,
+          bookingId,
+          email,
+        });
+        navigate("/success", { state: { bookingId } });
       } catch (error) {
         console.error(error);
+        navigate("/failed", { state: { bookingId } });
       }
     } else {
       console.error(error.message);
@@ -55,7 +62,7 @@ function CheckoutForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md p-6 mx-auto bg-gray-100 rounded-lg shadow-lg"
+      className="w-full max-w-lg p-6 mx-auto bg-gray-100 rounded-lg shadow-lg max-h-48"
     >
       <label className="block mb-2 text-lg font-medium text-gray-800">
         Card Details
@@ -67,9 +74,9 @@ function CheckoutForm() {
         type="submit"
         disabled={!stripe || loading}
         className={`w-full text-center text-white text-lg py-2 rounded-md transition-colors duration-300 ${
-          loading
+          loading || isExpired
             ? "bg-gray-500 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-600"
+            : "bg-purple-600 hover:bg-purple-700"
         }`}
       >
         {loading ? "Processing..." : "Pay Now"}
