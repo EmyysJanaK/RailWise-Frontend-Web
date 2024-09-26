@@ -17,7 +17,6 @@ function TripDetails({ timeLeft }) {
   const [tripDetails, setTripDetails] = useState({});
 
   const { bookingId } = location.state;
-  console.log("bookingId: ", bookingId);
 
   useEffect(() => {
     const getSeats = async () => {

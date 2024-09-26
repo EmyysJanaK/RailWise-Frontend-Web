@@ -1,173 +1,109 @@
-import { useState, useEffect } from "react";
-import { useFormik } from "formik";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import axios from "axios";
-import * as yup from "yup";
 
-const validationSchema = yup.object().shape({
-  cardHolderName: yup.string().required("Card Holder Name is required"),
-  cardNumber: yup
-    .string()
-    .required("Card Number is required")
-    .matches(/^\d{16}$/, "Card Number must be exactly 16 digits"),
-  expiryDate: yup
-    .string()
-    .required("Expiry Date is required")
-    .matches(
-      /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
-      "Expiry Date must be in MM/YY format"
-    ),
-  cvv: yup
-    .string()
-    .required("CVV is required")
-    .matches(/^\d{3}$/, "CVV must be exactly 3 digits"),
-});
+const CARD_ELEMENT_OPTIONS = {
+  style: {
+    base: {
+      color: "#32325d",
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: "antialiased",
+      fontSize: "16px",
+      "::placeholder": {
+        color: "#aab7c4",
+      },
+    },
+    invalid: {
+      color: "#fa755a",
+      iconColor: "#fa755a",
+    },
+  },
+};
 
 function CardDetails({ isExpired, setIsLoading }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { bookingId, email } = location.state;
+  const stripe = useStripe();
+  const elements = useElements();
 
-  const formik = useFormik({
-    initialValues: {
-      cardHolderName: "",
-      cardNumber: "",
-      expiryDate: "",
-      cvv: "",
-    },
-    validationSchema,
-    onSubmit: async (values) => {
-      if (isExpired) {
-        return;
-      }
+  console.log("Stripe instance:", stripe);
+  console.log("Elements instance:", elements);
 
-      setIsLoading(true); // Set loading state to true
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
 
+    if (isExpired) {
+      navigate("/failed", { state: { bookingId } });
+      return;
+    }
+
+    if (!stripe || !elements) {
+      console.error("Stripe.js has not loaded yet.");
+      return;
+    }
+    console.log("Before creating payment method");
+
+    // console.log("Before creating payment method");
+    // const cardElement = elements.getElement(CardElement);
+    // console.log("Card Element:", cardElement);
+
+    // if (!cardElement) {
+    //   console.error("Card Element not found or not mounted.");
+    //   setIsLoading(false);
+    //   return;
+    // }
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: elements.getElement(CardElement),
+    });
+
+    if (!error) {
       try {
+        const { id } = paymentMethod;
+        console.log("Payment method ID:", id);
         await axios.post("/api/bookings/confirmBooking", {
+          id,
           bookingId,
           email,
         });
         navigate("/success", { state: { bookingId } });
       } catch (error) {
         console.error(error);
-        formik.setErrors({ cardHolderName: "Failed to confirm booking" });
         navigate("/failed", { state: { bookingId } });
-      } finally {
-        setIsLoading(false); // Set loading state to false
       }
-    },
-  });
+    } else {
+      console.error(error.message);
+    }
+
+    setIsLoading(false);
+  };
 
   return (
-    <>
-
-        <div className="max-w-md">
-          <form
-            onSubmit={formik.handleSubmit}
-            className="p-6 bg-white rounded-lg shadow-md"
-          >
-            <h1 className="mb-4 text-3xl font-extrabold text-gray-900">
-              Enter Card Details
-            </h1>
-            <div className="mb-4">
-              <label
-                className="block mb-1 text-sm font-medium text-gray-700"
-                htmlFor="cardHolderName"
-              >
-                Card Holder Name
-              </label>
-              <input
-                type="text"
-                id="cardHolderName"
-                className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                {...formik.getFieldProps("cardHolderName")}
-                disabled={isExpired}
-              />
-              {formik.touched.cardHolderName && formik.errors.cardHolderName ? (
-                <p className="mt-1 text-sm text-red-500">
-                  {formik.errors.cardHolderName}
-                </p>
-              ) : null}
-            </div>
-            <div className="mb-4">
-              <label
-                className="block mb-1 text-sm font-medium text-gray-700"
-                htmlFor="cardNumber"
-              >
-                Card Number
-              </label>
-              <input
-                type="text"
-                id="cardNumber"
-                className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                {...formik.getFieldProps("cardNumber")}
-                disabled={isExpired}
-              />
-              {formik.touched.cardNumber && formik.errors.cardNumber ? (
-                <p className="mt-1 text-sm text-red-500">
-                  {formik.errors.cardNumber}
-                </p>
-              ) : null}
-            </div>
-            <div className="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2">
-              <div>
-                <label
-                  className="block mb-1 text-sm font-medium text-gray-700"
-                  htmlFor="expiryDate"
-                >
-                  Expiry Date
-                </label>
-                <input
-                  type="text"
-                  id="expiryDate"
-                  placeholder="MM/YY"
-                  className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  {...formik.getFieldProps("expiryDate")}
-                  disabled={isExpired}
-                />
-                {formik.touched.expiryDate && formik.errors.expiryDate ? (
-                  <p className="mt-1 text-sm text-red-500">
-                    {formik.errors.expiryDate}
-                  </p>
-                ) : null}
-              </div>
-              <div>
-                <label
-                  className="block mb-1 text-sm font-medium text-gray-700"
-                  htmlFor="cvv"
-                >
-                  CVV
-                </label>
-                <input
-                  type="text"
-                  id="cvv"
-                  className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  {...formik.getFieldProps("cvv")}
-                  disabled={isExpired}
-                />
-                {formik.touched.cvv && formik.errors.cvv ? (
-                  <p className="mt-1 text-sm text-red-500">
-                    {formik.errors.cvv}
-                  </p>
-                ) : null}
-              </div>
-            </div>
-            <button
-              type="submit"
-              className={`w-full px-4 py-2 font-bold text-white transition duration-200 rounded shadow-lg mt-2 ${
-                isExpired
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-purple-600 hover:bg-purple-700"
-              }`}
-              disabled={isExpired}
-            >
-              Pay Now
-            </button>
-          </form>
-        </div>
-
-    </>
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-lg p-6 mx-auto bg-gray-100 rounded-lg shadow-lg max-h-48"
+    >
+      <label className="block mb-2 text-lg font-medium text-gray-800">
+        Card Details
+      </label>
+      <div className="p-3 mb-5 bg-white border border-gray-300 rounded-md">
+        <CardElement options={CARD_ELEMENT_OPTIONS} />
+      </div>
+      <button
+        type="submit"
+        disabled={!stripe || !elements}
+        className={`w-full py-2 text-lg text-center text-white transition-colors duration-300 rounded-md ${
+          isExpired
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-purple-600 hover:bg-purple-700"
+        }`}
+      >
+        Pay Now
+      </button>
+    </form>
   );
 }
 
