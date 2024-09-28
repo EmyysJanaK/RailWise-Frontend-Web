@@ -1,4 +1,4 @@
-import React, {useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -58,7 +58,9 @@ function Register() {
             required
           />
           {errors.username && (
-            <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
+            <p className="mt-1 text-sm text-red-500">
+              {errors.username.message}
+            </p>
           )}
         </div>
 
@@ -81,14 +83,19 @@ function Register() {
         {/* Phone Input */}
         <div className="mb-4">
           <label className="block mb-1 text-gray-700">Phone</label>
-          <input
-            type="tel"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500 ${
-              errors.phone ? "border-red-500" : ""
-            }`}
-            {...register("phone")}
-            required
-          />
+          <div className="flex">
+            <span className="inline-flex items-center px-3 text-gray-700 bg-gray-200 border border-r-0 rounded-l-lg">
+              +94
+            </span>
+            <input
+              type="tel"
+              className={`w-full px-4 py-2 border rounded-r-lg focus:outline-none focus:border-blue-500 ${
+                errors.phone ? "border-red-500" : ""
+              }`}
+              {...register("phone")}
+              required
+            />
+          </div>
           {errors.phone && (
             <p className="mt-1 text-sm text-red-500">{errors.phone.message}</p>
           )}
@@ -106,7 +113,9 @@ function Register() {
             required
           />
           {errors.password && (
-            <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+            <p className="mt-1 text-sm text-red-500">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
