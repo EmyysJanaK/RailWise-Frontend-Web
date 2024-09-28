@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Filter from "../components/Filter";
 import TrainOption from "../components/TrainOption";
@@ -8,6 +8,8 @@ import useTrainOptions from "../hooks/useTrainOptions";
 export default function Results() {
   const { reservationData, setReservationData } =
     useContext(ReservationContext);
+
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
 
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ export default function Results() {
     <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div className="flex flex-col gap-6 md:flex-row lg:px-20 ml:6">
         <div className={`flex-1 w-full p-1 `}>
-          <Filter />
+          <Filter selectedFeatures={selectedFeatures} setSelectedFeatures={setSelectedFeatures} />
         </div>
 
         <div className="flex-1 flex flex-col gap-4 ml-0 md:ml-8 lg:flex-[3]">
@@ -44,14 +46,19 @@ export default function Results() {
           ) : error ? (
             <div className="text-red-500">{error}</div>
           ) : (
-            trainOptions.length>0 ?
-            (trainOptions.map((option) => (
-              <TrainOption
-                key={option.id}
-                option={option}
-                onClick={() => handleTrainOptionClick(option)}
-              />
-            ))):(
+            trainOptions.length > 0 ? (
+              trainOptions.map((option) => (
+                (selectedFeatures.length == 0 ||selectedFeatures.includes(option.scheduleType.charAt(0).toUpperCase() + option.scheduleType.slice(1))) ? (
+                  <TrainOption
+                    key={option.id}
+                    option={option}
+                    onClick={() => handleTrainOptionClick(option)}
+                  />
+                ): (              <div className="ml-3 text-2xl font-bold text-gray-700 capitalize">
+                  No trains available
+                </div>)
+              ))
+            ) :(
               <div className="ml-3 text-2xl font-bold text-gray-700 capitalize">
             No trains available
           </div>

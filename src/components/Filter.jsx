@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-export default function Filter() {
-  const [selectedFeatures, setSelectedFeatures] = useState([]);
+export default function Filter({selectedFeatures, setSelectedFeatures}) {
+ 
 
-  const features = ["Express", "Slow"];
+  const features = ["Express", "Slow", ];
 
   const handleFeatureChange = (event) => {
     const feature = event.target.value;
