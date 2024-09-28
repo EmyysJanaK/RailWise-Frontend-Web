@@ -19,6 +19,7 @@ import Payment from './pages/Payment';
 import Success from './pages/Success';
 import Failed from './pages/Failed';
 import ResetPassword from './pages/ResetPassword';
+import PrivateRoute from './pages/PrivateRoute';
 
 function App() {
   return (
@@ -37,7 +38,8 @@ function App() {
                   <Route path="/stations" element={<History />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
-                  <Route path="/profile" element={<ProfilePage />} />
+                  
+                  <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password/:token" element={<ResetPassword />} />
                   {/* <Route path="/traindetails" element={<TrainDetails />} /> */}
