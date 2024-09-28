@@ -23,9 +23,7 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
   const { setReservationData } = useContext(ReservationContext);
 
   const [stations, setStations] = useState([]);
-  const [filteredDepartureStations, setFilteredDepartureStations] = useState(
-    []
-  );
+  const [filteredDepartureStations, setFilteredDepartureStations] = useState([]);
   const [filteredArrivalStations, setFilteredArrivalStations] = useState([]);
   const [error, setError] = useState(null);
   const [isDepartureFocused, setIsDepartureFocused] = useState(false);
@@ -78,8 +76,6 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
       setFilteredArrivalStations([]);
       setIsArrivalFocused(false);
     }
-    
-    
   };
 
   const handleSubmit = (e) => {
@@ -130,7 +126,7 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
             value={searchParams.departure}
             onChange={handleInputChange}
             onFocus={() => setIsDepartureFocused(true)}
-            // onBlur={() => setTimeout(() => setIsDepartureFocused(false), 200)}
+            onBlur={() => setTimeout(() => setIsDepartureFocused(false), 500)}
             className="w-full p-3 text-xl border rounded"
             style={{ fontSize: "1.4rem", height: "3.5rem" }}
           />
@@ -156,7 +152,7 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
             value={searchParams.arrival}
             onChange={handleInputChange}
             onFocus={() => setIsArrivalFocused(true)}
-            // onBlur={() => setTimeout(() => setIsArrivalFocused(false), 200)}
+            onBlur={() => setTimeout(() => setIsArrivalFocused(false), 500)}
             className="w-full p-3 text-xl border rounded"
             style={{ fontSize: "1.4rem", height: "3.5rem" }}
           />

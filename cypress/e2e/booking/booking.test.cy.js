@@ -1,13 +1,27 @@
+import 'cypress-iframe';
 describe('Train Booking Flow with Seat Selection', () => {
     it('Should successfully book a seat and pay', () => {
       // Step 1: Visit the home page
       cy.visit('http://localhost:5173');
   
       // Step 2: Fill out the form on the home page
+
+      // Calculate the next Monday
+      const today = new Date();
+      const dayOfWeek = today.getDay(); // 0 is Sunday, 1 is Monday, etc.
+      const daysUntilNextMonday = (8 - dayOfWeek) % 7; // Days until the next Monday
+      const nextMonday = new Date(today);
+      nextMonday.setDate(today.getDate() + daysUntilNextMonday);
+
+      // Format the date to "YYYY-MM-DD"
+      const formattedNextMonday = nextMonday.toISOString().split('T')[0];
+
+
       cy.get('input[name="departure"]').type('Beliaththa');
       cy.get('input[name="arrival"]').type('Maradana');
+      cy.wait(600);
       cy.get('input[name="seat"]').clear().type('1');
-      cy.get('input[name="date"]').type('2024-09-23');
+      cy.get('input[name="date"]').type(formattedNextMonday);
 
   
       // Step 3: Click the "Search" button to navigate to the results page
@@ -24,14 +38,17 @@ describe('Train Booking Flow with Seat Selection', () => {
       cy.get('.bg-white.cursor-pointer').first().click(); 
   
       // Step 7: Enter email and enable the "Proceed to payment" button
-      cy.get('input[type="email"]').type('test@example.com');
+      cy.get('input[type="email"]').type('mongalburuwa@gmail.com');
       cy.get('button').contains('Proceed to payment').click();
   
       // Step 8: On the payment page, fill out card information
-      cy.get('input[id="cardHolderName"]').type('Test User');
-      cy.get('input[id="cardNumber"]').type('4111111111111111'); // Dummy card number
-      cy.get('input[id="expiryDate"]').type('12/24'); // Expiry date
-      cy.get('input[id="cvv"]').type('123'); // CVV
+      cy.origin('https://js.stripe.com', () => {
+        cy.get('input[name="cardnumber"]').type('4242424242424242');
+        cy.get('input[name="exp-date"]').type('12/24');
+        cy.get('input[name="cvc"]').type('123');
+        cy.get('input[name="postal"]').type('70100');
+      });
+
   
       // Step 9: Click "Pay Now" to complete the process
       cy.get('button').contains('Pay Now').click();
