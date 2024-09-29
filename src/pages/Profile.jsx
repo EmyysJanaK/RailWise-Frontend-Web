@@ -345,14 +345,16 @@ const ProfilePage = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-between w-full p-6 bg-blue-100 rounded-lg">
-                      <button
-                        onClick={() => handleDeleteBooking(booking._id)}
-                        className="px-4 py-2 text-white transition bg-red-500 rounded hover:bg-red-600"
-                      >
-                        Delete Booking
-                      </button>
-                    </div>
+                    {new Date(booking.date).getTime() > new Date().getTime() && (
+                  <div className="flex justify-between w-full p-6 bg-blue-100 rounded-lg">
+                    <button
+                      onClick={() => handleDeleteBooking(booking._id)}
+                      className="px-4 py-2 text-white transition bg-red-500 rounded hover:bg-red-600"
+                    >
+                      Cancel Booking
+                    </button>
+                  </div>
+                  )}
                   </li>
                 ))}
               </ul>
