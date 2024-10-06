@@ -28,7 +28,7 @@ const Failed = () => {
       <div className="flex flex-col items-center justify-center p-8 text-center bg-white rounded-lg shadow-lg">
         <MdCancel className="text-red-600 text-9xl" />
         <h1 className="mb-4 text-3xl font-bold text-red-600 ">Payment Failed</h1>
-        <p className="text-lg text-gray-700">Your payment was failed! You will be redirected to Home shortly.</p>
+        <p className="text-lg text-gray-700">Your payment was failed! You will be redirected to Payment page shortly.</p>
       </div>
     </div>)
 }
