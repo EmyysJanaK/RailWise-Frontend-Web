@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// Register.jsx
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,12 +7,15 @@ import { registerSchema } from "../utils/validation";
 import useAuth from "../hooks/useAuth";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png";
+import { UserContext } from "../context/UserContext";
+
 
 function Register() {
   const location = useLocation();
-  const { register: registerUser, error } = useAuth();
-  const [prevLocation, setPrevLocation] = useState("HomePage");
   const navigate = useNavigate();
+  const { register: registerUser, error } = useAuth();
+  const [prevLocation, setPrevLocation] = useState("/");
+  const { userData } = useContext(UserContext);
 
   const {
     register,
@@ -20,24 +24,26 @@ function Register() {
   } = useForm({
     resolver: zodResolver(registerSchema),
   });
+  if(userData){
+    navigate('/');
+  }
 
   useEffect(() => {
-    if (location.state && location.state.data) {
-      setPrevLocation(location.state.data);
+    if (location.state && location.state.from) {
+      setPrevLocation(location.state.from.pathname);
     }
   }, [location]);
 
   const onSubmit = async (data) => {
-    const registrationResult = await registerUser(data);
+    const success = await registerUser(data);
 
-    if (registrationResult.success) {
-      navigate("/dashboard");
+    if (success) {
+      navigate(prevLocation, { replace: true });
     }
   };
 
   return (
     <div className="relative z-10 w-full max-w-md p-8 mx-auto my-12 bg-white rounded-lg shadow-lg">
-      {/* <Breadcrumbs title="Register" prevLocation={prevLocation} /> */}
       <div className="flex justify-center mb-6">
         <img src={trainImage} alt="Railwise Logo" className="w-40 h-40" />
       </div>
@@ -129,7 +135,7 @@ function Register() {
       </form>
       <div className="mt-4">
         <span className="text-gray-600">Already have an account?</span>
-        <Link to="/Login" className="ml-2 text-blue-500">
+        <Link to="/login" className="ml-2 text-blue-500">
           Login
         </Link>
       </div>

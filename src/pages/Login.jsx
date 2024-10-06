@@ -1,36 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState,useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
 import useFormInput from "../hooks/useFormInput";
 import useAuth from "../hooks/useAuth";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { loginUser, error } = useAuth();
-  const [prevLocation, setPrevLocation] = useState("HomePage");
+  const [prevLocation, setPrevLocation] = useState("/");
   const username = useFormInput("");
   const password = useFormInput("");
+  const { userData } = useContext(UserContext);
 
+  if(userData){
+    navigate('/');
+  }
   useEffect(() => {
-    if (location.state && location.state.data) {
-      setPrevLocation(location.state.data);
+    if (location.state && location.state.from) {
+      setPrevLocation(location.state.from.pathname);
     }
   }, [location]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await loginUser({
+    const success = await loginUser({
       emailOrUsername: username.value,
       password: password.value,
     });
+    if (success) {
+      navigate(prevLocation, { replace: true });
+    }
   };
 
   return (
     <div className="relative z-10 w-full max-w-md p-8 mx-auto my-12 bg-white rounded-lg shadow-lg">
-      {/* <Breadcrumbs title="Login" prevLocation={prevLocation} /> */}
       <div className="flex justify-center mb-6">
         <img src={trainImage} alt="Railwise Logo" className="w-40 h-40" />
       </div>
@@ -56,7 +64,11 @@ const Login = () => {
       </form>
       <div className="mt-4">
         <span className="text-gray-600">Don't have an account?</span>
-        <Link to="/register" className="ml-2 text-blue-500">
+        <Link
+          to="/register"
+          state={{ from: location.state?.from }}
+          className="ml-2 text-blue-500"
+        >
           Register
         </Link>
       </div>
@@ -65,4 +77,3 @@ const Login = () => {
 };
 
 export default Login;
-

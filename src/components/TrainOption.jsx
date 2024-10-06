@@ -1,25 +1,28 @@
+// TrainOption.jsx
 import PropTypes from "prop-types";
 import { useContext, useEffect, useState } from "react";
 import { ReservationContext } from "../context/ReservationContext";
+import { UserContext } from "../context/UserContext";
 import { FaTrain, FaClock } from "react-icons/fa";
 import { MdChair } from "react-icons/md";
 import PopUp from "./PopUp";
-import { UserContext } from "../context/UserContext";
+import { useNavigate, useLocation } from "react-router-dom"; // Import hooks
 
 const TrainOption = ({ option, onClick }) => {
-  const { reservationData, setReservationData } =
-    useContext(ReservationContext);
+  const { reservationData, setReservationData } = useContext(ReservationContext);
+  const { userData } = useContext(UserContext);
+  const [showPopUp, setShowPopUp] = useState(false);
   
-    const { userData } = useContext(UserContext);
+  const navigate = useNavigate(); // Initialize navigate
+  const location = useLocation(); // Get current location
 
   useEffect(() => {
     console.log("TrainOption rendered");
   }, []);
 
-  const [showPopUp, setShowPopUp] = useState(false);
-
   const handleTrainOptionClick = () => {
     if (userData) {
+      // User is logged in, proceed to booking
       setReservationData({
         ...reservationData,
         scheduleId: option.id,
@@ -32,29 +35,18 @@ const TrainOption = ({ option, onClick }) => {
       });
       onClick(); // Proceed with the train selection
     } else {
-      setShowPopUp(true); // Show pop-up for unregistered users
+      // User is not logged in, show pop-up
+      setShowPopUp(true);
     }
   };
 
   const handlePopUpClose = () => {
-    setShowPopUp(false); // Close pop-up
-    // Allow user to continue with booking process
-    setReservationData({
-      ...reservationData,
-      scheduleId: option.id,
-      fromHaltId: option.fromHalt.id,
-      toHaltId: option.toHalt.id,
-      trainId: option.train.id,
-      seatAvailability: option.seatAvailability,
-      departureTime: option.fromHalt.departureTime,
-      arrivalTime: option.toHalt.arrivalTime,
-    });
-    onClick();
+    setShowPopUp(false); 
   };
 
   const handlePopUpLogin = () => {
     console.log("Redirect to login");
-    window.location.href = "/login"; // Redirect to login page
+    navigate("/login", { state: { from: location } });
   };
 
   return (
@@ -64,9 +56,9 @@ const TrainOption = ({ option, onClick }) => {
       )}
       <div
         className="items-center justify-between p-6 mb-6 transition-transform transform bg-white border border-gray-300 shadow-lg cursor-pointer rounded-xl hover:shadow-xl hover:scale-105"
-        onClick={handleTrainOptionClick} 
+        onClick={handleTrainOptionClick}
       >
-        <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
+         <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
           <div className="flex items-center">
             <div className="mr-3 text-2xl font-bold text-indigo-700 capitalize">
               {option.scheduleType}
@@ -153,7 +145,6 @@ TrainOption.propTypes = {
     }).isRequired,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
-  isRegistered: PropTypes.bool.isRequired,
 };
 
 export default TrainOption;

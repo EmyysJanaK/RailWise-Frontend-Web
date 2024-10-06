@@ -17,10 +17,9 @@ const useAuth = () => {
         password,
       }, { withCredentials: true });
 
-      console.log("register hook", response.data);
       if (response.status === 200) {
         login(response.data);
-        navigate("/");
+        return true;
       }
     } catch (error) {
       setError(error.response.data.message || "Registration failed");
@@ -36,7 +35,7 @@ const useAuth = () => {
 
       if (response.status === 200) {
         login(response.data);
-        navigate("/");
+        return true;
       }
     } catch (error) {
       setError("Invalid username or password");
