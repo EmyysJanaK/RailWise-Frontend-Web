@@ -10,6 +10,7 @@ import { ReservationContext } from "../context/ReservationContext";
 import { UserContext } from "../context/UserContext";
 import Wagon from "../components/Wagon";
 import SeatSelectionDispaly from "../components/SeatSelectionDisplay";
+import { set } from "react-hook-form";
 
 function SamplePrevArrow(props) {
   const { className, style, onClick } = props;
@@ -122,6 +123,13 @@ const SeatSelectionPage = () => {
       return false;
     }
   };
+
+  useEffect(() => {
+    if (userData){
+      setEmail(userData.email);
+    }
+  }, [userData])
+  
 
   const handleProceed = async (selectedSeats) => {
     setReservationData({
