@@ -4,10 +4,13 @@ import { ReservationContext } from "../context/ReservationContext";
 import { FaTrain, FaClock } from "react-icons/fa";
 import { MdChair } from "react-icons/md";
 import PopUp from "./PopUp";
+import { UserContext } from "../context/UserContext";
 
-const TrainOption = ({ option, onClick, isRegistered }) => {
+const TrainOption = ({ option, onClick }) => {
   const { reservationData, setReservationData } =
     useContext(ReservationContext);
+  
+    const { userData } = useContext(UserContext);
 
   useEffect(() => {
     console.log("TrainOption rendered");
@@ -16,8 +19,7 @@ const TrainOption = ({ option, onClick, isRegistered }) => {
   const [showPopUp, setShowPopUp] = useState(false);
 
   const handleTrainOptionClick = () => {
-    if (isRegistered) {
-      // Set reservation data and proceed to booking
+    if (userData) {
       setReservationData({
         ...reservationData,
         scheduleId: option.id,
