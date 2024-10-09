@@ -6,7 +6,6 @@ import PopularRoutes from '../components/PopularRoutes';
 import { useRef } from 'react';
 
 const HomePage = () => {
-  const [announcements, setAnnouncements] = useState([]);
   const [departure, setDeparture] = useState("");
   const [arrival, setArrival] = useState("");
   const [date, setDate] = useState("");
@@ -61,17 +60,6 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="mt-12">
-            <h2 className="mb-4 text-3xl font-bold text-gray-800">Important Announcements</h2>
-            <ul className="space-y-4">
-              {announcements.map((announcement, index) => (
-                <li key={index} className="p-4 bg-white rounded-lg shadow-md">
-                  <h3 className="text-2xl font-semibold text-gray-800">{announcement.title}</h3>
-                  <p className="text-gray-600">{announcement.content}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
         </main>
       </div>
     </div>
