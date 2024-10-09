@@ -345,16 +345,23 @@ const ProfilePage = () => {
                       </div>
                     </div>
 
-                    {new Date(booking.date).getTime() > new Date().getTime() && (
-                  <div className="flex justify-between w-full p-6 bg-blue-100 rounded-lg">
-                    <button
-                      onClick={() => handleDeleteBooking(booking._id)}
-                      className="px-4 py-2 text-white transition bg-red-500 rounded hover:bg-red-600"
-                    >
-                      Cancel Booking
-                    </button>
-                  </div>
-                  )}
+                    {new Date(booking.date).getTime() > new Date().getTime() &&
+                      // if booking.status is not cancelled show the button otherwise diable the button
+                      (booking.status !== "cancelled" ? (
+                        <button
+                          onClick={() => handleDeleteBooking(booking._id)}
+                          className="px-4 py-2 text-white bg-red-500 rounded"
+                        >
+                          Cancel Booking
+                        </button>
+                      ) : (
+                        <button
+                          disabled
+                          className="px-4 py-2 text-white bg-gray-500 rounded"
+                        >
+                          Cancelled
+                        </button>
+                      ))}
                   </li>
                 ))}
               </ul>
