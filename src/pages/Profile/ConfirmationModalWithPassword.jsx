@@ -9,7 +9,7 @@ const ConfirmationModalWithPassword = ({ onClose, onSubmit, formValues, handleIn
       <input
         type="password"
         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-        placeholder="Old Password"
+        placeholder="Password"
         value={formValues.oldPassword}
         onChange={handleInputChange("oldPassword")}
       />
