@@ -8,13 +8,13 @@ const SeatOption = ({ wagonClassName, availableSeats, price, features, isDisable
          ${isSelected ? 'border-purple-900 bg-blue-100' : 'border-purple-900 bg-white' } ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-blue-500'}`}
       onClick={!isDisabled ? onSelect : null}
     >
-      <h3 className="font-bold text-3xl mb-4 text-black-900 text-center">{wagonClassName.toUpperCase()}</h3>
-      <p className="text-3xl font-semibold text-gray-700 text-center">${price.toFixed(2)}</p>
-      <p className="text-3xl font-semibold text-gray-700 mt-2 text-center">Available seats: {availableSeats}</p>
+      <h3 className="mb-4 text-3xl font-bold text-center text-black-900">{wagonClassName.toUpperCase()}</h3>
+      <p className="text-3xl font-semibold text-center text-gray-700">LKR {price}</p>
+      <p className="mt-2 text-3xl font-semibold text-center text-gray-700">Available seats: {availableSeats}</p>
       <ul className="mt-6 space-y-3">
         {features.map((feature, index) => (
           <li key={index} className="flex items-center justify-center">
-            <span className="text-green-500 mr-2">✔</span>
+            <span className="mr-2 text-green-500">✔</span>
             <span className="text-lg text-gray-700">{feature}</span>
           </li>
         ))}

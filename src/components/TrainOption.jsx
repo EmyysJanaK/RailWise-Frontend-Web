@@ -73,7 +73,7 @@ const TrainOption = ({ option, onClick }) => {
           </div>
 
           <div className="flex items-center">
-            <div className="text-xl font-bold text-gray-800">From ${option.price}</div>
+            <div className="text-xl font-bold text-gray-800">From LKR {option.price}</div>
           </div>
         </div>
 

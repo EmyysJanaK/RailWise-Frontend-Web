@@ -129,7 +129,7 @@ function TripDetails({ timeLeft }) {
           <div className="flex justify-between pt-4 mt-4 border-t border-gray-300">
             <p className="text-xl font-semibold text-gray-700">Price</p>
             <p className="text-xl font-semibold text-gray-700">
-              ${bookingDetails.totalFare}
+              LKR {bookingDetails.totalFare}
             </p>
           </div>
         </>
