@@ -13,13 +13,15 @@ import Layout from './components/Layout';
 import Options from './pages/Options';
 import { UserProvider } from './context/UserContext';
 import SeatSelection from './pages/SeatSelection';
-import ProfilePage from './pages/Profile';
+import ProfilePage from './pages/Profile/Profile';
 import './index.css';
 import Payment from './pages/Payment';
 import Success from './pages/Success';
 import Failed from './pages/Failed';
 import ResetPassword from './pages/ResetPassword';
 import PrivateRoute from './pages/PrivateRoute';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -50,6 +52,7 @@ function App() {
                   <Route path="/failed" element={<Failed />} />
                   {/* <Route path="/seatselection" element={<SeatSelection />} /> */}
                 </Routes>
+                <ToastContainer />
               </Layout>
             </ReservationProvider>
           </UserProvider>
