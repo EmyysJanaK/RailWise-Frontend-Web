@@ -8,7 +8,7 @@ const PopUp = ({ onClose, onLogin }) => {
         <h2 className="mb-4 text-xl font-bold text-center">HELLO!</h2>
         <p className="mb-6 text-center">
           As a registered user, you can view your booking history, cancel
-          bookings, and receive exclusive offers!
+          bookings, and receive exclusive updates!
         </p>
         <div className="flex justify-center gap-4">
           <button
