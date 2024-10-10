@@ -1,16 +1,21 @@
 {
   "family": "railwiseTask",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",               
+  "memory": "512",             
   "containerDefinitions": [
     {
-      "name": "railwiseContainer",
+      "name": "my-container",
       "image": "REPOSITORY_URI:IMAGE_TAG",
       "essential": true,
-      "memory": 512,
-      "cpu": 256,
       "portMappings": [
         {
           "containerPort": 80,
-          "hostPort": 80
+          "hostPort": 80,
+          "protocol": "tcp"
         }
       ]
     }
