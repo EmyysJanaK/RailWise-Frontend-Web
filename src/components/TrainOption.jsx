@@ -9,10 +9,11 @@ import PopUp from "./PopUp";
 import { useNavigate, useLocation } from "react-router-dom"; // Import hooks
 
 const TrainOption = ({ option, onClick }) => {
-  const { reservationData, setReservationData } = useContext(ReservationContext);
+  const { reservationData, setReservationData } =
+    useContext(ReservationContext);
   const { userData } = useContext(UserContext);
   const [showPopUp, setShowPopUp] = useState(false);
-  
+
   const navigate = useNavigate(); // Initialize navigate
   const location = useLocation(); // Get current location
 
@@ -41,7 +42,18 @@ const TrainOption = ({ option, onClick }) => {
   };
 
   const handlePopUpClose = () => {
-    setShowPopUp(false); 
+    setShowPopUp(false);
+    setReservationData({
+      ...reservationData,
+      scheduleId: option.id,
+      fromHaltId: option.fromHalt.id,
+      toHaltId: option.toHalt.id,
+      trainId: option.train.id,
+      seatAvailability: option.seatAvailability,
+      departureTime: option.fromHalt.departureTime,
+      arrivalTime: option.toHalt.arrivalTime,
+    });
+    onClick(); // Proceed with the train selection
   };
 
   const handlePopUpLogin = () => {
@@ -58,7 +70,7 @@ const TrainOption = ({ option, onClick }) => {
         className="items-center justify-between p-6 mb-6 transition-transform transform bg-white border border-gray-300 shadow-lg cursor-pointer rounded-xl hover:shadow-xl hover:scale-105"
         onClick={handleTrainOptionClick}
       >
-         <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
+        <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
           <div className="flex items-center">
             <div className="mr-3 text-2xl font-bold text-indigo-700 capitalize">
               {option.scheduleType}
@@ -73,13 +85,17 @@ const TrainOption = ({ option, onClick }) => {
           </div>
 
           <div className="flex items-center">
-            <div className="text-xl font-bold text-gray-800">From LKR {option.price}</div>
+            <div className="text-xl font-bold text-gray-800">
+              From LKR {option.price}
+            </div>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-between w-full gap-4 mb-4">
           <div className="flex items-center">
-            <div className="mr-3 text-lg text-gray-800">{option.fromHalt.name}</div>
+            <div className="mr-3 text-lg text-gray-800">
+              {option.fromHalt.name}
+            </div>
           </div>
 
           <div className="flex items-center text-xl text-gray-700 capitalize">
@@ -96,7 +112,9 @@ const TrainOption = ({ option, onClick }) => {
           <div className="text-xl text-gray-500">
             {option.fromHalt.departureTime}
           </div>
-          <div className="text-xl text-gray-500">{option.toHalt.arrivalTime}</div>
+          <div className="text-xl text-gray-500">
+            {option.toHalt.arrivalTime}
+          </div>
         </div>
 
         <div className="flex justify-between w-full p-6 bg-blue-100 rounded-lg">
