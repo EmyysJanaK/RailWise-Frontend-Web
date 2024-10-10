@@ -1,4 +1,3 @@
-// Register.jsx
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -8,7 +7,7 @@ import useAuth from "../hooks/useAuth";
 import Breadcrumbs from "../components/Breadcrumbs";
 import trainImage from "../assets/trainImage.png";
 import { UserContext } from "../context/UserContext";
-
+import { validateEmail } from "../utils/emailValidation";
 
 function Register() {
   const location = useLocation();
@@ -16,6 +15,7 @@ function Register() {
   const { register: registerUser, error } = useAuth();
   const [prevLocation, setPrevLocation] = useState("/");
   const { userData } = useContext(UserContext);
+  const [emailError, setEmailError] = useState(""); // State to store email validation error
 
   const {
     register,
@@ -24,8 +24,9 @@ function Register() {
   } = useForm({
     resolver: zodResolver(registerSchema),
   });
-  if(userData){
-    navigate('/');
+
+  if (userData) {
+    navigate("/");
   }
 
   useEffect(() => {
@@ -35,6 +36,12 @@ function Register() {
   }, [location]);
 
   const onSubmit = async (data) => {
+    const isEmailValid = await validateEmail(data.email, setEmailError);
+
+    if (!isEmailValid) {
+      return; // Stop form submission if email is invalid
+    }
+
     const success = await registerUser(data);
 
     if (success) {
@@ -51,6 +58,8 @@ function Register() {
         Railwise Register
       </h1>
       {error && <div className="mb-4 text-red-600">{error}</div>}
+      {emailError && <div className="mb-4 text-red-600">{emailError}</div>}{" "}
+      {/* Display email validation error */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Username Input */}
         <div className="mb-4">
