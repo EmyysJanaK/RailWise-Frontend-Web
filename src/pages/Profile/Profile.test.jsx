@@ -56,6 +56,7 @@ describe('ProfilePage', () => {
     loading: false,
   };
 
+
   // Utility function to render ProfilePage with UserContext
   const renderWithUser = (userData, loading = false) => {
     return render(

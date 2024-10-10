@@ -8,7 +8,7 @@ import SideMenu from "./SideMenu";
 
 const ProfilePage = () => {
   const { loading } = useContext(UserContext);
-  const { activeTab, setActiveTab } = useProfile();
+  const [ activeTab, setActiveTab ] = useContext("profile")
 
   if (loading) return <div>Loading...</div>;
 
