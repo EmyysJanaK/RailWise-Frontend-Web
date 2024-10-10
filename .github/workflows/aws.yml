@@ -21,19 +21,20 @@ jobs:
         with:
           region: ${{ secrets.AWS_REGION }}
 
+
       - name: Build, tag, and push Docker image
         run: |
           IMAGE_TAG=latest
-          ECR_REPOSITORY=your-repository-name
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin your-aws-account-id.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+          ECR_REPOSITORY=railwise
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin 940482421209.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG your-aws-account-id.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push your-aws-account-id.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG 940482421209.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push 940482421209.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Deploy to ECS
         run: |
           aws ecs update-service \
-            --cluster your-cluster-name \
-            --service your-service-name \
+            --cluster railwiseCluster \
+            --service railwiseService \
             --force-new-deployment \
             --region ${{ secrets.AWS_REGION }}
