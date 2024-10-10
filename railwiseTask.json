@@ -8,7 +8,7 @@
   "memory": "512",             
   "containerDefinitions": [
     {
-      "name": "my-container",
+      "name": "railwiseContainer",
       "image": "REPOSITORY_URI:IMAGE_TAG",
       "essential": true,
       "portMappings": [
