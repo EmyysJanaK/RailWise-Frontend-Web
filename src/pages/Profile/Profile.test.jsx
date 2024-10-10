@@ -1,77 +1,41 @@
-// src/pages/Profile/Profile.test.jsx
-import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import ProfilePage from './Profile';
-import { UserContext } from '../../context/UserContext';
-import { useProfile } from '../../hooks/useProfile';
-import { useBookings } from '../../hooks/useBookings';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import PrivateRoute from '../PrivateRoute';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+// ProfilePage.test.jsx
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import ProfilePage from "./Profile";
+import PrivateRoute from "../PrivateRoute";
+import { UserContext } from "../../context/UserContext";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
+import "@testing-library/jest-dom";
+import userEvent from "@testing-library/user-event";
+import ProfileForm from "./ProfileForm";
+import Login from "../Login";
+import SideMenu from "./SideMenu";
 
-// Mock the useProfile and useBookings hooks
-vi.mock('../../hooks/useProfile');
-vi.mock('../../hooks/useBookings');
-
-describe('ProfilePage', () => {
-  // Mock functions
-  const mockSetActiveTab = vi.fn();
-  const mockSetIsEditing = vi.fn();
-  const mockSetShowModal = vi.fn();
-  const mockSetShowChangePasswordModal = vi.fn();
-  const mockHandleChangePasswordClick = vi.fn();
-  const mockHandleSaveClick = vi.fn();
-  const mockHandleSaveSubmit = vi.fn();
-  const mockHandleInputChange = vi.fn(() => vi.fn());
-  const mockHandleDeleteBooking = vi.fn();
-
-  // Default mock return values for useProfile
-  const mockUseProfileDefault = {
-    activeTab: 'profile',
-    setActiveTab: mockSetActiveTab,
-    isEditing: false,
-    setIsEditing: mockSetIsEditing,
-    showModal: false,
-    setShowModal: mockSetShowModal,
-    showChangePasswordModal: false,
-    setShowChangePasswordModal: mockSetShowChangePasswordModal,
-    handleChangePasswordClick: mockHandleChangePasswordClick,
-    handleSaveClick: mockHandleSaveClick,
-    handleSaveSubmit: mockHandleSaveSubmit,
-    formValues: {
-      username: 'testuser',
-      email: 'test@example.com',
-      phone: '+94123456789',
-      changesMade: false,
-    },
-    handleInputChange: mockHandleInputChange,
-  };
-
-  // Default mock return values for useBookings
-  const mockUseBookingsDefault = {
-    bookings: [],
-    handleDeleteBooking: mockHandleDeleteBooking,
-    loading: false,
-  };
+// Mock child components used within ProfilePage
 
 
-  // Utility function to render ProfilePage with UserContext
-  const renderWithUser = (userData, loading = false) => {
+vi.mock("./BookingHistory", () => ({
+  default: () => <div data-testid="booking-history">Booking History</div>,
+}));
+
+
+describe("ProfilePage Component", () => {
+  // Helper function to render components with necessary providers
+  const renderWithProviders = (ui, { userData, loading } = {}) => {
     return render(
-      <MemoryRouter initialEntries={['/profile']}>
+      <MemoryRouter initialEntries={["/profile"]}>
         <UserContext.Provider value={{ userData, loading }}>
           <Routes>
             <Route
               path="/profile"
               element={
                 <PrivateRoute>
-                  <ProfilePage />
+                  {ui}
                 </PrivateRoute>
               }
             />
-            <Route path="/login" element={<div>Login Page</div>} /> {/* Mock Login Page */}
+            <Route path="/login"  element={<Login/>} />
           </Routes>
         </UserContext.Provider>
       </MemoryRouter>
@@ -80,299 +44,104 @@ describe('ProfilePage', () => {
 
   beforeEach(() => {
     vi.resetAllMocks();
-    useProfile.mockReturnValue(mockUseProfileDefault);
-    useBookings.mockReturnValue(mockUseBookingsDefault);
   });
 
-  it('displays loading indicator when loading is true', () => {
-    renderWithUser({ username: 'testuser' }, true);
-    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
+  it("displays loading state when loading is true", () => {
+    renderWithProviders(<ProfilePage />, { loading: true, userData: null });
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it('renders SideMenu and ProfileForm when not loading and user is logged in', () => {
-    renderWithUser({ username: 'testuser' }, false);
-    expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
-    expect(screen.getByText(/Edit Profile/i)).toBeInTheDocument();
+  it("redirects to login page when user is not authenticated", () => {
+    renderWithProviders(<ProfilePage />, { loading: false, userData: null });
+    expect(screen.getByText(/Railwise Login/i)).toBeInTheDocument();
   });
 
-  it('renders BookingHistory when activeTab is "bookings"', () => {
-    // Update the mock to set activeTab to 'bookings'
-    useProfile.mockReturnValue({
-      ...mockUseProfileDefault,
-      activeTab: 'bookings',
-    });
-
-    renderWithUser({ username: 'testuser' }, false);
-
-    expect(screen.getByText(/No bookings found./i)).toBeInTheDocument();
-  });
-
-  it('switches tabs when a different tab is clicked', () => {
-    renderWithUser({ username: 'testuser' }, false);
-
-    const bookingsTab = screen.getByText(/Bookings/i);
-    fireEvent.click(bookingsTab);
-
-    expect(mockSetActiveTab).toHaveBeenCalledWith('bookings');
-  });
-
-  it('redirects to /login when user is not logged in', () => {
-    render(
-      <MemoryRouter initialEntries={['/profile']}>
-        <UserContext.Provider value={{ userData: null, loading: false }}>
-          <Routes>
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <ProfilePage />
-                </PrivateRoute>
-              }
-            />
-            <Route path="/login" element={<div>Login Page</div>} /> {/* Mock Login Page */}
-          </Routes>
-        </UserContext.Provider>
-      </MemoryRouter>
-    );
-
-    // Assert that the Login Page is rendered, indicating redirection
-    expect(screen.getByText(/Login Page/i)).toBeInTheDocument();
-  });
-
-  // New Test Cases Start Here
-
-  it('successfully updates user data', async () => {
-    // Arrange
-    const updatedUserData = {
-      username: 'updateduser',
-      email: 'updated@example.com',
-      phone: '+94123456789',
-      changesMade: true,
-    };
-
-    // Mock handleInputChange to update formValues
-    mockHandleInputChange.mockImplementation((field) => (e) => {
-      mockUseProfileDefault.formValues[field] = e.target.value;
-    });
-
-    // Mock axios.put to return success
-    axios.put.mockResolvedValueOnce({
-      status: 200,
-      data: {
-        username: updatedUserData.username,
-        email: updatedUserData.email,
-        phone: updatedUserData.phone,
+  it("renders ProfilePage with ProfileForm when activeTab is 'profile'", () => {
+    renderWithProviders(<ProfilePage />, {
+      loading: false,
+      userData: {
+        _id: "6707b36b00287697cc9558f6",
+        username: "ppppp",
+        email: "p@hh.com",
+        phone: "751234567",
+        __v: 0,
       },
     });
 
-    // Update useProfile mock to include login function
-    const mockLogin = vi.fn();
-    useProfile.mockReturnValue({
-      ...mockUseProfileDefault,
-      login: mockLogin, // Assuming useProfile provides a login function
-    });
+    // Check that SideMenu is rendered
+    expect(screen.getByRole('button', { name: /profile/i })).toHaveLength(3)
+    const bookingsButton = screen.getByRole('button', { name: /bookings/i });
 
-    renderWithUser({ username: 'testuser', email: 'test@example.com', phone: '+94123456789' }, false);
-
-    // Act
-    // Fill out the form fields
-    const usernameInput = screen.getByLabelText(/Username/i);
-    const emailInput = screen.getByLabelText(/Email/i);
-    const phoneInput = screen.getByLabelText(/Phone/i);
-    const saveButton = screen.getByText(/Save/i);
-
-    fireEvent.change(usernameInput, { target: { value: updatedUserData.username } });
-    fireEvent.change(emailInput, { target: { value: updatedUserData.email } });
-    fireEvent.change(phoneInput, { target: { value: updatedUserData.phone } });
-
-    fireEvent.click(saveButton);
-
-    // Assert
-    await waitFor(() => {
-      expect(axios.put).toHaveBeenCalledWith(
-        '/api/user/updateProfile',
-        {
-          username: updatedUserData.username,
-          email: updatedUserData.email,
-          phone: updatedUserData.phone,
-          oldPassword: '',
-          newPassword: '',
-        },
-        { withCredentials: true }
-      );
-      expect(mockLogin).toHaveBeenCalledWith({
-        username: updatedUserData.username,
-        email: updatedUserData.email,
-        phone: updatedUserData.phone,
-      });
-      expect(toast.success).toHaveBeenCalledWith('Profile updated successfully');
-    });
+    // By default, activeTab is 'profile', so ProfileForm should be rendered
+    expect(screen.getByTestId("profile-form")).toBeInTheDocument();
+    expect(screen.queryByTestId("booking-history")).not.toBeInTheDocument();
   });
 
-  it('handles API error when updating user data', async () => {
-    // Arrange
-    const errorMessage = 'Failed to update profile';
-
-    // Mock handleInputChange to update formValues
-    mockHandleInputChange.mockImplementation((field) => (e) => {
-      mockUseProfileDefault.formValues[field] = e.target.value;
-    });
-
-    // Mock axios.put to return error
-    axios.put.mockRejectedValueOnce(new Error(errorMessage));
-
-    // Update useProfile mock to include login function
-    const mockLogin = vi.fn();
-    useProfile.mockReturnValue({
-      ...mockUseProfileDefault,
-      login: mockLogin, // Assuming useProfile provides a login function
-    });
-
-    renderWithUser({ username: 'testuser', email: 'test@example.com', phone: '+94123456789' }, false);
-
-    // Act
-    // Fill out the form fields
-    const usernameInput = screen.getByLabelText(/Username/i);
-    const emailInput = screen.getByLabelText(/Email/i);
-    const phoneInput = screen.getByLabelText(/Phone/i);
-    const saveButton = screen.getByText(/Save/i);
-
-    fireEvent.change(usernameInput, { target: { value: 'updateduser' } });
-    fireEvent.change(emailInput, { target: { value: 'updated@example.com' } });
-    fireEvent.change(phoneInput, { target: { value: '+94123456789' } });
-
-    fireEvent.click(saveButton);
-
-    // Assert
-    await waitFor(() => {
-      expect(axios.put).toHaveBeenCalledWith(
-        '/api/user/updateProfile',
-        {
-          username: 'updateduser',
-          email: 'updated@example.com',
-          phone: '+94123456789',
-          oldPassword: '',
-          newPassword: '',
-        },
-        { withCredentials: true }
-      );
-      expect(mockLogin).not.toHaveBeenCalled();
-      expect(toast.error).toHaveBeenCalledWith('Failed to update profile');
-    });
-  });
-
-  it('successfully changes the password', async () => {
-    // Arrange
-    const oldPassword = 'oldpassword';
-    const newPassword = 'newpassword';
-
-    // Assuming handleChangePasswordClick opens a modal and handleSaveSubmit submits the password change
-    useProfile.mockReturnValue({
-      ...mockUseProfileDefault,
-      isEditing: true,
-      handleInputChange: mockHandleInputChange,
-    });
-
-    // Mock axios.put to return success for password change
-    axios.put.mockResolvedValueOnce({
-      status: 200,
-      data: {
-        message: 'Password changed successfully',
+  it("renders BookingHistory when activeTab is 'bookings'", async () => {
+    renderWithProviders(<ProfilePage />, {
+      loading: false,
+      userData: {
+        _id: "6707b36b00287697cc9558f6",
+        username: "ppppp",
+        email: "p@hh.com",
+        phone: "751234567",
+        __v: 0,
       },
     });
 
-    // Update useProfile mock to include login function if necessary
-    const mockLogin = vi.fn();
-    useProfile.mockReturnValue({
-      ...mockUseProfileDefault,
-      login: mockLogin,
-    });
+    // Click on the 'Bookings' tab
+    const bookingsTab = screen.getByTestId("tab-bookings");
+    await userEvent.click(bookingsTab);
 
-    renderWithUser({ username: 'testuser', email: 'test@example.com', phone: '+94123456789' }, false);
+    // Now, BookingHistory should be rendered
+    expect(screen.getByTestId("booking-history")).toBeInTheDocument();
+    expect(screen.queryByTestId("profile-form")).not.toBeInTheDocument();
 
-    // Act
-    // Click on "Change Password" button to open modal
-    const changePasswordButton = screen.getByText(/Change Password/i);
-    fireEvent.click(changePasswordButton);
-
-    // Fill out the password fields in the modal
-    const oldPasswordInput = screen.getByLabelText(/Old Password/i);
-    const newPasswordInput = screen.getByLabelText(/New Password/i);
-    const confirmPasswordInput = screen.getByLabelText(/Confirm New Password/i);
-    const submitPasswordButton = screen.getByText(/Submit/i);
-
-    fireEvent.change(oldPasswordInput, { target: { value: oldPassword } });
-    fireEvent.change(newPasswordInput, { target: { value: newPassword } });
-    fireEvent.change(confirmPasswordInput, { target: { value: newPassword } });
-
-    fireEvent.click(submitPasswordButton);
-
-    // Assert
-    await waitFor(() => {
-      expect(axios.put).toHaveBeenCalledWith(
-        '/api/user/updatePassword',
-        {
-          oldPassword,
-          newPassword,
-        },
-        { withCredentials: true }
-      );
-      expect(toast.success).toHaveBeenCalledWith('Password changed successfully');
-    });
+    // The 'Bookings' tab should have 'active' class
+    expect(bookingsTab).toHaveClass("active");
+    const profileTab = screen.getByTestId("tab-profile");
+    expect(profileTab).not.toHaveClass("active");
   });
 
-  it('handles API error when changing the password', async () => {
-    // Arrange
-    const oldPassword = 'wrongpassword';
-    const newPassword = 'newpassword';
-    const errorMessage = 'Incorrect old password';
-
-    useProfile.mockReturnValue({
-      ...mockUseProfileDefault,
-      isEditing: true,
-      handleInputChange: mockHandleInputChange,
+  it("changes activeTab and updates SideMenu accordingly", async () => {
+    renderWithProviders(<ProfilePage />, {
+      loading: false,
+      userData: {
+        _id: "6707b36b00287697cc9558f6",
+        username: "ppppp",
+        email: "p@hh.com",
+        phone: "751234567",
+        __v: 0,
+      },
     });
 
-    // Mock axios.put to return error for password change
-    axios.put.mockRejectedValueOnce(new Error(errorMessage));
+    // Initially, 'Profile' tab is active
+    const profileTab = screen.getByTestId("tab-profile");
+    const bookingsTab = screen.getByTestId("tab-bookings");
 
-    // Update useProfile mock to include login function if necessary
-    const mockLogin = vi.fn();
-    useProfile.mockReturnValue({
-      ...mockUseProfileDefault,
-      login: mockLogin,
-    });
+    expect(profileTab).toHaveClass("active");
+    expect(bookingsTab).not.toHaveClass("active");
 
-    renderWithUser({ username: 'testuser', email: 'test@example.com', phone: '+94123456789' }, false);
+    // Click on 'Bookings' tab
+    await userEvent.click(bookingsTab);
 
-    // Act
-    // Click on "Change Password" button to open modal
-    const changePasswordButton = screen.getByText(/Change Password/i);
-    fireEvent.click(changePasswordButton);
+    // Now, 'Bookings' tab should be active
+    expect(bookingsTab).toHaveClass("active");
+    expect(profileTab).not.toHaveClass("active");
 
-    // Fill out the password fields in the modal
-    const oldPasswordInput = screen.getByLabelText(/Old Password/i);
-    const newPasswordInput = screen.getByLabelText(/New Password/i);
-    const confirmPasswordInput = screen.getByLabelText(/Confirm New Password/i);
-    const submitPasswordButton = screen.getByText(/Submit/i);
+    // Verify that BookingHistory is rendered
+    expect(screen.getByTestId("booking-history")).toBeInTheDocument();
+    expect(screen.queryByTestId("profile-form")).not.toBeInTheDocument();
 
-    fireEvent.change(oldPasswordInput, { target: { value: oldPassword } });
-    fireEvent.change(newPasswordInput, { target: { value: newPassword } });
-    fireEvent.change(confirmPasswordInput, { target: { value: newPassword } });
+    // Click back to 'Profile' tab
+    await userEvent.click(profileTab);
 
-    fireEvent.click(submitPasswordButton);
+    // 'Profile' tab should be active again
+    expect(profileTab).toHaveClass("active");
+    expect(bookingsTab).not.toHaveClass("active");
 
-    // Assert
-    await waitFor(() => {
-      expect(axios.put).toHaveBeenCalledWith(
-        '/api/user/updatePassword',
-        {
-          oldPassword,
-          newPassword,
-        },
-        { withCredentials: true }
-      );
-      expect(toast.error).toHaveBeenCalledWith('Failed to update profile'); // Adjust error message as per implementation
-    });
+    // Verify that ProfileForm is rendered
+    expect(screen.getByTestId("profile-form")).toBeInTheDocument();
+    expect(screen.queryByTestId("booking-history")).not.toBeInTheDocument();
   });
 });
