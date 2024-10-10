@@ -1,38 +1,51 @@
+// SideMenu.jsx
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faClipboardList, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faClipboardList, faLock, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
 const SideMenu = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="w-64 p-4 text-white bg-gray-800">
-      <h2 className="mb-6 text-2xl font-bold">Dashboard</h2>
-      <ul>
-        {/* Profile Tab */}
-        <li
-          className={`mb-4 ${activeTab === "profile" ? "text-blue-500" : ""}`}
-        >
-          <button
-            onClick={() => setActiveTab("profile")}
-            className="flex items-center"
-          >
-            <FontAwesomeIcon icon={faUser} className="mr-2" />
-            Profile
-          </button>
-        </li>
+    <div className="w-64 h-screen bg-white shadow-lg flex flex-col">
 
-        {/* Bookings Tab */}
-        <li
-          className={`mb-4 ${activeTab === "bookings" ? "text-blue-500" : ""}`}
-        >
-          <button
-            onClick={() => setActiveTab("bookings")}
-            className="flex items-center"
-          >
-            <FontAwesomeIcon icon={faClipboardList} className="mr-2" />
-            Bookings
-          </button>
-        </li>
-      </ul>
+
+      {/* Navigation Menu */}
+      <nav className="flex-1 px-4 py-6">
+        <ul>
+          {/* Profile Tab */}
+          <li className="mb-4">
+            <button
+              onClick={() => setActiveTab("profile")}
+              className={`flex items-center w-full px-4 py-2 text-lg font-medium rounded-lg transition-colors duration-200 ${
+                activeTab === "profile"
+                  ? "bg-blue-100 text-blue-600"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              <FontAwesomeIcon icon={faUser} className="mr-3 w-5 h-5" />
+              Profile
+            </button>
+          </li>
+
+          {/* Bookings Tab */}
+          <li className="mb-4">
+            <button
+              onClick={() => setActiveTab("bookings")}
+              className={`flex items-center w-full px-4 py-2 text-lg font-medium rounded-lg transition-colors duration-200 ${
+                activeTab === "bookings"
+                  ? "bg-blue-100 text-blue-600"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              <FontAwesomeIcon icon={faClipboardList} className="mr-3 w-5 h-5" />
+              Bookings
+            </button>
+          </li>
+
+
+        </ul>
+      </nav>
+
+
     </div>
   );
 };

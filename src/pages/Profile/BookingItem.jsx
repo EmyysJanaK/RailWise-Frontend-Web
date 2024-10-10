@@ -42,7 +42,7 @@ const BookingItem = ({ booking, onDelete }) => {
 
           <div className="flex items-center">
             <div className="text-xl font-bold text-gray-800">
-              Total Price: ${booking.totalFare}
+              Total Price: LKR {booking.totalFare}
             </div>
           </div>
         </div>

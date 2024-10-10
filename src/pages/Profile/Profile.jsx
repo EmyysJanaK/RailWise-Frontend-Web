@@ -1,5 +1,5 @@
 // Profile.jsx
-import React, { useContext } from "react";
+import React, { useContext, useState} from "react";
 import { UserContext } from "../../context/UserContext";
 import ProfileForm from "./ProfileForm";
 import BookingHistory from "./BookingHistory";
@@ -8,7 +8,7 @@ import SideMenu from "./SideMenu";
 
 const ProfilePage = () => {
   const { loading } = useContext(UserContext);
-  const [ activeTab, setActiveTab ] = useContext("profile")
+  const [ activeTab, setActiveTab ] = useState("profile")
 
   if (loading) return <div>Loading...</div>;
 

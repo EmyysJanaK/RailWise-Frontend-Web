@@ -20,6 +20,13 @@ export const useProfile = () => {
     newPassword: "",
     changesMade: false,
   });
+  const handleInputChange = (field) => (e) => {
+    setFormValues((prevState) => ({
+      ...prevState,
+      [field]: e.target.value,
+      changesMade: true,
+    }));
+  };
 
   useEffect(() => {
     if (userData) {
@@ -35,13 +42,7 @@ export const useProfile = () => {
   }, [userData]);
 
   // Handle form input changes
-  const handleInputChange = (field) => (e) => {
-    setFormValues((prevState) => ({
-      ...prevState,
-      [field]: e.target.value,
-      changesMade: true,
-    }));
-  };
+
 
   const handleNewPasswordChange = (e) => {
     setFormValues((prevState) => ({
