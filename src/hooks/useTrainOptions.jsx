@@ -14,13 +14,16 @@ const useTrainOptions = ({
   useEffect(() => {
     const getStations = async () => {
       try {
-        const response = await axios.get("/api/schedules", {
-          params: {
-            fromStationId: departureStationId,
-            toStationId: arrivalStationId,
-            date: departureDate,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/schedules`,
+          {
+            params: {
+              fromStationId: departureStationId,
+              toStationId: arrivalStationId,
+              date: departureDate,
+            },
+          }
+        );
         const data = response.data;
 
         const formattedTrainOptions = data.map((item) => ({

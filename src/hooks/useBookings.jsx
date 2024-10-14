@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const useBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -9,10 +9,13 @@ export const useBookings = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get("/api/user/bookingHistory", {
-          headers: { "Cache-Control": "no-cache" },
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/bookingHistory`,
+          {
+            headers: { "Cache-Control": "no-cache" },
+            withCredentials: true,
+          }
+        );
         setBookings(response.data);
       } catch (error) {
         console.error("Error fetching booking history", error);
@@ -26,12 +29,19 @@ export const useBookings = () => {
   const handleDeleteBooking = async (bookingId) => {
     try {
       setLoading(true);
-      const response = await axios.delete(`/api/bookings/${bookingId}`, { withCredentials: true });
+      const response = await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/api/bookings/${bookingId}`,
+        {
+          withCredentials: true,
+        }
+      );
       if (response.status === 200) {
         toast.success("Booking cancelled successfully");
         setBookings((prevBookings) =>
           prevBookings.map((booking) =>
-            booking._id === bookingId ? { ...booking, status: 'cancelled' } : booking
+            booking._id === bookingId
+              ? { ...booking, status: "cancelled" }
+              : booking
           )
         );
       }
@@ -41,5 +51,5 @@ export const useBookings = () => {
     setLoading(false);
   };
 
-  return { bookings, handleDeleteBooking,loading };
+  return { bookings, handleDeleteBooking, loading };
 };

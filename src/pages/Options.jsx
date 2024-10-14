@@ -12,7 +12,8 @@ const Options = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { fromHaltId, toHaltId, scheduleId, departureDate, pax } = reservationData;
+  const { fromHaltId, toHaltId, scheduleId, departureDate, pax } =
+    reservationData;
 
   const [selectedClass, setSelectedClass] = useState(null);
 
@@ -22,14 +23,17 @@ const Options = () => {
   useEffect(() => {
     const getSeats = async () => {
       try {
-        const response = await axios.get("/api/schedules/scheduleDetails", {
-          params: {
-            fromHaltId: fromHaltId,
-            toHaltId: toHaltId,
-            scheduleId: scheduleId,
-            date: departureDate,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/schedules/scheduleDetails`,
+          {
+            params: {
+              fromHaltId: fromHaltId,
+              toHaltId: toHaltId,
+              scheduleId: scheduleId,
+              date: departureDate,
+            },
+          }
+        );
         setScheduleInfo({
           schedule: response.data.schedule,
           fromHalt: response.data.fromHalt,
@@ -80,21 +84,23 @@ const Options = () => {
             <h2 className="mb-2 text-3xl font-bold text-center text-white ">
               TRIP DETAILS
             </h2>
-            <div><h6 className="mb-2 text-xl text-white ">
-              <p>
-                <strong>Departure :</strong>{" "}
-                {scheduleInfo.fromHalt.stationRef.name}
-              </p>
-              <p>
-                <strong>Arrival Station :</strong>{" "}
-                {scheduleInfo.toHalt.stationRef.name}
-              </p>
-              <p>
-                <strong>Departure Date :</strong> {departureDate}
-              </p>
-              <p>
-                <strong>Passenger :</strong> {pax}
-              </p></h6>
+            <div>
+              <h6 className="mb-2 text-xl text-white ">
+                <p>
+                  <strong>Departure :</strong>{" "}
+                  {scheduleInfo.fromHalt.stationRef.name}
+                </p>
+                <p>
+                  <strong>Arrival Station :</strong>{" "}
+                  {scheduleInfo.toHalt.stationRef.name}
+                </p>
+                <p>
+                  <strong>Departure Date :</strong> {departureDate}
+                </p>
+                <p>
+                  <strong>Passenger :</strong> {pax}
+                </p>
+              </h6>
             </div>
           </div>
 
@@ -126,7 +132,7 @@ const Options = () => {
           <div className="flex justify-between">
             <button
               onClick={handleBack}
-              className="bg-purple-900 text-white px-6 py-2 rounded-lg hover:bg-purple-900 transition duration-300"
+              className="px-6 py-2 text-white transition duration-300 bg-purple-900 rounded-lg hover:bg-purple-900"
             >
               Back
             </button>
@@ -148,9 +154,11 @@ const Options = () => {
 
 export default Options;
 
-{/* <button
+{
+  /* <button
                             onClick={handleReset}
-                            className="bg-purple-900 text-white px-4 py-2 rounded-lg hover:bg-purple-900 transition duration-300"
+                            className="px-4 py-2 text-white transition duration-300 bg-purple-900 rounded-lg hover:bg-purple-900"
                         >
                             Reset Selection
-                        </button> */}
+                        </button> */
+}

@@ -23,7 +23,9 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
   const { setReservationData } = useContext(ReservationContext);
 
   const [stations, setStations] = useState([]);
-  const [filteredDepartureStations, setFilteredDepartureStations] = useState([]);
+  const [filteredDepartureStations, setFilteredDepartureStations] = useState(
+    []
+  );
   const [filteredArrivalStations, setFilteredArrivalStations] = useState([]);
   const [error, setError] = useState(null);
   const [isDepartureFocused, setIsDepartureFocused] = useState(false);
@@ -33,7 +35,9 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
   useEffect(() => {
     const getStations = async () => {
       try {
-        const response = await axios.get("/api/stations");
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/stations`
+        );
         setStations(response.data);
       } catch (error) {
         console.error(error);
@@ -97,7 +101,11 @@ const SearchForm = ({ departure, arrival, date, seat }) => {
       (station) => station.name === searchParams.arrival
     );
 
-    if (!departureStation || !arrivalStation || departureStation === arrivalStation) {
+    if (
+      !departureStation ||
+      !arrivalStation ||
+      departureStation === arrivalStation
+    ) {
       setError("Invalid station selected.");
       return;
     }

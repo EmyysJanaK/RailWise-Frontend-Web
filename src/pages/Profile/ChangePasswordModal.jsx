@@ -6,7 +6,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserContext } from "../../context/UserContext"; 
+import { UserContext } from "../../context/UserContext";
 
 const passwordSchema = z.object({
   oldPassword: z
@@ -45,14 +45,14 @@ const ChangePasswordModal = ({ onClose }) => {
       const { oldPassword, newPassword } = data;
       const { username, email, phone } = userData;
       const response = await axios.put(
-        "/api/user/updateProfile", 
-        {username,email, phone, oldPassword, newPassword },
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/updateProfile`,
+        { username, email, phone, oldPassword, newPassword },
         { withCredentials: true }
       );
 
       if (response.status === 200) {
         toast.success("Password changed successfully");
-        reset(); 
+        reset();
       } else {
         throw new Error("Unexpected response status");
       }
@@ -62,7 +62,9 @@ const ChangePasswordModal = ({ onClose }) => {
           toast.error("Incorrect old password");
         } else {
           toast.error(
-            `Error: ${error.response.data.message || "Failed to change password"}`
+            `Error: ${
+              error.response.data.message || "Failed to change password"
+            }`
           );
         }
       } else if (error.request) {
@@ -83,7 +85,7 @@ const ChangePasswordModal = ({ onClose }) => {
         {/* Header with Icon */}
         <div className="flex items-center mb-4">
           <svg
-            className="w-6 h-6 text-gray-400 mr-2"
+            className="w-6 h-6 mr-2 text-gray-400"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -174,7 +176,7 @@ const ChangePasswordModal = ({ onClose }) => {
                 reset();
                 onClose();
               }}
-              className="px-4 py-2 text-gray-900 bg-white border border-gray-200 rounded-lg shadow-md transition-all duration-200 hover:bg-gray-100 hover:text-blue-700"
+              className="px-4 py-2 text-gray-900 transition-all duration-200 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 hover:text-blue-700"
             >
               Cancel
             </button>

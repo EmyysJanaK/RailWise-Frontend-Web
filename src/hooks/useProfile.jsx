@@ -43,7 +43,6 @@ export const useProfile = () => {
 
   // Handle form input changes
 
-
   const handleNewPasswordChange = (e) => {
     setFormValues((prevState) => ({
       ...prevState,
@@ -57,7 +56,7 @@ export const useProfile = () => {
       const { username, email, phone, oldPassword, newPassword } = formValues;
 
       const response = await axios.put(
-        "/api/user/updateProfile",
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/updateProfile`,
         { username, email, phone, oldPassword, newPassword },
         { withCredentials: true }
       );
