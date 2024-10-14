@@ -10,7 +10,6 @@ const Header = () => {
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
     { to: "/contact", label: "Contact" },
-    { to: "/stations", label: "Stations" },
   ];
 
   const toggleNav = () => {
@@ -18,7 +17,7 @@ const Header = () => {
   };
 
   return (
-    <header className="relative isolate overflow-hidden bg-gray-900 text-white py-4 sm:py-6 px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center">
+    <header className="relative flex flex-col items-center justify-between px-4 py-4 overflow-hidden text-white bg-gray-900 isolate sm:py-6 sm:px-6 sm:flex-row">
       <div
         aria-hidden="true"
         className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
@@ -44,16 +43,16 @@ const Header = () => {
         />
       </div>
 
-      <div className="flex justify-between items-center w-full sm:w-auto">
+      <div className="flex items-center justify-between w-full sm:w-auto">
         <Link to="/">
           <img
             src={logo}
             alt="Logo"
-            className="h-16 sm:h-24 transition-all duration-300 transform hover:scale-105"
+            className="h-16 transition-all duration-300 transform sm:h-24 hover:scale-105"
           />
         </Link>
         <button
-          className="sm:hidden text-3xl transition-colors duration-300 hover:text-gray-400"
+          className="text-3xl transition-colors duration-300 sm:hidden hover:text-gray-400"
           aria-label="Toggle navigation"
           onClick={toggleNav}
         >
@@ -67,7 +66,7 @@ const Header = () => {
           isNavOpen ? "block" : "hidden"
         } sm:block w-full sm:w-auto mt-4 sm:mt-0`}
       >
-        <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+        <ul className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
           {navLinks.map((link) => (
             <NavLinkItem
               key={link.to}
@@ -81,12 +80,12 @@ const Header = () => {
 
       <UserMenu className="hidden sm:block" />
 
-      <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-        <button className="hover:text-gray-400 transition duration-300 text-2xl">
+      <div className="flex items-center mt-4 space-x-4 sm:mt-0">
+        <button className="text-2xl transition duration-300 hover:text-gray-400">
           <span className="sr-only">Change Language</span>
           <i className="fas fa-language"></i>
         </button>
-        <button className="hover:text-gray-400 transition duration-300 text-2xl">
+        <button className="text-2xl transition duration-300 hover:text-gray-400">
           <span className="sr-only">Search</span>
           <i className="fas fa-search"></i>
         </button>
