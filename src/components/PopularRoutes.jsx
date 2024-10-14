@@ -68,40 +68,47 @@ const PopularRoutes = ({ setDeparture, setArrival, searchFormRef }) => {
           Popular Routes
         </h2>
         <Slider {...settings}>
-          {popularRoutes.map((route) => (
-            <div
-              key={route.startHaltStation._id + route.endHaltStation._id}
-              className="p-2"
-              onClick={() => {
-                handleClick(
-                  route.startHaltStation.name,
-                  route.endHaltStation.name
-                );
-              }}
-            >
+          {popularRoutes && popularRoutes.length > 0 ? (
+            popularRoutes.map((route) => (
               <div
-                className="relative overflow-hidden transition-transform duration-300 transform bg-center bg-cover rounded-lg hover:scale-105"
-                style={{
-                  backgroundImage: `url(${route.image || trainImage})`,
-                  height: "200px",
+                key={route?.startHaltStation?._id + route?.endHaltStation?._id}
+                className="p-2"
+                onClick={() => {
+                  handleClick(
+                    route.startHaltStation.name,
+                    route.endHaltStation.name
+                  );
                 }}
               >
-                {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+                <div
+                  className="relative overflow-hidden transition-transform duration-300 transform bg-center bg-cover rounded-lg hover:scale-105"
+                  style={{
+                    backgroundImage: `url(${route.image || trainImage})`,
+                    height: "200px",
+                  }}
+                >
+                  {/* Dark overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-70"></div>
 
-                {/* Content */}
-                <div className="relative z-10 flex flex-col items-center justify-center h-full p-4">
-                  <h2 className="text-2xl font-bold text-white">
-                    {route.startHaltStation.name} → {route.endHaltStation.name}
-                  </h2>
-                  <h3 className="text-xl text-gray-200">{route.train.name}</h3>
-                  <p className="text-lg text-center text-gray-300">
-                    {route.count} Bookings in last month
-                  </p>
+                  {/* Content */}
+                  <div className="relative z-10 flex flex-col items-center justify-center h-full p-4">
+                    <h2 className="text-2xl font-bold text-white">
+                      {route.startHaltStation.name} →{" "}
+                      {route.endHaltStation.name}
+                    </h2>
+                    <h3 className="text-xl text-gray-200">
+                      {route.train.name}
+                    </h3>
+                    <p className="text-lg text-center text-gray-300">
+                      {route.count} Bookings in last month
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No popular routes available</p>
+          )}
         </Slider>
       </div>
     </section>

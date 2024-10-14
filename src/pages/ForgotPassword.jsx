@@ -28,7 +28,10 @@ export default function ForgotPassword() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("/api/user/forgotPassword", { email });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/forgotPassword`,
+        { email }
+      );
       setMessage("A password reset link has been sent to your email.");
     } catch (error) {
       setError("Failed to send the reset link. Please try again.");
@@ -46,7 +49,10 @@ export default function ForgotPassword() {
       {error && <div className="mb-4 text-red-600">{error}</div>}
       <form onSubmit={handleForgotPassword}>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
             Enter your email
           </label>
           <input
