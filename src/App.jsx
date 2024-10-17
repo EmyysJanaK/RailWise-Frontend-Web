@@ -1,27 +1,29 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Results from "./pages/Results";
-import Home from './pages/Home';
-import Login from './pages/Login';
-import History from './pages/History';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Register from './pages/Register';
-import ForgotPassword from './pages/ForgotPassword';
-import { ReservationProvider } from './context/ReservationContext';
-import ReservationSummary from './pages/ReservationSummary';
-import Layout from './components/Layout';
-import Options from './pages/Options';
-import { UserProvider } from './context/UserContext';
-import SeatSelection from './pages/SeatSelection';
-import ProfilePage from './pages/Profile/Profile';
-import './index.css';
-import Payment from './pages/Payment';
-import Success from './pages/Success';
-import Failed from './pages/Failed';
-import ResetPassword from './pages/ResetPassword';
-import PrivateRoute from './pages/PrivateRoute';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import History from "./pages/History";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import { ReservationProvider } from "./context/ReservationContext";
+import ReservationSummary from "./pages/ReservationSummary";
+import Layout from "./components/Layout";
+import Options from "./pages/Options";
+import { UserProvider } from "./context/UserContext";
+import SeatSelection from "./pages/SeatSelection";
+import ProfilePage from "./pages/Profile/Profile";
+import "./index.css";
+import Payment from "./pages/Payment";
+import Success from "./pages/Success";
+import Failed from "./pages/Failed";
+import ResetPassword from "./pages/ResetPassword";
+import PrivateRoute from "./pages/PrivateRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import LoadingModal from "./components/LoadingModal";
 
 function App() {
   return (
@@ -40,17 +42,30 @@ function App() {
                   <Route path="/stations" element={<History />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
-                  
-                  <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+
+                  <Route
+                    path="/profile"
+                    element={
+                      <PrivateRoute>
+                        <ProfilePage />
+                      </PrivateRoute>
+                    }
+                  />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/reset-password/:token" element={<ResetPassword />} />
+                  <Route
+                    path="/reset-password/:token"
+                    element={<ResetPassword />}
+                  />
                   {/* <Route path="/traindetails" element={<TrainDetails />} /> */}
                   <Route path="/seat-selection" element={<SeatSelection />} />
-                  <Route path="/reservationsummary" element={<ReservationSummary />} />
+                  <Route
+                    path="/reservationsummary"
+                    element={<ReservationSummary />}
+                  />
                   <Route path="/payment-gateway" element={<Payment />} />
                   <Route path="/success" element={<Success />} />
                   <Route path="/failed" element={<Failed />} />
-                  {/* <Route path="/seatselection" element={<SeatSelection />} /> */}
+                  <Route path="/loading" element={<LoadingModal />} />
                 </Routes>
                 <ToastContainer />
               </Layout>
