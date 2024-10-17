@@ -10,7 +10,7 @@ import { ReservationContext } from "../context/ReservationContext";
 import { UserContext } from "../context/UserContext";
 import Wagon from "../components/Wagon";
 import SeatSelectionDispaly from "../components/SeatSelectionDisplay";
-import { set } from "react-hook-form";
+import { validateEmail } from "../utils/emailValidation";
 
 function SamplePrevArrow(props) {
   const { className, style, onClick } = props;
@@ -42,7 +42,6 @@ const SeatSelectionPage = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [disableSlider, setDisableSlider] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
 
@@ -114,14 +113,14 @@ const SeatSelectionPage = () => {
     setDisableSlider(false);
   };
 
-  const validateEmail = (email) => {
+  const handleEmailChange = async (email) => {
     setEmail(email);
     try {
       emailSchema.parse(email);
       setEmailError("");
       return true;
     } catch (error) {
-      setEmailError(error.errors[0].message);
+      setEmailError("Invalid email format");
       return false;
     }
   };
@@ -133,11 +132,18 @@ const SeatSelectionPage = () => {
   }, [userData]);
 
   const handleProceed = async (selectedSeats) => {
+    setLoading(true);
+    const isValid = await validateEmail(email, setEmailError);
+    if (!isValid) {
+      setLoading(false);
+      return;
+    } else {
+      setEmailError("");
+    }
     setReservationData({
       ...reservationData,
       selectedSeats,
     });
-    setLoading(true);
     try {
       const data = {
         scheduleId,
@@ -232,8 +238,7 @@ const SeatSelectionPage = () => {
                 className="w-full p-3 mt-1 text-gray-700 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => validateEmail(e.target.value)}
-                // onBlur={() => validateEmail(email)} // Validate on blur
+                onChange={(e) => handleEmailChange(e.target.value)}
               />
               {emailError && (
                 <p className="mt-1 text-sm text-red-500">{emailError}</p>
@@ -244,12 +249,14 @@ const SeatSelectionPage = () => {
                 className={`w-1/2 p-2 mt-8 text-white rounded-lg ${
                   !disableSlider || !email || emailError
                     ? "bg-gray-400 cursor-not-allowed"
+                    : loading
+                    ? "bg-gray-400 cursor-not-allowed"
                     : "bg-purple-900 cursor-pointer"
                 }`}
                 onClick={() => handleProceed(selectedSeats)}
                 disabled={selectedSeats.length < pax || !email || emailError}
               >
-                Proceed to payment
+                {loading ? "Validating Email..." : "Proceed to Payment"}
               </button>
             </div>
           </div>
