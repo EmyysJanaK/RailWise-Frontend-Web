@@ -8,8 +8,8 @@ const Header = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const navLinks = [
     { to: "/", label: "Home" },
-    { to: "/about", label: "About" },
-    { to: "/contact", label: "Contact" },
+    { to: "/about", label: "About Us" },
+    { to: "/contact", label: "Contact Us" },
   ];
 
   const toggleNav = () => {
@@ -17,7 +17,7 @@ const Header = () => {
   };
 
   return (
-    <header className="relative flex flex-col items-center justify-between px-4 py-4 overflow-hidden text-white bg-gray-900 isolate sm:py-6 sm:px-6 sm:flex-row">
+    <header className="relative flex flex-col items-center justify-between px-4 py-4 overflow-hidden text-white bg-gray-900 isolate sm:py-6 sm:px-20 sm:flex-row">
       <div
         aria-hidden="true"
         className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
@@ -66,7 +66,7 @@ const Header = () => {
           isNavOpen ? "block" : "hidden"
         } sm:block w-full sm:w-auto mt-4 sm:mt-0`}
       >
-        <ul className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
+        <ul className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-14">
           {navLinks.map((link) => (
             <NavLinkItem
               key={link.to}
@@ -79,17 +79,6 @@ const Header = () => {
       </nav>
 
       <UserMenu className="hidden sm:block" />
-
-      <div className="flex items-center mt-4 space-x-4 sm:mt-0">
-        <button className="text-2xl transition duration-300 hover:text-gray-400">
-          <span className="sr-only">Change Language</span>
-          <i className="fas fa-language"></i>
-        </button>
-        <button className="text-2xl transition duration-300 hover:text-gray-400">
-          <span className="sr-only">Search</span>
-          <i className="fas fa-search"></i>
-        </button>
-      </div>
     </header>
   );
 };
