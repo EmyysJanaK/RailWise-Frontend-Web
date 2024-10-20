@@ -9,9 +9,10 @@ import { UserContext } from "../../context/UserContext";
 
 // Define the Zod schema for password validation
 
-const ConfirmationModalWithPassword = ({ onClose, formData }) => {
+const ConfirmationModalWithPassword = ({ onClose, formData,resetProfileForm }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
