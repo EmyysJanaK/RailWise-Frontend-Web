@@ -1,10 +1,11 @@
 // ConfirmationModalWithPassword.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "../../components/Modal";
 import { LuEye } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { UserContext } from "../../context/UserContext";
 
 // Define the Zod schema for password validation
 
@@ -14,6 +15,7 @@ const ConfirmationModalWithPassword = ({ onClose, formData }) => {
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+  const { userData, login } = useContext(UserContext);
 
   const handleClose = () => {
     setOldPassword("");
@@ -34,7 +36,9 @@ const ConfirmationModalWithPassword = ({ onClose, formData }) => {
         setIsEditing(false);
         toast.success("Profile updated successfully");
         resetProfileForm();
+        console.log("Profile updated successfully");
       } else {
+        console.error("Unexpected response status");
         throw new Error("Unexpected response status");
       }
     } catch (error) {
