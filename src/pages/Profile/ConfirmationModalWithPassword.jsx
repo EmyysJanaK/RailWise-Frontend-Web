@@ -37,9 +37,7 @@ const ConfirmationModalWithPassword = ({ onClose, formData,resetProfileForm }) =
         setIsEditing(false);
         toast.success("Profile updated successfully");
         resetProfileForm();
-        console.log("Profile updated successfully");
       } else {
-        console.error("Unexpected response status");
         throw new Error("Unexpected response status");
       }
     } catch (error) {

@@ -74,7 +74,6 @@ const SeatSelectionPage = () => {
             },
           }
         );
-        console.log("response", response.data);
         setWagonsData(response.data.requestedClassWagons);
         setLoading(false);
       } catch (error) {
@@ -154,13 +153,11 @@ const SeatSelectionPage = () => {
         selectedClassId,
         userId,
       };
-      console.log("data", data);
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/bookings/createPendingBooking`,
         data
       );
       setLoading(false);
-      console.log("response", response.data);
       navigate("/payment-gateway", {
         state: {
           bookingId: response.data.bookingId,

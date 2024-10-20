@@ -36,7 +36,6 @@ export default function ResetPassword() {
         navigate("/login");
       }, 2000);
     } catch (error) {
-      console.log(error);
       setError("Failed to reset password. Please try again.");
     }
   };
