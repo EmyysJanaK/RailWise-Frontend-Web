@@ -24,16 +24,18 @@ export default function ResetPassword() {
     }
 
     try {
-      const response = await axios.put("/api/user/resetPassword", {
-        resetToken: token,
-        newPassword: password,
-      });
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/resetPassword`,
+        {
+          resetToken: token,
+          newPassword: password,
+        }
+      );
       setMessage("Password has been successfully reset.");
       setTimeout(() => {
         navigate("/login");
       }, 2000);
     } catch (error) {
-      console.log(error);
       setError("Failed to reset password. Please try again.");
     }
   };

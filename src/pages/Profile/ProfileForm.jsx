@@ -179,6 +179,7 @@ const ProfileForm = () => {
         <ConfirmationModalWithPassword
           onClose={() => setShowProfileModal(false)}
           formData={formData}
+          resetProfileForm={resetProfileForm}
         />
       )}
 

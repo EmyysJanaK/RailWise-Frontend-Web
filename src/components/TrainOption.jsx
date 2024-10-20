@@ -17,10 +17,6 @@ const TrainOption = ({ option, onClick }) => {
   const navigate = useNavigate(); // Initialize navigate
   const location = useLocation(); // Get current location
 
-  useEffect(() => {
-    console.log("TrainOption rendered");
-  }, []);
-
   const handleTrainOptionClick = () => {
     if (userData) {
       // User is logged in, proceed to booking
@@ -57,7 +53,6 @@ const TrainOption = ({ option, onClick }) => {
   };
 
   const handlePopUpLogin = () => {
-    console.log("Redirect to login");
     navigate("/login", { state: { from: location } });
   };
 

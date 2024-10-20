@@ -4,7 +4,11 @@ import { ReservationContext } from "../context/ReservationContext";
 import { useLocation } from "react-router-dom";
 import { calculateDuration } from "../utils/duration";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrain, faClock, faStopwatch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrain,
+  faClock,
+  faStopwatch,
+} from "@fortawesome/free-solid-svg-icons";
 import { MdChair } from "react-icons/md";
 import axios from "axios";
 
@@ -22,7 +26,9 @@ function TripDetails({ timeLeft }) {
     const getSeats = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/bookings/${bookingId}`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/bookings/${bookingId}`
+        );
         setTripDetails({
           bookingDetails: response.data.booking,
           selectedSeats,
@@ -51,12 +57,12 @@ function TripDetails({ timeLeft }) {
       </h1>
       {bookingDetails.startHalt && (
         <>
-        <div className="flex items-center mb-2 text-gray-700 text-md">
+          <div className="flex items-center mb-2 text-gray-700 text-md">
             <FontAwesomeIcon icon={faStopwatch} className="mr-2 text-red-500" />
             <span className="flex items-center font-medium text-red-500">
-              Held for:{" "} {timeLeft}
+              Held for: {timeLeft}
             </span>
-        </div>
+          </div>
           <div className="flex justify-between mb-6">
             <div className="w-1/3 p-4 text-center bg-blue-100 rounded-lg">
               <p className="font-medium ">

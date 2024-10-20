@@ -43,11 +43,14 @@ function CardDetails({ isExpired }) {
     if (!error) {
       try {
         const { id } = paymentMethod;
-        await axios.post("/api/bookings/confirmBooking", {
-          id,
-          bookingId,
-          email,
-        });
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/bookings/confirmBooking`,
+          {
+            id,
+            bookingId,
+            email,
+          }
+        );
         navigate("/success", { state: { bookingId } });
       } catch (error) {
         console.error(error);

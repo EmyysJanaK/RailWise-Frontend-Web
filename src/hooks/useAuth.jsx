@@ -1,7 +1,7 @@
-import { useState, useContext } from 'react';
-import axios from 'axios';
-import { UserContext } from '../context/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext } from "react";
+import axios from "axios";
+import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const useAuth = () => {
   const { login } = useContext(UserContext);
@@ -10,12 +10,16 @@ const useAuth = () => {
 
   const register = async ({ username, email, phone, password }) => {
     try {
-      const response = await axios.post("/api/user/register", {
-        username,
-        email,
-        phone,
-        password,
-      }, { withCredentials: true });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/register`,
+        {
+          username,
+          email,
+          phone,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       if (response.status === 200) {
         login(response.data);
@@ -28,10 +32,14 @@ const useAuth = () => {
 
   const loginUser = async ({ emailOrUsername, password }) => {
     try {
-      const response = await axios.post("/api/user/login", {
-        emailOrUsername,
-        password,
-      }, { withCredentials: true });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/login`,
+        {
+          emailOrUsername,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       if (response.status === 200) {
         login(response.data);

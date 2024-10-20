@@ -4,7 +4,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
-import { set, z } from "zod";
+import { z } from "zod";
+
 import { ReservationContext } from "../context/ReservationContext";
 import { UserContext } from "../context/UserContext";
 import Wagon from "../components/Wagon";
@@ -60,17 +61,19 @@ const SeatSelectionPage = () => {
     const getSeats = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("/api/schedules/wagonsOfClass", {
-          params: {
-            scheduleId,
-            trainId,
-            fromHaltId,
-            toHaltId,
-            date: departureDate,
-            requestedClassId: selectedClassId,
-          },
-        });
-        console.log("response", response.data);
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/schedules/wagonsOfClass`,
+          {
+            params: {
+              scheduleId,
+              trainId,
+              fromHaltId,
+              toHaltId,
+              date: departureDate,
+              requestedClassId: selectedClassId,
+            },
+          }
+        );
         setWagonsData(response.data.requestedClassWagons);
         setLoading(false);
       } catch (error) {
@@ -150,13 +153,11 @@ const SeatSelectionPage = () => {
         selectedClassId,
         userId,
       };
-      console.log("data", data);
       const response = await axios.post(
-        "/api/bookings/createPendingBooking",
+        `${import.meta.env.VITE_BACKEND_URL}/api/bookings/createPendingBooking`,
         data
       );
       setLoading(false);
-      console.log("response", response.data);
       navigate("/payment-gateway", {
         state: {
           bookingId: response.data.bookingId,

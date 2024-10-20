@@ -1,20 +1,22 @@
 // ConfirmationModalWithPassword.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "../../components/Modal";
 import { LuEye } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { UserContext } from "../../context/UserContext";
 
 // Define the Zod schema for password validation
 
-
-const ConfirmationModalWithPassword = ({ onClose, formData }) => {
+const ConfirmationModalWithPassword = ({ onClose, formData,resetProfileForm }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+  const { userData, login } = useContext(UserContext);
 
   const handleClose = () => {
     setOldPassword("");
@@ -23,13 +25,13 @@ const ConfirmationModalWithPassword = ({ onClose, formData }) => {
   const handleProfileSubmit = async () => {
     try {
       const { username, email, phone } = formData;
-  
+
       const response = await axios.put(
-        "/api/user/updateProfile",
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/updateProfile`,
         { username, email, phone, oldPassword },
         { withCredentials: true }
       );
-  
+
       if (response.status === 200) {
         login({ ...userData, username, email, phone });
         setIsEditing(false);
@@ -43,7 +45,11 @@ const ConfirmationModalWithPassword = ({ onClose, formData }) => {
         if (error.response.status === 400) {
           toast.error("Incorrect password");
         } else {
-          toast.error(`Error: ${error.response.data.message || "Failed to update profile"}`);
+          toast.error(
+            `Error: ${
+              error.response.data.message || "Failed to update profile"
+            }`
+          );
         }
       } else if (error.request) {
         console.error("No response received:", error.request);
@@ -57,13 +63,12 @@ const ConfirmationModalWithPassword = ({ onClose, formData }) => {
       onClose();
     }
   };
-  
 
   return (
     <Modal onClose={onClose}>
       <div className="p-6 text-center">
         <svg
-          className="mx-auto mb-4 text-gray-400 w-12 h-12"
+          className="w-12 h-12 mx-auto mb-4 text-gray-400"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -93,11 +98,7 @@ const ConfirmationModalWithPassword = ({ onClose, formData }) => {
             onClick={togglePasswordVisibility}
             className="absolute right-2 top-2.5 text-gray-600"
           >
-            {showPassword ? (
-              <LuEye />
-            ) : (
-              <LuEyeOff/>
-            )}
+            {showPassword ? <LuEye /> : <LuEyeOff />}
           </button>
         </div>
         <div className="flex justify-center space-x-4">
@@ -110,7 +111,7 @@ const ConfirmationModalWithPassword = ({ onClose, formData }) => {
             Confirm
           </button>
           <button
-            onClick={() =>handleClose()}
+            onClick={() => handleClose()}
             type="button"
             className="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 font-medium rounded-lg text-sm px-5 py-2.5"
           >
