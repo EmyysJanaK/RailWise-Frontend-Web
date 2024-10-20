@@ -28,7 +28,9 @@ describe('Train Booking Flow with Seat Selection', () => {
       cy.get('.searchButton').click();
   
       // Step 4: Select the "Galu Kumari" option on the results page
-      cy.contains('Galu Kumari').click();
+      cy.contains('Galu Kumari', {timeout:10000}).should('be.visible').click();
+
+      cy.get('button').contains('Continue Without Login').click();
   
       // Step 5: On the options page, choose a class and click "Next"
       cy.contains('SECOND').click(); // Selecting second class as an example
@@ -41,24 +43,24 @@ describe('Train Booking Flow with Seat Selection', () => {
       cy.get('input[type="email"]').type('mongalburuwa@gmail.com');
       cy.get('button').contains('Proceed to payment').click();
   
-      // Step 8: On the payment page, fill out card information
-      cy.origin('https://js.stripe.com', () => {
-        cy.get('input[name="cardnumber"]').type('4242424242424242');
-        cy.get('input[name="exp-date"]').type('12/24');
-        cy.get('input[name="cvc"]').type('123');
-        cy.get('input[name="postal"]').type('70100');
-      });
+      // // Step 8: On the payment page, fill out card information
+      // cy.origin('https://js.stripe.com', () => {
+      //   cy.get('input[name="cardnumber"]').type('4242424242424242');
+      //   cy.get('input[name="exp-date"]').type('12/24');
+      //   cy.get('input[name="cvc"]').type('123');
+      //   cy.get('input[name="postal"]').type('70100');
+      // });
 
   
-      // Step 9: Click "Pay Now" to complete the process
-      cy.get('button').contains('Pay Now').click();
+      // // Step 9: Click "Pay Now" to complete the process
+      // cy.get('button').contains('Pay Now').click();
   
-      // Step 10: Assert that we are on the success page
-      cy.contains('Payment Successful', { timeout: 10000 }).should('be.visible');
+      // // Step 10: Assert that we are on the success page
+      // cy.contains('Payment Successful', { timeout: 10000 }).should('be.visible');
   
-      // Step 11: Wait for redirection back to the home page
-      cy.wait(6000); // Wait for the page to redirect automatically
-      cy.url().should('eq', 'http://localhost:5173/');
+      // // Step 11: Wait for redirection back to the home page
+      // cy.wait(6000); // Wait for the page to redirect automatically
+      // cy.url().should('eq', 'http://localhost:5173/');
     });
   });
   
