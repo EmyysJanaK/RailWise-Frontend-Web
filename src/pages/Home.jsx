@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import SearchForm from '../components/SearchForm';
-import axios from 'axios';
-import QRCode from 'qrcode.react'; // You can use 'qrcode.react' library to generate QR codes
-import PopularRoutes from '../components/PopularRoutes';
-import { useRef } from 'react';
+import React, { useState, useEffect } from "react";
+import SearchForm from "../components/SearchForm";
+import axios from "axios";
+import QRCode from "qrcode.react"; // You can use 'qrcode.react' library to generate QR codes
+import PopularRoutes from "../components/PopularRoutes";
+import { useRef } from "react";
 
 const HomePage = () => {
   const [departure, setDeparture] = useState("");
@@ -11,8 +11,6 @@ const HomePage = () => {
   const [date, setDate] = useState("");
   const [seat, setSeat] = useState("");
   const searchFormRef = useRef(null);
-  
-
 
   return (
     <div className="relative py-24 overflow-hidden bg-gray-700 isolate sm:py-32">
@@ -41,25 +39,50 @@ const HomePage = () => {
         />
       </div>
       <div className="relative z-10 flex-1">
-        <main className="flex flex-col items-center justify-center flex-1 p-4" ref={searchFormRef}>
+        <main
+          className="flex flex-col items-center justify-center flex-1 p-4"
+          ref={searchFormRef}
+        >
           <div className="mb-8 text-center">
-            <h1 className="font-extrabold text-white text-7xl">Welcome to RailWise</h1>
-            <p className="mt-2 text-2xl text-white">Book your train tickets easily and quickly with our platform.</p>
+            <h1 className="font-extrabold text-white text-7xl">
+              Welcome to RailWise
+            </h1>
+            <p className="mt-2 text-2xl text-white">
+              Book your train tickets easily and quickly with our platform.
+            </p>
           </div>
-          <SearchForm departure={departure} arrival={arrival} date={date} seat={seat} />
+          <SearchForm
+            departure={departure}
+            arrival={arrival}
+            date={date}
+            seat={seat}
+          />
           <div className="flex flex-col items-center mt-12">
-            <h2 className="mb-4 text-3xl font-bold text-white">Install Our Mobile App</h2>
-            <QRCode value="https://www.railwise.com/mobile-app" size={128} />
-            <p className="mt-2 text-2xl text-white">Scan the QR code to download our mobile app.</p>
+            <h2 className="mb-4 text-3xl font-bold text-white">
+              Install Our Mobile App
+            </h2>
+            <QRCode
+              value="https://expo.dev/preview/update?message=test%20the%20components&updateRuntimeVersion=1.0.0&createdAt=2024-10-16T14%3A18%3A49.302Z&slug=exp&projectId=3f460478-7412-4fa5-8628-56bfd9a43099&group=4ebfcbcf-09e1-4af8-ae16-8b0e3975d07a"
+              size={200}
+            />
+            <p className="mt-2 text-xl text-white">
+              Scan the QR code to download our mobile app.
+            </p>
           </div>
-          <PopularRoutes setDeparture={setDeparture} setArrival={setArrival} searchFormRef={searchFormRef} />
+          <PopularRoutes
+            setDeparture={setDeparture}
+            setArrival={setArrival}
+            searchFormRef={searchFormRef}
+          />
 
           <div className="w-max">
-            <p className="items-center pr-5 mt-4 mb-4 overflow-hidden text-3xl font-extrabold text-center text-white border-r-2 border-black sm:font-extrabold sm:text-7xl animate-typing whitespace-nowrap md:text-4xl sm:text-center xl:my-10 xl:text-7xl" style={{ opacity: 1 }}>
+            <p
+              className="items-center pr-5 mt-4 mb-4 overflow-hidden text-3xl font-extrabold text-center text-white border-r-2 border-black sm:font-extrabold sm:text-7xl animate-typing whitespace-nowrap md:text-4xl sm:text-center xl:my-10 xl:text-7xl"
+              style={{ opacity: 1 }}
+            >
               Book,Ride,Enjoy
             </p>
           </div>
-
         </main>
       </div>
     </div>

@@ -4,6 +4,7 @@ import Filter from "../components/Filter";
 import TrainOption from "../components/TrainOption";
 import { ReservationContext } from "../context/ReservationContext";
 import useTrainOptions from "../hooks/useTrainOptions";
+import LoadingModal from "../components/LoadingModal";
 
 export default function Results() {
   const { reservationData, setReservationData } =
@@ -47,16 +48,18 @@ export default function Results() {
   return (
     <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div className="flex flex-col gap-6 md:flex-row lg:px-20 ml:6">
-        <div className={`flex-1 w-full p-1 `}>
-          <Filter
-            selectedFeatures={selectedFeatures}
-            setSelectedFeatures={setSelectedFeatures}
-          />
-        </div>
+        {!loading && (
+          <div className={`flex-1 w-full p-1 `}>
+            <Filter
+              selectedFeatures={selectedFeatures}
+              setSelectedFeatures={setSelectedFeatures}
+            />
+          </div>
+        )}
 
         <div className="flex-1 flex flex-col gap-4 ml-0 md:ml-8 lg:flex-[3]">
           {loading ? (
-            <div>Loading...</div>
+            <LoadingModal />
           ) : error ? (
             <div className="text-red-500">{error}</div>
           ) : (

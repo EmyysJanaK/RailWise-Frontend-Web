@@ -4,20 +4,19 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
-import { z } from "zod"; 
-
+import { set, z } from "zod";
 import { ReservationContext } from "../context/ReservationContext";
 import { UserContext } from "../context/UserContext";
 import Wagon from "../components/Wagon";
 import SeatSelectionDispaly from "../components/SeatSelectionDisplay";
-import { set } from "react-hook-form";
+import { validateEmail } from "../utils/emailValidation";
 
 function SamplePrevArrow(props) {
   const { className, style, onClick } = props;
   return (
     <div
       className={className}
-      style={{ ...style,  background: "purple", borderRadius: "50%" }}
+      style={{ ...style, background: "purple", borderRadius: "50%" }}
       onClick={onClick}
     />
   );
@@ -42,10 +41,8 @@ const SeatSelectionPage = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [disableSlider, setDisableSlider] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-
 
   const emailSchema = z.string().email({ message: "Invalid email format" });
 
@@ -95,7 +92,7 @@ const SeatSelectionPage = () => {
         selectedSeats.filter((selectedSeat) => selectedSeat._id !== seat._id)
       );
     } else {
-      if (selectedSeats.length >= pax - 1) {  
+      if (selectedSeats.length >= pax - 1) {
         setDisableSlider(true);
       } else {
         setDisableSlider(false);
@@ -112,31 +109,37 @@ const SeatSelectionPage = () => {
     setDisableSlider(false);
   };
 
-  const validateEmail = (email) => {
+  const handleEmailChange = async (email) => {
     setEmail(email);
     try {
       emailSchema.parse(email);
       setEmailError("");
       return true;
     } catch (error) {
-      setEmailError(error.errors[0].message);
+      setEmailError("Invalid email format");
       return false;
     }
   };
 
   useEffect(() => {
-    if (userData){
+    if (userData) {
       setEmail(userData.email);
     }
-  }, [userData])
-  
+  }, [userData]);
 
   const handleProceed = async (selectedSeats) => {
+    setLoading(true);
+    const isValid = await validateEmail(email, setEmailError);
+    if (!isValid) {
+      setLoading(false);
+      return;
+    } else {
+      setEmailError("");
+    }
     setReservationData({
       ...reservationData,
       selectedSeats,
     });
-    setLoading(true);
     try {
       const data = {
         scheduleId,
@@ -146,12 +149,21 @@ const SeatSelectionPage = () => {
         selectedSeatIds: selectedSeats.map((seat) => seat._id),
         selectedClassId,
         userId,
-      }
+      };
       console.log("data", data);
-      const response = await axios.post("/api/bookings/createPendingBooking", data);
+      const response = await axios.post(
+        "/api/bookings/createPendingBooking",
+        data
+      );
       setLoading(false);
       console.log("response", response.data);
-      navigate("/payment-gateway", { state: { bookingId: response.data.bookingId, expireTime: response.data.expireTime, email } });
+      navigate("/payment-gateway", {
+        state: {
+          bookingId: response.data.bookingId,
+          expireTime: response.data.expireTime,
+          email,
+        },
+      });
     } catch (error) {
       console.error(error);
       setError("Failed to proceed to payment");
@@ -160,99 +172,92 @@ const SeatSelectionPage = () => {
   };
 
   return (
-
     <>
-    <div className="relative py-24 overflow-hidden bg-gray-700 isolate sm:py-32">
-      
-      <div
-        aria-hidden="true"
-        className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
-      >
+      <div className="relative py-24 overflow-hidden bg-gray-700 isolate sm:py-32">
         <div
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-          className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
-        />
-      </div>
-      <div
-        aria-hidden="true"
-        className="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0 sm:transform-gpu"
-      >
-      <div
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-          className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
-        />
-      </div>
-    
-      <h2 className="mb-8 text-4xl font-extrabold text-center text-white">
-        Seat Selection and Email
-      </h2>
-      <div className="w-[500px] mx-auto mt-8">
-        <Slider {...settings}>
-          {wagonsData.map((wagonData) => (
-            <div key={wagonData._id} className="p-10 bg-gray-700">
-              <Wagon
-                wagonNumber={wagonData.wagonNumber}
-                seats={wagonData.seats}
-                bookedSeats={wagonData.alreadyBookedSeats}
-                handleSeatClick={handleSeatClick}
-                selectedSeats={selectedSeats}
-                disableSlider={disableSlider}
-              />
-            </div>
-          ))}
-        </Slider>
-        <div className="w-1/2 mx-auto mt-8">
-          <SeatSelectionDispaly
-            selectedSeats={selectedSeats}
-            handleReset={handleReset}
-          ></SeatSelectionDispaly>
+          aria-hidden="true"
+          className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl"
+        >
+          <div
+            style={{
+              clipPath:
+                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+            }}
+            className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
+          />
         </div>
-        
-        
-        
-        <div className="max-w-lg p-8 mx-auto mb-8 bg-white shadow-lg rounded-xl">
+        <div
+          aria-hidden="true"
+          className="absolute -top-52 left-1/2 -z-10 -translate-x-1/2 transform-gpu blur-3xl sm:top-[-28rem] sm:ml-16 sm:translate-x-0 sm:transform-gpu"
+        >
+          <div
+            style={{
+              clipPath:
+                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+            }}
+            className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
+          />
+        </div>
+
+        <h2 className="mb-8 text-4xl font-extrabold text-center text-white">
+          Seat Selection and Email
+        </h2>
+        <div className="w-[500px] mx-auto mt-8">
+          <Slider {...settings}>
+            {wagonsData.map((wagonData) => (
+              <div key={wagonData._id} className="p-10 bg-gray-700">
+                <Wagon
+                  wagonNumber={wagonData.wagonNumber}
+                  seats={wagonData.seats}
+                  bookedSeats={wagonData.alreadyBookedSeats}
+                  handleSeatClick={handleSeatClick}
+                  selectedSeats={selectedSeats}
+                  disableSlider={disableSlider}
+                />
+              </div>
+            ))}
+          </Slider>
+          <div className="w-1/2 mx-auto mt-8">
+            <SeatSelectionDispaly
+              selectedSeats={selectedSeats}
+              handleReset={handleReset}
+            ></SeatSelectionDispaly>
+          </div>
+
+          <div className="max-w-lg p-8 mx-auto mb-8 bg-white shadow-lg rounded-xl">
             <h2 className="mb-6 text-2xl font-extrabold text-center text-gray-800">
               Enter Email for Ticket
             </h2>
             <div className="mb-4">
-            <input
+              <input
                 type="email"
                 className="w-full p-3 mt-1 text-gray-700 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => validateEmail(e.target.value)}
-                // onBlur={() => validateEmail(email)} // Validate on blur
+                onChange={(e) => handleEmailChange(e.target.value)}
               />
               {emailError && (
-                <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                <p className="mt-1 text-sm text-red-500">{emailError}</p>
               )}
             </div>
             <div className="flex items-center justify-center">
-            <button
+              <button
                 className={`w-1/2 p-2 mt-8 text-white rounded-lg ${
                   !disableSlider || !email || emailError
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : loading
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-purple-900 cursor-pointer"
                 }`}
                 onClick={() => handleProceed(selectedSeats)}
                 disabled={selectedSeats.length < pax || !email || emailError}
               >
-                Proceed to payment
+                {loading ? "Validating Email..." : "Proceed to Payment"}
               </button>
             </div>
+          </div>
         </div>
-          
-
-
       </div>
-      
-    </div>
     </>
   );
 };
